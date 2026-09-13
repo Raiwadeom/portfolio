@@ -37,7 +37,12 @@ export default function SpaceBackdrop() {
     let H = 0;
     let dpr = 1;
     let raf = 0;
-    let visible = true;
+    let inView = true;
+    let docVisible = true;
+    /* Forces a single repaint even while paused. Resizing clears the canvas
+       (setting width/height wipes it), so without this a resize that lands
+       while the tab is hidden leaves a black rectangle behind for good. */
+    let dirty = true;
     let last = performance.now();
     let t = 0;
 
@@ -187,14 +192,17 @@ export default function SpaceBackdrop() {
       deep.height = Math.round(H * 1.06);
       paintDeep();
       seedStars();
+      dirty = true;
     };
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
-      if (!visible) {
+      if (!inView || !docVisible) {
         last = now;
-        return;
+        // still owe the canvas one paint (fresh mount, or a resize wiped it)
+        if (!dirty) return;
       }
+      dirty = false;
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       if (!reduced) t += dt;
@@ -355,15 +363,25 @@ export default function SpaceBackdrop() {
     const ro = new ResizeObserver(resize);
     ro.observe(host);
 
-    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), {
-      threshold: 0,
-    });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting;
+        if (inView) dirty = true;
+      },
+      { threshold: 0 }
+    );
     io.observe(host);
 
     const onVis = () => {
-      if (document.hidden) visible = false;
+      docVisible = !document.hidden;
+      // Coming back from another tab must resume the loop, not just pause it.
+      if (docVisible) {
+        dirty = true;
+        last = performance.now();
+      }
     };
     document.addEventListener("visibilitychange", onVis);
+    onVis();
 
     raf = requestAnimationFrame(frame);
 

@@ -75,7 +75,7 @@ export default function Hero() {
       )
         .to(hud.current, { opacity: 0, duration: 0.12, force3D: true }, 0)
         .to(
-          [meta.current, "[data-kicker]"],
+          [meta.current, "[data-kicker-wrap]"],
           { opacity: 0, y: -30, duration: 0.3, force3D: true },
           0.05
         )
@@ -123,10 +123,9 @@ export default function Hero() {
           style={{ zIndex: 20, opacity: 0 }}
         >
           <div className="w-full max-w-[1500px] mx-auto">
-            <div className="overflow-hidden">
+            <div data-kicker-wrap className="overflow-hidden">
               <p
                 data-line
-                data-kicker
                 className="label !text-[var(--color-cyan)] flex items-start gap-2.5"
               >
                 <span className="inline-block w-5 h-px shrink-0 mt-[0.62em] bg-[var(--color-cyan)]" />
