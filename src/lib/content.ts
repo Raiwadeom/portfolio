@@ -78,45 +78,40 @@ export const services = [
   },
 ];
 
-/**
- * ⚠️  CHECK THE BLURBS AND LINKS BELOW.
- * The GitHub repos for these are currently empty, so the one-line
- * descriptions were written from the project names — rewrite them to
- * say what each one actually does. Add `live` URLs once deployed.
- */
+/** Pulled from the repo descriptions on github.com/Raiwadeom. */
 export const projects = [
   {
     n: "01",
     title: "RaktSetu",
     blurb:
-      "A bridge between blood donors, hospitals and blood banks — matching urgent requests to nearby eligible donors in real time.",
-    stack: ["Web App", "Full Stack", "Database"],
+      "A blood donor network, shipped on Google Play. Matches urgent requests to verified volunteer donors by real red-cell compatibility rather than exact blood group.",
+    stack: ["React Native", "Expo", "Firebase", "TypeScript"],
     year: "2026",
-    role: "Design & Build",
+    role: "Mobile & Backend",
     live: "",
     repo: "https://github.com/Raiwadeom/raktsetu",
   },
   {
     n: "02",
-    title: "Dnyan Setu",
+    title: "Dyan Setu",
     blurb:
-      "A knowledge bridge for students — structured learning material and practice in one place, built for regional-language learners.",
-    stack: ["Web App", "Full Stack", "EdTech"],
+      "A quiz-based learning platform — Vite on the front, Firebase for data and auth, with Vercel serverless routes handling the API.",
+    stack: ["Vite", "Firebase", "Serverless", "JavaScript"],
     year: "2026",
     role: "Full Stack",
-    live: "",
-    repo: "",
+    live: "https://dyansetu.vercel.app",
+    repo: "https://github.com/Raiwadeom/dyansetu",
   },
   {
     n: "03",
-    title: "New Desk",
+    title: "CSM News Desk",
     blurb:
-      "A focused workspace that pulls the day's tasks, notes and sources onto a single desk instead of five scattered tabs.",
-    stack: ["Next.js", "TypeScript", "UI"],
-    year: "2025",
+      "A Pinterest-style public archive of a college's newspaper cuttings — open browsing with no sign-in, plus an admin area for uploads and collections.",
+    stack: ["Next.js", "Firebase", "Cloudinary"],
+    year: "2026",
     role: "Design & Build",
-    live: "",
-    repo: "",
+    live: "https://csm-news-desk.vercel.app",
+    repo: "https://github.com/Raiwadeom/csm-news-desk",
   },
 ];
 
@@ -125,17 +120,17 @@ export const stack = [
   {
     n: "01",
     group: "FRONTEND",
-    items: ["NEXT.JS", "REACT", "TYPESCRIPT", "TAILWIND", "GSAP"],
+    items: ["NEXT.JS", "REACT", "REACT NATIVE", "TYPESCRIPT", "TAILWIND"],
   },
   {
     n: "02",
     group: "BACKEND",
-    items: ["NODE.JS", "PYTHON", "FASTAPI", "POSTGRESQL", "MONGODB"],
+    items: ["FIREBASE", "NODE.JS", "PYTHON", "SERVERLESS", "CLOUDINARY"],
   },
   {
     n: "03",
     group: "TOOLING",
-    items: ["GIT", "DOCKER", "VERCEL", "LINUX", "FIGMA"],
+    items: ["EXPO", "VITE", "GIT", "VERCEL", "GSAP"],
   },
 ];
 
