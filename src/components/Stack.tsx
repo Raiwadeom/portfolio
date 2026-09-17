@@ -1,98 +1,112 @@
 "use client";
 
-import { useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { stack } from "@/lib/content";
-import { Section, SectionHead } from "./ui";
-import { motionOn } from "@/lib/motion";
+/**
+ * The stack, on three wheels.
+ *
+ * Each group turns on its own cylinder: the item in the middle is sharp and
+ * marked with an arrow, the ones above and below tilt away and blur out. The
+ * wheels turn by themselves and hold still while you hover one.
+ *
+ * The wheels step rather than scroll — a step every couple of seconds, eased
+ * — so the blur is recomputed a handful of times a minute instead of every
+ * frame. The timers stop entirely while the section is off screen.
+ */
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+import { useEffect, useRef, useState } from "react";
+import { stack } from "@/lib/content";
+import { motionOn } from "@/lib/motion";
+import { Section, SectionHead } from "./ui";
+
+const STEP_MS = 2200;
 
 export default function Stack() {
   const scope = useRef<HTMLDivElement>(null);
+  const [at, setAt] = useState<number[]>(() => stack.map((_, i) => i));
+  const [held, setHeld] = useState<number | null>(null);
+  const [live, setLive] = useState(false);
 
-  useGSAP(
-    () => {
-      const rows = gsap.utils.toArray<HTMLElement>("[data-row]");
-      if (!rows.length || !motionOn()) return;
+  /* Nothing turns while the section is off screen. */
+  useEffect(() => {
+    const el = scope.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setLive(e.isIntersecting), {
+      rootMargin: "10% 0px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
-      rows.forEach((row) => {
-        const rule = row.querySelector<HTMLElement>("[data-rule]");
-        const chips = gsap.utils.toArray<HTMLElement>("[data-item]", row);
-        const head = row.querySelector<HTMLElement>("[data-head]");
+  useEffect(() => {
+    if (!live || !motionOn()) return;
 
-        const st = { trigger: row, start: "top 86%", once: true };
+    const id = setInterval(() => {
+      setAt((prev) => prev.map((n, g) => (held === g ? n : n + 1)));
+    }, STEP_MS);
 
-        gsap.fromTo(
-          rule,
-          { scaleX: 0 },
-          { scaleX: 1, duration: 1.1, ease: "power3.out", scrollTrigger: st }
-        );
-        gsap.fromTo(
-          head,
-          { x: -18, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out", scrollTrigger: st }
-        );
-        gsap.fromTo(
-          chips,
-          { y: 22, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.65,
-            ease: "power3.out",
-            stagger: 0.055,
-            delay: 0.12,
-            scrollTrigger: st,
-          }
-        );
-      });
-    },
-    { scope }
-  );
+    return () => clearInterval(id);
+  }, [live, held]);
 
   return (
-    <Section id="stack">
-      <SectionHead label="STACK" index="04" />
+    <Section id="stack" className="overflow-hidden">
+      <SectionHead label="STACK" index="04" right="(04)" />
 
-      <div ref={scope} className="mt-10 sm:mt-16">
-        {stack.map((g) => (
-          <div key={g.group} data-row className="relative pt-6 sm:pt-9 pb-7 sm:pb-11">
-            {/* the rule draws itself as the row arrives */}
-            <span
-              data-rule
-              className="absolute top-0 left-0 right-0 h-px bg-[var(--color-line)] origin-left"
-            />
+      <div ref={scope} className="wheels">
+        {stack.map((group, g) => {
+          const n = group.items.length;
+          const cursor = ((at[g] % n) + n) % n;
 
-            <div className="grid gap-5 sm:gap-8 md:grid-cols-[minmax(0,200px)_minmax(0,1fr)] md:items-start">
-              <div data-head className="flex items-baseline gap-3">
-                <span className="label !text-[var(--color-cyan)]">{g.n}</span>
-                <h3 className="display font-bold text-[clamp(1rem,2.2vw,1.4rem)] tracking-[0.06em] text-[var(--color-ice)]">
-                  {g.group}
-                </h3>
+          return (
+            <div
+              key={group.group}
+              className="wheel-col"
+              onPointerEnter={() => setHeld(g)}
+              onPointerLeave={() => setHeld(null)}
+            >
+              <div className="wheel-tag">
+                <span className="label !text-[var(--color-amber)]">{group.n}</span>
+                <span className="label">{group.group}</span>
               </div>
 
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 sm:gap-x-7">
-                {g.items.map((item, i) => (
-                  <span key={item} data-item className="flex items-baseline gap-4 sm:gap-7">
-                    <span className="group relative font-display font-medium text-[clamp(1.15rem,4vw,2.35rem)] leading-none text-[var(--color-dim)] hover:text-[var(--color-ice)] transition-colors duration-300 cursor-default">
-                      {item}
-                      <span className="absolute -bottom-1.5 left-0 right-0 h-px bg-[var(--color-cyan)] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+              <div className="wheel" role="list" aria-label={group.group}>
+                {group.items.map((item, i) => {
+                  /* shortest way round the wheel */
+                  let o = (i - cursor) % n;
+                  if (o > n / 2) o -= n;
+                  if (o < -n / 2) o += n;
+                  if (Math.abs(o) > 2) return null;
+
+                  const far = Math.abs(o);
+                  return (
+                    <span
+                      key={item}
+                      role="listitem"
+                      className="wheel-item"
+                      data-on={o === 0 ? "" : undefined}
+                      aria-hidden={o !== 0}
+                      style={{
+                        transform: `translate(-50%, -50%) translateY(calc(${o} * var(--rise))) translateZ(${-far * 34}px) rotateX(${o * -26}deg)`,
+                        opacity: o === 0 ? 1 : 0.42 - far * 0.11,
+                        filter: o === 0 ? "none" : `blur(${far * 1.7}px)`,
+                      }}
+                    >
+                      <svg className="wheel-arrow" viewBox="0 0 24 24" aria-hidden>
+                        <path
+                          d="M3 12h17M14 6l6 6-6 6"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span className="wheel-word">{item}</span>
                     </span>
-                    {i < g.items.length - 1 ? (
-                      <span className="text-[var(--color-cyan)] text-[7px] opacity-45 translate-y-[-0.35em]">
-                        ◆
-                      </span>
-                    ) : null}
-                  </span>
-                ))}
+                  );
+                })}
               </div>
             </div>
-          </div>
-        ))}
-        <span className="block h-px bg-[var(--color-line)]" />
+          );
+        })}
       </div>
     </Section>
   );

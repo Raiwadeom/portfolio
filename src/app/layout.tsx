@@ -1,12 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Orbitron, JetBrains_Mono } from "next/font/google";
+import { Bebas_Neue, Caveat, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/lib/content";
 
-const display = Orbitron({
+/* Poster type for anything that shouts, a plain grotesque for anything that
+   has to be read, and a mono for labels, forms and printed card stock. */
+const display = Bebas_Neue({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const body = Inter({
+  variable: "--font-body",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+/* The hand the name is signed in on the cover. */
+const script = Caveat({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["500", "700"],
   display: "swap",
 });
 
@@ -29,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#03060f",
+  themeColor: "#050807",
   width: "device-width",
   initialScale: 1,
 };
@@ -40,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${mono.variable}`}
+      className={`${display.variable} ${body.variable} ${script.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>

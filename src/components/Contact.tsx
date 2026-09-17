@@ -1,6 +1,7 @@
 "use client";
 
-import { profile, links } from "@/lib/content";
+import { links, profile } from "@/lib/content";
+import Visitors from "./Visitors";
 import { Reveal } from "./ui";
 
 export default function Contact() {
@@ -14,13 +15,13 @@ export default function Contact() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%]"
         style={{
           background:
-            "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(31,79,255,0.24), transparent 70%)",
+            "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(224,160,44,0.24), transparent 70%)",
         }}
       />
 
       <Reveal>
         <div className="relative flex items-baseline justify-between border-b border-[var(--color-line-soft)] pb-3">
-          <span className="label !text-[var(--color-cyan)]">/ CONTACT</span>
+          <span className="label !text-[var(--color-amber)]">/ CONTACT</span>
           <span className="label">(06)</span>
         </div>
       </Reveal>
@@ -36,12 +37,12 @@ export default function Contact() {
       <Reveal delay={140}>
         <a
           href={`mailto:${profile.email}`}
-          className="relative group inline-flex items-center gap-3 mt-10 sm:mt-14 border-b border-[var(--color-line)] pb-2 hover:border-[var(--color-cyan)] transition-colors"
+          className="relative group inline-flex items-center gap-3 mt-10 sm:mt-14 border-b border-[var(--color-line)] pb-2 hover:border-[var(--color-amber)] transition-colors"
         >
-          <span className="text-[clamp(0.95rem,3vw,1.7rem)] tracking-[0.06em] text-[var(--color-ice)] group-hover:text-[var(--color-cyan)] transition-colors">
+          <span className="text-[clamp(0.95rem,3vw,1.7rem)] tracking-[0.06em] text-[var(--color-ice)] group-hover:text-[var(--color-amber)] transition-colors">
             {profile.email}
           </span>
-          <span className="text-[var(--color-cyan)] transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+          <span className="text-[var(--color-amber)] transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
             ↗
           </span>
         </a>
@@ -55,19 +56,19 @@ export default function Contact() {
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="group relative h-full flex flex-col justify-between gap-3 sm:gap-6 border-b border-r border-[var(--color-line-soft)] px-4 sm:px-5 py-3.5 sm:py-5 overflow-hidden hover:bg-[rgba(20,50,120,0.14)] transition-colors duration-400"
+              className="group relative h-full flex flex-col justify-between gap-3 sm:gap-6 border-b border-r border-[var(--color-line-soft)] px-4 sm:px-5 py-3.5 sm:py-5 overflow-hidden hover:bg-[rgba(38,86,82,0.14)] transition-colors duration-400"
             >
               <span className="flex items-center justify-between gap-3">
-                <span className="label group-hover:!text-[var(--color-cyan)] transition-colors">
+                <span className="label group-hover:!text-[var(--color-amber)] transition-colors">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-[13px] text-[var(--color-dim)] group-hover:text-[var(--color-cyan)] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                <span className="text-[13px] text-[var(--color-dim)] group-hover:text-[var(--color-amber)] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   ↗
                 </span>
               </span>
 
               <span>
-                <span className="block font-display font-bold text-[13px] sm:text-[15px] tracking-[0.1em] text-[var(--color-ice)] group-hover:text-[var(--color-cyan)] transition-colors">
+                <span className="block font-display font-bold text-[13px] sm:text-[15px] tracking-[0.1em] text-[var(--color-ice)] group-hover:text-[var(--color-amber)] transition-colors">
                   {l.label}
                 </span>
                 <span className="block mt-1 text-[11px] tracking-[0.06em] text-[var(--color-dim)]">
@@ -76,18 +77,31 @@ export default function Contact() {
               </span>
 
               {/* hairline that draws in on hover */}
-              <span className="pointer-events-none absolute left-0 bottom-0 h-px w-full origin-left scale-x-0 group-hover:scale-x-100 bg-[var(--color-cyan)] transition-transform duration-500 ease-out" />
+              <span className="pointer-events-none absolute left-0 bottom-0 h-px w-full origin-left scale-x-0 group-hover:scale-x-100 bg-[var(--color-amber)] transition-transform duration-500 ease-out" />
             </a>
           </Reveal>
         ))}
       </div>
 
       <Reveal>
-        <footer className="relative mt-16 sm:mt-24 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line-soft)] pt-5">
-          <span className="label">
-            © {new Date().getFullYear()} {profile.name.toUpperCase()}
+        {/* A printed strip rather than a bare row of labels — the same
+            bordered, mono-set language as a chip, wide enough to be a plate.
+            Three cells divided by a rule; the rule runs vertical once there's
+            a row to divide, horizontal while everything is still stacked. */}
+        <footer className="footer-strip">
+          <span className="footer-cell">
+            <span className="footer-mark">{profile.logo}</span>
+            <span aria-hidden>·</span>
+            <span>
+              © {new Date().getFullYear()} {profile.name.toUpperCase()}
+            </span>
           </span>
-          <span className="label">{profile.location.toUpperCase()}</span>
+
+          <span className="footer-cell footer-cell--mid">
+            <Visitors />
+          </span>
+
+          <span className="footer-cell">{profile.location.toUpperCase()}</span>
         </footer>
       </Reveal>
     </section>

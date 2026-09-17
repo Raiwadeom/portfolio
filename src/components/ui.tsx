@@ -49,7 +49,7 @@ export function SectionHead({
   return (
     <Reveal>
       <div className="flex items-baseline justify-between border-b border-[var(--color-line-soft)] pb-3">
-        <span className="label !text-[var(--color-cyan)]">/ {label}</span>
+        <span className="label !text-[var(--color-amber)]">/ {label}</span>
         <span className="label">{right ?? `(${index})`}</span>
       </div>
     </Reveal>

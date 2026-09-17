@@ -1,23 +1,56 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-void: #03060f;
-  --color-deep: #060c1c;
-  --color-panel: #0a1426;
-  --color-line: #17243d;
-  --color-line-soft: #101a2e;
-  --color-blue: #1f4fff;
-  --color-glow: #2f6bff;
-  --color-cyan: #8fd6ff;
-  --color-ice: #d7e9ff;
-  --color-dim: #5b6d8c;
-  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  /* Ink and atmosphere: a near-black room, teal haze in the air, and amber
+     used only where something is meant to be looked at. */
+  --color-void: #050807;
+  --color-deep: #080c0b;
+  --color-panel: #0e1514;
+  --color-line: #253431;
+  --color-line-soft: #16201e;
+  --color-haze: #1d4a48;
+  --color-haze-lit: #3f8a83;
+  --color-amber: #e0a02c;
+  --color-amber-soft: #f0c069;
+  --color-ice: #f1efe9;
+  --color-dim: #7f8a86;
+  --font-display: var(--font-display), "Haettenschweiler", ui-sans-serif, sans-serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-script), "Segoe Script", cursive;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
   color-scheme: dark;
   --gutter: clamp(16px, 4vw, 56px);
+
+  /* Room the fixed nav bar (plus the caption under it) actually takes at the
+     top of the screen. The cover card's own size budgets around this so the
+     polaroid and paperclip, which pop up past the card's own top edge, never
+     land underneath it. Referencing an undefined var() here would poison
+     every calc() built on --w below — everything on the card, sized off it —
+     so it is defined once, right where --w is used. */
+  --nav-safe: clamp(84px, 15svh, 112px);
+
+  /* How far each card steps away from the one in front, in the music
+     cover-flow and the book fan. Phones get a tighter spread so the deck
+     stays inside the screen. */
+  --flow-step: 58px;
+  --fan-step: 36px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --flow-step: 96px;
+    --fan-step: 56px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --flow-step: 132px;
+    --fan-step: 70px;
+  }
 }
 
 * {
@@ -34,14 +67,14 @@ body {
   margin: 0;
   background: var(--color-void);
   color: var(--color-ice);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.65;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--color-blue);
+  background: var(--color-amber);
   color: #fff;
 }
 
@@ -66,14 +99,15 @@ a {
 
 .display {
   font-family: var(--font-display);
+  font-weight: 400;
   text-transform: uppercase;
   line-height: 0.92;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.005em;
 }
 
 .outline-text {
   color: transparent;
-  -webkit-text-stroke: 1px var(--color-cyan);
+  -webkit-text-stroke: 1px var(--color-amber);
   paint-order: stroke fill;
 }
 
@@ -89,8 +123,8 @@ a {
   pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(190, 220, 255, 0.028) 0px,
-    rgba(190, 220, 255, 0.028) 1px,
+    rgba(214,226,220, 0.028) 0px,
+    rgba(214,226,220, 0.028) 1px,
     transparent 1px,
     transparent 3px
   );
@@ -113,7 +147,7 @@ a {
   background: radial-gradient(
     ellipse at 50% 45%,
     transparent 35%,
-    rgba(2, 5, 12, 0.55) 100%
+    rgba(3,6,5, 0.55) 100%
   );
 }
 
@@ -123,33 +157,6 @@ a {
   .scanlines {
     display: none;
   }
-}
-
-/* ---------- CRT screen ---------- */
-
-.crt-glass {
-  background: radial-gradient(
-    ellipse at 50% 40%,
-    rgba(60, 130, 255, 0.55) 0%,
-    rgba(12, 40, 110, 0.85) 45%,
-    rgba(4, 12, 35, 0.98) 100%
-  );
-}
-
-.crt-inset {
-  box-shadow:
-    inset 0 0 60px rgba(0, 0, 0, 0.8),
-    inset 0 0 120px rgba(40, 110, 255, 0.35);
-}
-
-.crt-lines {
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.05) 0px,
-    rgba(255, 255, 255, 0.05) 1px,
-    transparent 1px,
-    transparent 4px
-  );
 }
 
 /* ---------- lines & chips ---------- */
@@ -164,17 +171,12 @@ a {
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-cyan);
-  background: rgba(20, 50, 120, 0.16);
+  color: var(--color-amber);
+  background: rgba(38,86,82, 0.16);
   white-space: nowrap;
 }
 
 /* ---------- reveal ---------- */
-
-.reveal-word {
-  display: inline-block;
-  opacity: 0.12;
-}
 
 .reveal {
   opacity: 0;
@@ -199,104 +201,1080 @@ section[id] {
   scroll-margin-top: 72px;
 }
 
+/* Sections bring their own gutter on the landing page. Inside a subpage the
+   wrapper already has one, so drop theirs rather than pad twice. */
+.subpage section[id] {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 
-/* ---------- hero room atmosphere ---------- */
 
-.mote {
+/* ---------- nav bar ----------
+   A dark rounded bar of icons with a small tab riding the edge that faces
+   the page. Only the tab and the icon colour move, so it stays cheap. */
+
+.navbar {
+  position: relative;
+  padding: 7px 8px 9px;
+  border: 1px solid rgba(241, 239, 233, 0.1);
+  border-radius: 20px;
+  background: rgba(8, 12, 11, 0.72);
+  box-shadow:
+    0 18px 40px -16px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    background-color 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.navbar.is-lifted {
+  border-color: rgba(224, 160, 44, 0.28);
+  background: rgba(6, 10, 9, 0.88);
+  box-shadow:
+    0 22px 50px -16px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.navbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(46px, 13vw, 62px);
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 13px;
+  background: none;
+  color: rgba(241, 239, 233, 0.38);
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar-item:hover,
+.navbar-item:focus-visible {
+  color: rgba(241, 239, 233, 0.85);
+  background: rgba(241, 239, 233, 0.06);
+  outline: none;
+}
+
+.navbar-item.is-on {
+  color: var(--color-ice);
+}
+
+.navbar-item:active {
+  transform: scale(0.93);
+}
+
+.navbar-indicator {
   position: absolute;
-  border-radius: 9999px;
-  pointer-events: none;
-  background: radial-gradient(
-    circle,
-    rgba(190, 225, 255, 0.95) 0%,
-    rgba(120, 180, 255, 0.35) 45%,
-    transparent 70%
-  );
+  bottom: -9px;
+  left: 0;
+  width: 22px;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--color-ice);
   opacity: 0;
-  animation-name: mote-float;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  will-change: transform, opacity;
+  box-shadow: 0 0 12px rgba(241, 239, 233, 0.55);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease;
 }
 
-@keyframes mote-float {
-  0% {
-    transform: translate3d(0, 0, 0);
+.navbar-caption {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(241, 239, 233, 0.42);
+  animation: caption-in 0.35s ease both;
+}
+
+@keyframes caption-in {
+  from {
     opacity: 0;
+    transform: translateY(-3px);
   }
-  15% {
-    opacity: var(--mote-o, 0.45);
-  }
-  85% {
-    opacity: var(--mote-o, 0.45);
-  }
-  100% {
-    transform: translate3d(var(--mote-x, 12px), -170px, 0);
-    opacity: 0;
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
-/* the tube's glow rising and falling on the back wall */
-.room-breathe {
-  animation: room-breathe 9s ease-in-out infinite alternate;
-  will-change: opacity;
-}
-
-@keyframes room-breathe {
-  from { opacity: 0.55; }
-  to { opacity: 1; }
-}
-
-[data-motion="off"] [data-hero-title] {
-  opacity: 1 !important;
-}
-
-[data-motion="off"] .mote,
-[data-motion="off"] .room-breathe {
+[data-motion="off"] .navbar-caption {
   animation: none;
-  opacity: var(--mote-o, 0.4);
 }
 
-/* ---------- cinema: CRT channel switcher ---------- */
-
-/* reusable noise texture (also used by .grain) */
-.grain-tex {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+.cover-screen {
+  /* The card is centred inside this reduced box, not the full 100svh — the
+     --w formula above assumes exactly this padding is here. */
+  padding-top: var(--nav-safe);
+  padding-bottom: 34px;
 }
 
-/* the bright band an old tube drags down the picture */
-.cine-track {
-  top: -14%;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(160, 210, 255, 0.07) 40%,
-    rgba(200, 230, 255, 0.13) 50%,
-    rgba(160, 210, 255, 0.07) 60%,
-    transparent 100%
-  );
-  animation: cine-track 7s linear infinite;
+/* ---------- the cover (hero) ----------
+   A flat field of colour, the photograph blown up and thrown out of focus
+   behind it, and a printed card laid over the top. Everything on the card is
+   a multiple of `--w`, the card's own width, so it scales as one object. */
+
+.cover-back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(150vh, 190vw);
+  aspect-ratio: 9 / 16;
+  transform: translate(-52%, -46%);
+  filter: blur(26px) saturate(0.5) contrast(1.1) brightness(0.72);
+  opacity: 0.55;
   will-change: transform;
 }
 
-@keyframes cine-track {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(0, 820%, 0); }
+.cover-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 44%, transparent 30%, rgba(4, 18, 17, 0.55) 100%),
+    linear-gradient(to bottom, rgba(4, 18, 17, 0.35), transparent 26%, transparent 66%, rgba(3, 14, 13, 0.6));
 }
 
-/* dwell bar that fills while a channel is on screen */
-.cine-dwell {
-  animation: cine-dwell 5200ms linear forwards;
+/* ---------- the card ---------- */
+
+.cover-card {
+  /* The card's own box is 1.34*w tall, but the polaroid pulls up another
+     ~0.13*w past the card's top edge and the paperclip a further ~0.075*w
+     past that — so the real visual top sits about 0.2*w above the box.
+     The card sits centred inside a box that already has --nav-safe padded
+     off its top (see .cover-screen): with that padding in place, clearing
+     the reserved strip only needs half the leftover space above the card
+     to cover the 0.2w overhang, i.e. (avail − 1.34w)/2 ≥ 0.2w — which
+     rearranges to the 1.74 divisor below. */
+  --w: min(
+    74vw,
+    380px,
+    calc((100svh - var(--nav-safe) - 34px) / 1.74)
+  );
+  position: relative;
+  z-index: 10;
+  width: var(--w);
+  aspect-ratio: 1 / 1.34;
+  padding: calc(var(--w) * 0.055) calc(var(--w) * 0.055) calc(var(--w) * 0.05);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(172deg, #fdfcf9 0%, #f4f2ec 60%, #eceae2 100%);
+  box-shadow:
+    0 48px 90px -34px rgba(0, 0, 0, 0.85),
+    0 10px 24px -14px rgba(0, 0, 0, 0.6);
+  transform: rotate(-1.2deg);
+  will-change: transform;
 }
 
-@keyframes cine-dwell {
-  from { width: 0%; }
-  to { width: 100%; }
+/* micro-type running up the left edge */
+.cover-spine {
+  position: absolute;
+  top: calc(var(--w) * 0.3);
+  left: calc(var(--w) * 0.028);
+  font-family: var(--font-mono);
+  font-size: calc(var(--w) * 0.024);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+  color: #6c706e;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
 }
 
-[data-motion="off"] .cine-track,
-[data-motion="off"] .cine-dwell {
+/* ---------- the polaroid ---------- */
+
+.polaroid-plate {
+  position: relative;
+  width: calc(var(--w) * 0.86);
+  margin: calc(var(--w) * -0.13) 0 0 auto;
+  padding: calc(var(--w) * 0.038) calc(var(--w) * 0.038) calc(var(--w) * 0.1);
+  background: #fdfdfb;
+  box-shadow:
+    0 20px 34px -16px rgba(0, 0, 0, 0.55),
+    0 2px 5px rgba(0, 0, 0, 0.22);
+  transform: rotate(0.8deg);
+}
+
+.polaroid-window {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #26302f;
+  filter: saturate(0.62) contrast(1.08);
+}
+
+.clip {
+  position: absolute;
+  top: calc(var(--w) * -0.075);
+  right: calc(var(--w) * 0.055);
+  z-index: 3;
+  width: calc(var(--w) * 0.075);
+  height: auto;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+}
+
+/* ---------- the signature ---------- */
+
+.cover-sign {
+  margin: calc(var(--w) * 0.045) 0 0;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: calc(var(--w) * 0.185);
+  line-height: 0.82;
+  letter-spacing: -0.005em;
+  text-align: center;
+  text-transform: none;
+  color: #1a2740;
+  transform: rotate(-1.4deg);
+}
+
+.cover-sign span:last-child {
+  padding-left: calc(var(--w) * 0.12);
+}
+
+/* ---------- the footer row ---------- */
+
+.cover-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--w) * 0.012) calc(var(--w) * 0.05);
+  margin-top: auto;
+  padding-left: calc(var(--w) * 0.07);
+  font-family: var(--font-mono);
+  font-size: calc(var(--w) * 0.023);
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  color: #4d5150;
+}
+
+.cover-foot span:last-child {
+  margin-left: auto;
+}
+
+/* ---------- the CV tab ----------
+   A paper index tab out of the right edge of the card, the way a marker
+   sticks out of a folder. It is the only thing on the cover you can take
+   away with you, so it gets its own object rather than a line of text. */
+
+.cv-tab {
+  position: absolute;
+  top: 46%;
+  left: 100%;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--w) * 0.022);
+  padding: calc(var(--w) * 0.026) calc(var(--w) * 0.038) calc(var(--w) * 0.026)
+    calc(var(--w) * 0.03);
+  border-radius: 0 calc(var(--w) * 0.014) calc(var(--w) * 0.014) 0;
+  background: linear-gradient(120deg, #f6f4ee, #e6e3da);
+  box-shadow:
+    5px 8px 18px -8px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  color: #1a2740;
+  font-family: var(--font-mono);
+  font-size: calc(var(--w) * 0.028);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(calc(var(--w) * -0.012));
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.cv-tab svg {
+  width: calc(var(--w) * 0.042);
+  height: calc(var(--w) * 0.042);
+}
+
+.cv-tab:hover,
+.cv-tab:focus-visible {
+  transform: translateX(calc(var(--w) * 0.03));
+  background: linear-gradient(120deg, #fff6e2, #f0dfb8);
+  color: #8a3a12;
+  outline: none;
+}
+
+/* On a phone the tab would hang off the screen, so it tucks under the card. */
+@media (max-width: 560px) {
+  .cv-tab {
+    top: auto;
+    left: 50%;
+    bottom: calc(var(--w) * -0.085);
+    border-radius: 0 0 calc(var(--w) * 0.014) calc(var(--w) * 0.014);
+    transform: translateX(-50%);
+  }
+
+  .cv-tab:hover,
+  .cv-tab:focus-visible {
+    transform: translateX(-50%) translateY(calc(var(--w) * 0.016));
+  }
+}
+
+.cover-cue {
+  position: absolute;
+  bottom: clamp(14px, 3vh, 30px);
+  left: 50%;
+  z-index: 10;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  color: rgba(233, 246, 244, 0.5);
+  transform: translateX(-50%);
+}
+
+/* ---------- stack wheels ----------
+   Three cylinders, one per group. Items sit absolutely in the middle and are
+   pushed up or down the wheel by their distance from the cursor, tilting and
+   blurring as they go. Only the centre item is sharp — and only the centre
+   item is exposed to a screen reader. */
+
+.wheels {
+  display: grid;
+  gap: clamp(28px, 4vw, 40px);
+  margin-top: clamp(30px, 5vw, 54px);
+}
+
+@media (min-width: 760px) {
+  .wheels {
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(20px, 3vw, 44px);
+  }
+}
+
+.wheel-col {
+  border-top: 1px solid var(--color-line-soft);
+  padding-top: 14px;
+}
+
+.wheel-tag {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.wheel {
+  --rise: clamp(38px, 5vw, 54px);
+  position: relative;
+  height: clamp(150px, 21vw, 200px);
+  margin-top: clamp(8px, 1.4vw, 16px);
+  perspective: 620px;
+  transform-style: preserve-3d;
+}
+
+.wheel-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.42em;
+  white-space: nowrap;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wheel-word {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.35rem, 3.4vw, 2.15rem);
+  line-height: 1;
+  letter-spacing: -0.028em;
+  color: rgba(241, 239, 233, 0.55);
+  transition: color 0.6s ease;
+}
+
+.wheel-item[data-on] .wheel-word {
+  color: var(--color-ice);
+}
+
+/* the arrow only appears on the one in focus, and slides in */
+.wheel-arrow {
+  width: clamp(18px, 2.2vw, 26px);
+  height: clamp(18px, 2.2vw, 26px);
+  flex-shrink: 0;
+  color: var(--color-amber);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wheel-item[data-on] .wheel-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* Motion off: no turning, no blur — just the list, legibly. */
+[data-motion="off"] .wheel {
+  height: auto;
+  perspective: none;
+}
+
+[data-motion="off"] .wheel-item {
+  position: static;
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transition: none;
+  padding: 3px 0;
+}
+
+/* ---------- the library rig ----------
+   Three slabs standing in perspective. The rig leans towards the pointer and
+   tips as the section scrolls (GSAP owns rotateX and y, CSS owns the lean),
+   and the open slab pops its deck out of its own top-right corner.
+
+   The fan is deliberately short: it has to clear the slab it belongs to
+   without reaching the one next door. */
+
+.lib-stage {
+  margin-top: clamp(34px, 6vw, 66px);
+  padding-top: clamp(30px, 5vw, 56px);
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+
+.lib-rig {
+  display: grid;
+  gap: clamp(18px, 2.6vw, 26px);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* The lean is its own layer so GSAP can own the rig's transform outright. */
+.lib-drift {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.lib-drift .lib-slab {
+  --lean: rotateX(var(--lx, 0deg)) rotateY(var(--ly, 0deg));
+}
+
+@media (min-width: 820px) {
+  .lib-rig {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.lib-slab {
+  position: relative;
+  display: block;
+  transform-style: preserve-3d;
+  /* fan the outer two away from the reader, and follow the pointer */
+  transform: var(--lean) rotateY(calc(var(--i) * -12deg))
+    translateZ(calc(var(--i) * var(--i) * -30px));
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.lib-slab[data-on] {
+  transform: var(--lean) rotateY(0deg) translateZ(56px) translateY(-6px);
+  z-index: 5;
+}
+
+.lib-face {
+  position: relative;
+  z-index: 2;
+  display: block;
+  padding: clamp(20px, 2.6vw, 30px);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  background: linear-gradient(165deg, rgba(19, 28, 26, 0.97), rgba(9, 14, 13, 0.97));
+  box-shadow: 0 26px 54px -24px rgba(0, 0, 0, 0.95);
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.lib-slab[data-on] .lib-face {
+  border-color: var(--color-amber);
+  box-shadow: 0 40px 70px -26px rgba(0, 0, 0, 0.98);
+}
+
+.lib-bar {
+  display: block;
+  width: 36px;
+  height: 3px;
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lib-slab[data-on] .lib-bar {
+  width: 74px;
+}
+
+.lib-k {
+  display: block;
+  margin-top: clamp(16px, 2vw, 22px);
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--color-ice);
+  transition: color 0.35s ease;
+}
+
+.lib-slab[data-on] .lib-k {
+  color: var(--color-amber);
+}
+
+.lib-v {
+  display: block;
+  max-width: 24ch;
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-dim);
+}
+
+.lib-go {
+  display: block;
+  margin-top: clamp(18px, 2.4vw, 26px);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: var(--color-dim);
+  transition: color 0.35s ease;
+}
+
+.lib-slab[data-on] .lib-go {
+  color: var(--color-amber);
+}
+
+/* ---------- the deck ----------
+   Anchored to the slab's own top-right corner and fanned UP rather than
+   across, so it clears its slab and never lands on the next one. */
+
+.lib-deck {
+  position: absolute;
+  top: 0;
+  right: clamp(10px, 1.6vw, 22px);
+  z-index: 3;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.lib-card {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(52px, 9vw, 84px);
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #0b0f0e;
+  box-shadow: 0 20px 34px -14px rgba(0, 0, 0, 0.95);
+  opacity: 0;
+  transform: translateY(0) translateZ(-24px) rotate(0deg);
+  transition:
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
+}
+
+/* records are square, not portrait */
+.lib-card--disc {
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.95);
+}
+
+.lib-slab[data-on] .lib-card {
+  opacity: 1;
+  transform: translateY(calc(var(--k) * -14px - 34px))
+    translateX(calc(var(--k) * -19px))
+    translateZ(calc(var(--k) * 14px + 16px))
+    rotate(calc(var(--k) * -5deg + 5deg));
+}
+
+/* Stacked on a phone, so the fan has the full width of the slab to open into
+   and can afford to spread sideways instead of stacking upward. */
+@media (max-width: 819px) {
+  .lib-rig {
+    gap: clamp(22px, 6vw, 34px);
+  }
+
+  .lib-slab {
+    transform: var(--lean) translateZ(0);
+  }
+
+  .lib-slab[data-on] {
+    transform: var(--lean) translateZ(30px);
+  }
+
+  .lib-v {
+    max-width: 34ch;
+  }
+
+  .lib-deck {
+    top: auto;
+    bottom: clamp(16px, 4vw, 26px);
+    right: clamp(14px, 4vw, 26px);
+  }
+
+  .lib-card {
+    top: auto;
+    bottom: 0;
+    width: clamp(46px, 15vw, 68px);
+  }
+
+  .lib-slab[data-on] .lib-card {
+    transform: translateX(calc(var(--k) * -26px)) translateY(calc(var(--k) * -5px))
+      translateZ(calc(var(--k) * 12px + 14px)) rotate(calc(var(--k) * -6deg + 6deg));
+  }
+}
+
+[data-motion="off"] .lib-slab,
+[data-motion="off"] .lib-card {
+  transition: none;
+}
+
+/* ---------- the shelf ----------
+   Books stand spine-out in a row. Each one is hinged on its left edge: shut,
+   it sits at 74deg so only the spine shows; open, it swings round to face the
+   reader. The spine plate counter-rotates so it stays readable while shut.
+
+   Everything is transform and opacity, so opening a book costs no layout. */
+
+.shelf-plate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 20px);
+  margin: clamp(30px, 5vw, 52px) 0 0;
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1vw, 11px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+.shelf-plate span {
+  display: block;
+  width: clamp(28px, 8vw, 90px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-line));
+}
+
+.shelf-plate span:last-child {
+  background: linear-gradient(to left, transparent, var(--color-line));
+}
+
+.shelf {
+  --spine: clamp(26px, 5.4vw, 46px);
+  --cover: clamp(118px, 26vw, 196px);
+  --tall: calc(var(--cover) * 1.48);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(26px, 4vw, 44px);
+  padding-bottom: 14px;
+  perspective: 1500px;
+  perspective-origin: 50% 40%;
+}
+
+.shelf-row {
+  position: relative;
+  /* the last book starts at (n-1) spines and is a full cover wide, plus
+     the nudge the books to its right take when one opens */
+  width: calc((var(--n) - 1) * var(--spine) + var(--cover) * 1.26);
+  height: var(--tall);
+  transform-style: preserve-3d;
+}
+
+/* the board they stand on */
+.shelf-board {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: min(96%, calc(var(--spine) * var(--n) + var(--cover) * 0.7));
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, transparent, var(--color-line) 18%, var(--color-line) 82%, transparent);
+  box-shadow: 0 12px 26px -8px rgba(0, 0, 0, 0.9);
+}
+
+/* The books are drawn, not clicked — see .shelf-hit. */
+.book {
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: calc(var(--i) * var(--spine));
+  width: var(--cover);
+  height: var(--tall);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform: translateX(calc(var(--past) * var(--cover) * 0.24)) rotateY(74deg);
+  transition: transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.book[data-open] {
+  transform: translateY(-14px) translateZ(56px) rotateY(6deg);
+}
+
+.book:focus-visible {
+  outline: none;
+}
+
+/* One flat strip per slot, above everything, so hovering is predictable no
+   matter which book is currently swung open across its neighbours. */
+.shelf-hit {
+  position: absolute;
+  top: 0;
+  left: calc(var(--i) * var(--spine));
+  z-index: 60;
+  width: var(--spine);
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.shelf-hit:focus-visible {
+  outline: 1px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+.book-cover {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 2px 5px 5px 2px;
+  background: #111615;
+  box-shadow:
+    0 28px 44px -20px rgba(0, 0, 0, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* the sheen down the hinge side of a hardback */
+.book-gloss {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.12) 5%,
+    rgba(255, 255, 255, 0.1) 9%,
+    transparent 22%,
+    transparent 88%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* ---------- the spine ---------- */
+
+.book-spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spine);
+  height: 100%;
+  border-radius: 2px 0 0 2px;
+  transform-origin: left center;
+  /* swing back exactly as far as the book leans forward */
+  transform: rotateY(-74deg);
+  transition:
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
+  box-shadow:
+    inset -6px 0 12px -6px rgba(0, 0, 0, 0.7),
+    inset 2px 0 0 rgba(255, 255, 255, 0.16),
+    0 24px 40px -22px rgba(0, 0, 0, 0.9);
+}
+
+.book[data-open] .book-spine {
+  opacity: 0;
+  transform: rotateY(-6deg);
+  pointer-events: none;
+}
+
+.book-spine-text {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  max-height: 94%;
+  padding: 6px 0;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-spine-text b {
+  font-family: var(--font-display);
+  font-size: clamp(11px, 1.7vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.book-spine-text i {
+  font-family: var(--font-mono);
+  font-size: clamp(7px, 1vw, 8.5px);
+  font-style: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Motion off: lay the shelf out flat and skip the swing. */
+[data-motion="off"] .book,
+[data-motion="off"] .book-spine {
+  transition: none;
+}
+
+/* ---------- the about sheet ----------
+   A landscape page held by a binder clip, in the same ink-on-cream as the
+   licence cards so the printed things on this site all match. */
+
+.clipsheet {
+  position: relative;
+  padding: clamp(30px, 5vw, 58px) clamp(20px, 4vw, 56px) clamp(26px, 4vw, 48px);
+  border-radius: 3px;
+  box-shadow:
+    0 40px 80px -34px rgba(0, 0, 0, 0.95),
+    0 6px 18px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* a torn, slightly uneven bottom edge */
+.clipsheet::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -6px;
+  z-index: 2;
+  height: 7px;
+  background: var(--color-deep);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' preserveAspectRatio='none'%3E%3Cpath d='M0 7V2.6l7 1.1 6-2 8 1.6 9-2.4 7 2.2 8-1.3 6 1.9 9-2.6 8 1.4 7-1.8 8 2.3 6-1.5 9 2L120 1.4V7z' fill='%23000'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' preserveAspectRatio='none'%3E%3Cpath d='M0 7V2.6l7 1.1 6-2 8 1.6 9-2.4 7 2.2 8-1.3 6 1.9 9-2.6 8 1.4 7-1.8 8 2.3 6-1.5 9 2L120 1.4V7z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-size: 120px 7px;
+  mask-size: 120px 7px;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+
+.binder-clip {
+  position: absolute;
+  top: clamp(-26px, -3vw, -18px);
+  left: clamp(22px, 5vw, 64px);
+  z-index: 3;
+  width: clamp(46px, 7vw, 68px);
+  height: auto;
+  filter: drop-shadow(0 7px 10px rgba(0, 0, 0, 0.6));
+}
+
+.hello {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+.clipsheet-body p {
+  margin: 0 0 0.95em;
+  max-width: 46ch;
+  break-inside: avoid;
+  font-family: var(--font-body);
+  font-size: clamp(12px, 1.15vw, 13.5px);
+  line-height: 1.62;
+  color: #3b3a36;
+}
+
+.clipsheet-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 3.4vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.skill-list li {
+  break-inside: avoid;
+}
+
+.skill-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1.05vw, 12.5px);
+  line-height: 1.85;
+  color: #3b3a36;
+}
+
+/* the hand-drawn rings from the reference, redrawn with a broken border */
+.ring {
+  display: grid;
+  place-items: center;
+  width: clamp(74px, 11vw, 104px);
+  aspect-ratio: 1;
+  padding: 6px;
+  border: 1px solid rgba(25, 27, 30, 0.75);
+  border-top-color: transparent;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: clamp(8.5px, 0.85vw, 10px);
+  line-height: 1.3;
+  text-align: center;
+  color: #3b3a36;
+  transform: rotate(-8deg);
+}
+
+.ring > span {
+  display: block;
+  transform: rotate(8deg);
+}
+
+.hair-rule {
+  height: 1px;
+  background: rgba(25, 27, 30, 0.28);
+}
+
+/* ---------- paper: licence cards and the lanyard badge ----------
+   Both are printed objects sitting on the dark page, so they share one
+   ink-on-cream palette and one paper texture. */
+
+.paper {
+  --ink: #16161c;
+  --ink-soft: #5c5a54;
+  --accent: #1d4a48;
+  position: relative;
+  background: #efe9dd;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  isolation: isolate;
+}
+
+/* the halftone speckle real card stock has */
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(90, 82, 66, 0.22) 1px, transparent 0),
+    linear-gradient(155deg, rgba(255, 255, 255, 0.7), rgba(198, 188, 168, 0.35));
+  background-size: 4px 4px, 100% 100%;
+}
+
+.paper > * {
+  position: relative;
+  z-index: 1;
+}
+
+.paper-dash {
+  border: 1px dashed rgba(22, 22, 28, 0.42);
+}
+
+.paper-box {
+  border: 1px solid rgba(22, 22, 28, 0.55);
+}
+
+.paper-field {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* a printed barcode, drawn rather than fetched */
+.barcode {
+  height: 34px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #16161c 0 1px,
+    transparent 1px 3px,
+    #16161c 3px 5px,
+    transparent 5px 6px,
+    #16161c 6px 9px,
+    transparent 9px 12px,
+    #16161c 12px 13px,
+    transparent 13px 16px
+  );
+}
+
+/* the round "certified" mark, stamped crooked */
+.stamp {
+  border: 2px solid var(--accent);
+  border-radius: 9999px;
+  color: var(--accent);
+  opacity: 0.34;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  transform: rotate(-16deg);
+}
+
+/* highlighter pen over a word */
+.marker {
+  background: linear-gradient(
+    to bottom,
+    transparent 12%,
+    #b8f24d 12%,
+    #b8f24d 88%,
+    transparent 88%
+  );
+  padding: 0 5px;
+}
+
+/* ---------- lanyard badge ---------- */
+
+.lanyard-swing {
+  transform-origin: 50% 0;
+  animation: lanyard-swing 7s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes lanyard-swing {
+  from {
+    transform: rotate(-2.4deg);
+  }
+  to {
+    transform: rotate(2.4deg);
+  }
+}
+
+[data-motion="off"] .lanyard-swing {
   animation: none;
 }
 
@@ -307,4 +1285,677 @@ section[id] {
 }
 .no-scrollbar {
   scrollbar-width: none;
+}
+
+/* ---------- the play bar ----------
+   The nav bar again, put to work: dark rounded slab, icon-only controls, and
+   the tab on the edge turned into a real, seekable progress line. */
+
+.playbar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: clamp(26px, 4vw, 42px);
+}
+
+.playbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 8px 9px;
+  border: 1px solid rgba(241, 239, 233, 0.1);
+  border-radius: 20px;
+  background: rgba(8, 12, 11, 0.78);
+  box-shadow:
+    0 18px 40px -16px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.playbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(44px, 12vw, 56px);
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 13px;
+  background: none;
+  color: rgba(241, 239, 233, 0.4);
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.playbar-item:hover:not(:disabled),
+.playbar-item:focus-visible {
+  color: var(--color-ice);
+  background: rgba(241, 239, 233, 0.06);
+  outline: none;
+}
+
+.playbar-item:active:not(:disabled) {
+  transform: scale(0.93);
+}
+
+.playbar-item:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.playbar-item--main {
+  width: clamp(50px, 13vw, 62px);
+  color: #12100a;
+  background: var(--color-amber);
+}
+
+.playbar-item--main:hover:not(:disabled),
+.playbar-item--main:focus-visible {
+  color: #12100a;
+  background: var(--color-amber-soft);
+}
+
+.playbar-split {
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background: rgba(241, 239, 233, 0.14);
+}
+
+/* the edge tab, now the progress line */
+.playbar-rail {
+  position: absolute;
+  bottom: -9px;
+  left: 14px;
+  right: 14px;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(241, 239, 233, 0.16);
+  cursor: pointer;
+}
+
+.playbar-rail::after {
+  /* a taller invisible target, so the 3px line is still easy to hit */
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
+
+.playbar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--color-ice);
+  box-shadow: 0 0 12px rgba(241, 239, 233, 0.5);
+  transition: width 0.3s linear;
+}
+
+.playbar-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 12px;
+  margin: 20px 0 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* the honest note when a play command produced no actual sound */
+.playbar-stall {
+  max-width: 46ch;
+  margin: 12px auto 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-dim);
+}
+
+.playbar-stall a {
+  color: var(--color-amber);
+}
+
+.playbar-stall a:hover {
+  text-decoration: underline;
+}
+
+.playbar-now {
+  color: var(--color-ice);
+}
+
+.playbar-by {
+  color: rgba(241, 239, 233, 0.42);
+}
+
+.playbar-time {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
+  color: rgba(241, 239, 233, 0.3);
+}
+
+/* ---------- the playlist drawer ----------
+   Collapsed with a grid row rather than max-height, so it opens to exactly
+   the height the player needs and never guesses. */
+
+.playlist {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: min(100%, 560px);
+  margin-top: 0;
+  transition:
+    grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    margin-top 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
+  opacity: 0;
+}
+
+.playlist.is-open {
+  grid-template-rows: 1fr;
+  margin-top: 22px;
+  opacity: 1;
+}
+
+.playlist-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.playbar-item.is-on {
+  color: var(--color-amber);
+  background: rgba(224, 160, 44, 0.12);
+}
+
+[data-motion="off"] .playlist {
+  transition: none;
+}
+
+/* ---------- the film deck ----------
+   A hand of posters. The top card is out front, the ones already dealt are
+   thrown off to the left, the rest sit behind in a receding stack. */
+
+.deck-wrap {
+  display: grid;
+  gap: clamp(30px, 5vw, 54px);
+  align-items: center;
+  margin-top: clamp(28px, 4vw, 46px);
+}
+
+@media (min-width: 880px) {
+  .deck-wrap {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 80px);
+  }
+}
+
+.deck {
+  position: relative;
+  height: clamp(300px, 52vw, 430px);
+  perspective: 1300px;
+  transform-style: preserve-3d;
+}
+
+.deck-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(190px, 30vw, 286px);
+  aspect-ratio: 2 / 3;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: #0b0f0e;
+  cursor: pointer;
+  box-shadow: 0 34px 60px -26px rgba(0, 0, 0, 0.95);
+  will-change: transform, opacity;
+  transition:
+    transform 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.55s ease,
+    box-shadow 0.55s ease;
+}
+
+/* still to come: stacked behind, each smaller and further back */
+/* Fanned far enough to the right that each card keeps a strip of itself
+   clear of the one in front — otherwise there is nothing to hover. */
+.deck-card[data-state="back"] {
+  transform: translate(-50%, -50%) translateX(calc(var(--o) * 38px))
+    translateY(calc(var(--o) * -14px)) translateZ(calc(var(--o) * -70px))
+    rotate(calc(var(--o) * 3.5deg));
+  opacity: calc(1 - var(--o) * 0.2);
+}
+
+/* on top */
+.deck-card[data-state="top"] {
+  transform: translate(-50%, -50%) translateX(-16px) translateY(-10px) translateZ(70px)
+    rotate(-1.5deg);
+  opacity: 1;
+  box-shadow: 0 46px 80px -28px rgba(0, 0, 0, 0.98);
+}
+
+/* already dealt: thrown off to the left */
+.deck-card[data-state="gone"] {
+  transform: translate(-50%, -50%) translateX(calc(var(--o) * 62px - 40px))
+    translateY(calc(var(--o) * 14px)) translateZ(calc(var(--o) * 40px))
+    rotate(calc(var(--o) * 7deg - 4deg));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.deck-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.14), transparent 42%);
+}
+
+.deck-tag {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 3px 7px;
+  border-radius: 3px;
+  background: rgba(6, 10, 9, 0.75);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  color: rgba(241, 239, 233, 0.7);
+}
+
+.deck-read {
+  min-width: 0;
+}
+
+.deck-pip {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(241, 239, 233, 0.22);
+  cursor: pointer;
+  transition:
+    width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.4s ease;
+}
+
+.deck-pip[data-on] {
+  width: 24px;
+  background: var(--color-amber);
+}
+
+[data-motion="off"] .deck-card {
+  transition: none;
+}
+
+/* ---------- music: the front cover lifts ---------- */
+
+.flow-card {
+  transition:
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-motion="off"] .flow-card {
+  transition: none;
+}
+
+/* ---------- about on a phone ----------
+   The sheet is landscape by design, which on a phone turns into a very long
+   column. Below 640px it tightens up: the copy opens at one paragraph, the
+   skills sit in two columns, and the ID card lies on its side. */
+
+.clipsheet-more {
+  display: none;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid rgba(25, 27, 30, 0.4);
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+@media (max-width: 639px) {
+  .clipsheet {
+    padding: 26px 18px 22px;
+  }
+
+  .hello {
+    font-size: clamp(2.4rem, 15vw, 3.4rem);
+  }
+
+  .clipsheet-body p {
+    font-size: 11.8px;
+    line-height: 1.55;
+    margin-bottom: 0.7em;
+  }
+
+  /* everything past the opening paragraph waits to be asked for */
+  .clipsheet-body:not([data-all]) p:not(:first-child) {
+    display: none;
+  }
+
+  .clipsheet-more {
+    display: inline-block;
+  }
+
+  .clipsheet-h2 {
+    font-size: 1.25rem;
+  }
+
+  .skill-list {
+    columns: 2;
+    column-gap: 18px;
+    font-size: 10.5px;
+    line-height: 1.7;
+  }
+
+  .ring {
+    width: 68px;
+    font-size: 8px;
+  }
+
+  /* the card lies on its side: photo beside the details, no lanyard */
+  .badge-strap,
+  .badge-ring,
+  .badge-slot,
+  .badge-top,
+  .badge-code {
+    display: none;
+  }
+
+  .badge-wrap {
+    max-width: 100%;
+  }
+
+  .badge-hang {
+    margin-top: 0;
+    animation: none;
+  }
+
+  .badge-card {
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .badge-inner {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    margin-top: 0;
+    padding: 0;
+  }
+
+  .badge-photo {
+    margin-top: 0;
+  }
+
+  .badge-text h3 {
+    margin-top: 0;
+  }
+}
+
+/* the pulse beside the visit count */
+.visit-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 99px;
+  background: var(--color-amber);
+  box-shadow: 0 0 8px var(--color-amber);
+  animation: visit-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes visit-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+[data-motion="off"] .visit-dot {
+  animation: none;
+}
+
+/* ---------- the hidden Spotify embed ----------
+   Off-screen rather than display:none — a hidden iframe is not allowed to
+   play, and this one is the whole point. */
+
+.embed-hide {
+  position: absolute;
+  bottom: 0;
+  left: -9999px;
+  width: 320px;
+  height: 90px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- the work deck ----------
+   Three licences in one slot. The grid gives them a shared cell so the
+   section is as tall as one card, not three. */
+
+.work-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: clamp(22px, 3vw, 34px) 0 clamp(20px, 2.6vw, 28px);
+}
+
+.work-tab {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 9px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  background: rgba(14, 21, 20, 0.6);
+  cursor: pointer;
+  transition:
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.work-tab-n {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--color-dim);
+  transition: color 0.35s ease;
+}
+
+.work-tab-t {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: rgba(241, 239, 233, 0.62);
+  transition: color 0.35s ease;
+}
+
+.work-tab:hover .work-tab-t,
+.work-tab:focus-visible .work-tab-t {
+  color: var(--color-ice);
+}
+
+.work-tab[data-on] {
+  border-color: var(--color-amber);
+  background: rgba(224, 160, 44, 0.1);
+}
+
+.work-tab[data-on] .work-tab-t {
+  color: var(--color-amber);
+}
+
+.work-tab[data-on] .work-tab-n {
+  color: var(--color-amber);
+}
+
+.work-deck {
+  display: grid;
+}
+
+.work-card {
+  grid-area: 1 / 1;
+  transform-origin: 50% 0;
+  transition:
+    transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease;
+  will-change: transform, opacity;
+}
+
+.work-card[data-state="front"] {
+  transform: none;
+  opacity: 1;
+}
+
+/* the ones behind peek out under the front card */
+.work-card[data-state="back"] {
+  transform: translateY(calc(var(--o) * 14px)) scale(calc(1 - var(--o) * 0.035));
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-motion="off"] .work-card {
+  transition: none;
+}
+
+[data-motion="off"] .work-card[data-state="back"] {
+  position: absolute;
+  visibility: hidden;
+}
+
+/* ---------- a shorter licence on a phone ----------
+   The card is a wide printed form; on a narrow screen the boilerplate and
+   the stamp are the first things that can go. */
+
+@media (max-width: 767px) {
+  .paper .paper-dash {
+    padding: 16px 14px 18px;
+  }
+
+  .licence-fine {
+    display: none;
+  }
+}
+
+/* ---------- hover targets ----------
+   A flat row of transparent strips laid over a group whose items move. The
+   items are what animates; these never do, so the pointer always has
+   something still to sit on and the spotlight cannot oscillate. */
+
+.deck-hits {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+}
+
+.deck-hits > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* the gap left over the centred track in the music flow, so clicks and taps
+   fall through to the real card underneath instead of a strip with nothing
+   behind it to do */
+.deck-hits > span {
+  pointer-events: none;
+}
+
+.deck-hits button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.deck-hits button:focus-visible {
+  outline: 1px solid var(--color-amber);
+  outline-offset: -3px;
+}
+
+/* ---------- the footer strip ----------
+   A printed plate rather than a bare row of labels — the same bordered,
+   mono-set language a chip uses, just wide. Stacked and centred on a phone,
+   where a divider is a hairline above each cell; a row on a desktop, where
+   the dividers turn vertical between cells. */
+
+.footer-strip {
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(56px, 9vw, 96px);
+  border: 1px solid var(--color-line-soft);
+  border-radius: 3px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+.footer-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--color-line-soft);
+  text-align: center;
+}
+
+.footer-cell:first-child {
+  border-top: 0;
+}
+
+.footer-mark {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--color-ice);
+}
+
+@media (min-width: 640px) {
+  .footer-strip {
+    flex-direction: row;
+  }
+
+  .footer-cell {
+    flex: 1;
+    justify-content: flex-start;
+    border-top: 0;
+    border-left: 1px solid var(--color-line-soft);
+  }
+
+  .footer-cell:first-child {
+    border-left: 0;
+  }
+
+  .footer-cell--mid {
+    justify-content: center;
+  }
+
+  .footer-cell:last-child {
+    justify-content: flex-end;
+  }
 }

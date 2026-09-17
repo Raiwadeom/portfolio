@@ -24,7 +24,7 @@ export default function Services() {
                 <div className="flex items-center gap-4 sm:gap-8">
                   <span
                     className={`label shrink-0 transition-colors ${
-                      isOpen ? "!text-[var(--color-cyan)]" : ""
+                      isOpen ? "!text-[var(--color-amber)]" : ""
                     }`}
                   >
                     {s.n}
@@ -36,15 +36,15 @@ export default function Services() {
                       color: isOpen ? "var(--color-ice)" : "transparent",
                       WebkitTextStroke: isOpen
                         ? "0px transparent"
-                        : "1px rgba(143,214,255,0.42)",
-                      textShadow: isOpen ? "0 0 50px rgba(90,160,255,0.35)" : "none",
+                        : "1px rgba(224,160,44,0.42)",
+                      textShadow: isOpen ? "0 0 50px rgba(224,160,44,0.35)" : "none",
                     }}
                   >
                     {s.word}
                   </h3>
 
                   <span
-                    className={`ml-auto shrink-0 text-[var(--color-cyan)] text-lg transition-transform duration-500 ${
+                    className={`ml-auto shrink-0 text-[var(--color-amber)] text-lg transition-transform duration-500 ${
                       isOpen ? "rotate-45" : ""
                     }`}
                   >
