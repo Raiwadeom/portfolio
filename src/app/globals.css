@@ -198,6 +198,149 @@ a {
   transition: none;
 }
 
+/* ---------- section headers: names lit like neon tubing ---------- */
+
+.sectionhead-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 8px;
+  border-radius: 99px;
+  background: var(--color-amber);
+  vertical-align: middle;
+  animation: sectionhead-pulse 2.4s ease-in-out infinite;
+}
+
+.sectionhead-sweep {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 0%;
+  background: var(--color-amber);
+  box-shadow: 0 0 8px rgba(177, 80, 47, 0.5);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
+
+.reveal.is-in .sectionhead-sweep {
+  width: 100%;
+}
+
+/* the name itself: a lit glass tube, steady most of the time, that buzzes
+   and dips like the power supply is a little unreliable. */
+.sectionhead-name {
+  display: inline-block;
+  color: var(--color-amber-soft);
+  animation: neon-flicker 5s linear infinite;
+}
+
+.sectionhead-name--right {
+  color: var(--color-ice);
+  animation: neon-flicker-dim 5s linear infinite;
+  animation-delay: 1.6s;
+}
+
+/* each letter just fades up into place once the header scrolls into
+   view — the sign switching on, not flying in from anywhere. */
+.sectionhead-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20%);
+  transition:
+    opacity 0.5s ease var(--d, 0ms),
+    transform 0.5s ease var(--d, 0ms);
+}
+
+.reveal.is-in .sectionhead-char {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes sectionhead-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+/* the classic neon-tube flicker: lit, a quick double-blink, lit again, one
+   more stutter around the midpoint, then steady until it loops. */
+@keyframes neon-flicker {
+  0%,
+  2%,
+  4%,
+  8%,
+  70%,
+  100% {
+    text-shadow:
+      0 0 4px var(--color-amber),
+      0 0 11px var(--color-amber),
+      0 0 24px rgba(177, 80, 47, 0.75),
+      0 0 42px rgba(177, 80, 47, 0.4);
+    opacity: 1;
+  }
+  3%,
+  9% {
+    text-shadow: none;
+    opacity: 0.35;
+  }
+  71% {
+    text-shadow: none;
+    opacity: 0.5;
+  }
+}
+
+@keyframes neon-flicker-dim {
+  0%,
+  2%,
+  4%,
+  8%,
+  70%,
+  100% {
+    text-shadow:
+      0 0 3px var(--color-dim),
+      0 0 9px rgba(177, 80, 47, 0.4),
+      0 0 20px rgba(177, 80, 47, 0.25);
+    opacity: 1;
+  }
+  3%,
+  9% {
+    text-shadow: none;
+    opacity: 0.4;
+  }
+  71% {
+    text-shadow: none;
+    opacity: 0.55;
+  }
+}
+
+[data-motion="off"] .sectionhead-dot {
+  animation: none;
+}
+
+[data-motion="off"] .sectionhead-name,
+[data-motion="off"] .sectionhead-name--right {
+  animation: none;
+  transform: none;
+}
+
+[data-motion="off"] .sectionhead-sweep {
+  transition: none;
+  width: 100%;
+}
+
+[data-motion="off"] .sectionhead-char {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  animation: none;
+}
+
 section[id] {
   scroll-margin-top: 72px;
 }
@@ -320,14 +463,14 @@ section[id] {
 
 .navbar-indicator {
   position: absolute;
-  bottom: -9px;
+  bottom: 3px;
   left: 0;
   width: 22px;
   height: 3px;
   border-radius: 99px;
-  background: var(--color-ice);
+  background: var(--color-amber);
   opacity: 0;
-  box-shadow: 0 0 12px rgba(241, 239, 233, 0.55);
+  box-shadow: 0 0 12px rgba(177, 80, 47, 0.55);
   transition:
     transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.3s ease;
@@ -482,6 +625,23 @@ section[id] {
   width: calc(var(--w) * 0.075);
   height: auto;
   filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+  transform-origin: 50% 0%;
+  animation: clip-sway 4.5s ease-in-out 1.8s infinite;
+}
+
+/* a small pendulum sway, like it's still settling after being clipped on */
+@keyframes clip-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+[data-motion="off"] .clip {
+  animation: none;
 }
 
 /* ---------- the signature ---------- */
@@ -909,6 +1069,47 @@ section[id] {
 [data-motion="off"] .lib-slab,
 [data-motion="off"] .lib-card {
   transition: none;
+}
+
+/* ---------- desktop-only: tilt + glare ----------
+   Gated on real hover/pointer hardware, not viewport width, so a phone
+   or tablet never sees any of this regardless of screen size. */
+@media (hover: hover) and (pointer: fine) {
+  .lib-slab {
+    --tx: 0deg;
+    --ty: 0deg;
+  }
+
+  .lib-slab[data-on] {
+    transform: var(--lean) rotateY(var(--tx)) rotateX(var(--ty)) translateZ(56px) translateY(-6px);
+  }
+
+  .lib-face {
+    overflow: hidden;
+  }
+
+  .lib-glare {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(255, 255, 255, 0.16),
+      transparent 45%
+    );
+    transition: opacity 0.35s ease;
+  }
+
+  .lib-slab:hover .lib-glare {
+    opacity: 1;
+  }
+
+  .lib-slab:hover .lib-card {
+    transform: translateY(calc(var(--k) * -18px - 42px)) translateX(calc(var(--k) * -24px))
+      translateZ(calc(var(--k) * 20px + 30px)) rotate(calc(var(--k) * -7deg + 8deg));
+  }
 }
 
 /* ---------- the shelf ----------
@@ -1346,314 +1547,324 @@ section[id] {
   scrollbar-width: none;
 }
 
-/* ---------- the play bar ----------
-   The nav bar again, put to work: dark rounded slab, icon-only controls, and
-   the tab on the edge turned into a real, seekable progress line. */
-
-.playbar-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: clamp(26px, 4vw, 42px);
-}
-
-.playbar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 7px 8px 9px;
-  border: 1px solid rgba(241, 239, 233, 0.1);
-  border-radius: 20px;
-  background: rgba(8, 12, 11, 0.78);
-  box-shadow:
-    0 18px 40px -16px rgba(0, 0, 0, 0.9),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.playbar-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(44px, 12vw, 56px);
-  height: 38px;
-  padding: 0;
-  border: 0;
-  border-radius: 13px;
-  background: none;
-  color: rgba(241, 239, 233, 0.4);
-  cursor: pointer;
-  transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.playbar-item:hover:not(:disabled),
-.playbar-item:focus-visible {
-  color: var(--color-ice);
-  background: rgba(241, 239, 233, 0.06);
-  outline: none;
-}
-
-.playbar-item:active:not(:disabled) {
-  transform: scale(0.93);
-}
-
-.playbar-item:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
-.playbar-item--main {
-  width: clamp(50px, 13vw, 62px);
-  color: #12100a;
-  background: var(--color-amber);
-}
-
-.playbar-item--main:hover:not(:disabled),
-.playbar-item--main:focus-visible {
-  color: #12100a;
-  background: var(--color-amber-soft);
-}
-
-.playbar-split {
-  width: 1px;
-  height: 20px;
-  margin: 0 6px;
-  background: rgba(241, 239, 233, 0.14);
-}
-
-/* the edge tab, now the progress line */
-.playbar-rail {
-  position: absolute;
-  bottom: -9px;
-  left: 14px;
-  right: 14px;
-  height: 3px;
-  border-radius: 99px;
-  background: rgba(241, 239, 233, 0.16);
-  cursor: pointer;
-}
-
-.playbar-rail::after {
-  /* a taller invisible target, so the 3px line is still easy to hit */
-  content: "";
-  position: absolute;
-  inset: -8px 0;
-}
-
-.playbar-fill {
-  display: block;
-  height: 100%;
-  border-radius: 99px;
-  background: var(--color-ice);
-  box-shadow: 0 0 12px rgba(241, 239, 233, 0.5);
-  transition: width 0.3s linear;
-}
-
-.playbar-caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: 4px 12px;
-  margin: 20px 0 0;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-/* the honest note when a play command produced no actual sound */
-.playbar-stall {
-  max-width: 46ch;
-  margin: 12px auto 0;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  line-height: 1.6;
-  text-align: center;
-  text-transform: none;
-  letter-spacing: normal;
-  color: var(--color-dim);
-}
-
-.playbar-stall a {
-  color: var(--color-amber);
-}
-
-.playbar-stall a:hover {
-  text-decoration: underline;
-}
-
-.playbar-now {
-  color: var(--color-ice);
-}
-
-.playbar-by {
-  color: rgba(241, 239, 233, 0.42);
-}
-
-.playbar-time {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.12em;
-  color: rgba(241, 239, 233, 0.3);
-}
-
-/* ---------- the playlist drawer ----------
-   Collapsed with a grid row rather than max-height, so it opens to exactly
-   the height the player needs and never guesses. */
-
-.playlist {
-  display: grid;
-  grid-template-rows: 0fr;
-  width: min(100%, 560px);
-  margin-top: 0;
-  transition:
-    grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-    margin-top 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.4s ease;
-  opacity: 0;
-}
-
-.playlist.is-open {
-  grid-template-rows: 1fr;
-  margin-top: 22px;
-  opacity: 1;
-}
-
-.playlist-inner {
-  overflow: hidden;
-  min-height: 0;
-}
-
-.playbar-item.is-on {
-  color: var(--color-amber);
-  background: rgba(177, 80, 47, 0.1);
-}
-
-[data-motion="off"] .playlist {
-  transition: none;
-}
-
 /* ---------- the film deck ----------
    A hand of posters. The top card is out front, the ones already dealt are
    thrown off to the left, the rest sit behind in a receding stack. */
 
-.deck-wrap {
+/* ---------- cinema: a list you read down, a poster that answers ---------- */
+
+.cine-wrap {
   display: grid;
-  gap: clamp(30px, 5vw, 54px);
-  align-items: center;
+  gap: clamp(22px, 4vw, 36px);
   margin-top: clamp(28px, 4vw, 46px);
 }
 
 @media (min-width: 880px) {
-  .deck-wrap {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(36px, 5vw, 80px);
+  .cine-wrap {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: clamp(36px, 5vw, 72px);
   }
 }
 
-.deck {
-  position: relative;
-  height: clamp(300px, 52vw, 430px);
-  perspective: 1300px;
-  transform-style: preserve-3d;
-}
-
-.deck-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: clamp(190px, 30vw, 286px);
-  aspect-ratio: 2 / 3;
+.cine-list {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
-  background: #0b0f0e;
+  list-style: none;
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.cine-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--color-line-soft);
+  background: none;
   cursor: pointer;
-  box-shadow: 0 34px 60px -26px rgba(0, 0, 0, 0.95);
-  will-change: transform, opacity;
-  transition:
-    transform 0.78s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.55s ease,
-    box-shadow 0.55s ease;
+  text-align: left;
+  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* still to come: stacked behind, each smaller and further back */
-/* Fanned far enough to the right that each card keeps a strip of itself
-   clear of the one in front — otherwise there is nothing to hover. */
-.deck-card[data-state="back"] {
-  transform: translate(-50%, -50%) translateX(calc(var(--o) * 38px))
-    translateY(calc(var(--o) * -14px)) translateZ(calc(var(--o) * -70px))
-    rotate(calc(var(--o) * 3.5deg));
-  opacity: calc(1 - var(--o) * 0.2);
+.cine-row-n {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--color-dim);
+  opacity: 0.7;
 }
 
-/* on top */
-.deck-card[data-state="top"] {
-  transform: translate(-50%, -50%) translateX(-16px) translateY(-10px) translateZ(70px)
-    rotate(-1.5deg);
-  opacity: 1;
-  box-shadow: 0 46px 80px -28px rgba(0, 0, 0, 0.98);
+.cine-row-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2.4vw, 20px);
+  letter-spacing: 0.01em;
+  color: var(--color-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.35s ease;
 }
 
-/* already dealt: thrown off to the left */
-.deck-card[data-state="gone"] {
-  transform: translate(-50%, -50%) translateX(calc(var(--o) * 62px - 40px))
-    translateY(calc(var(--o) * 14px)) translateZ(calc(var(--o) * 40px))
-    rotate(calc(var(--o) * 7deg - 4deg));
-  opacity: 0;
-  pointer-events: none;
+.cine-row-year {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--color-dim);
+  opacity: 0.55;
 }
 
-.deck-sheen {
+.cine-row:hover .cine-row-title {
+  color: var(--color-ice);
+}
+
+.cine-row[data-on] {
+  padding-left: 14px;
+}
+
+.cine-row[data-on] .cine-row-title {
+  color: var(--color-amber);
+}
+
+.cine-row[data-on] .cine-row-n,
+.cine-row[data-on] .cine-row-year {
+  color: var(--color-amber);
+  opacity: 0.85;
+}
+
+.cine-row[data-on] {
+  position: relative;
+}
+
+.cine-row[data-on]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 99px;
+  background: var(--color-amber);
+  box-shadow: 0 0 10px rgba(177, 80, 47, 0.45);
+}
+
+.cine-panel {
+  display: grid;
+  gap: clamp(20px, 3vw, 30px);
+  min-width: 0;
+}
+
+@media (min-width: 560px) {
+  .cine-panel {
+    grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+.cine-frame {
+  position: relative;
+  width: clamp(160px, 42vw, 220px);
+  aspect-ratio: 2 / 3;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-panel);
+  box-shadow: 0 24px 46px -24px rgba(24, 20, 15, 0.35);
+}
+
+@media (min-width: 560px) {
+  .cine-frame {
+    margin: 0;
+  }
+}
+
+.cine-frame-sheen {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.14), transparent 42%);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.16), transparent 42%);
 }
 
-.deck-tag {
+.cine-frame-tag {
   position: absolute;
   right: 10px;
   bottom: 10px;
   padding: 3px 7px;
   border-radius: 3px;
-  background: rgba(6, 10, 9, 0.75);
+  background: rgba(24, 20, 15, 0.68);
   font-family: var(--font-mono);
   font-size: 8.5px;
   letter-spacing: 0.16em;
-  color: rgba(241, 239, 233, 0.7);
+  color: rgba(246, 243, 236, 0.85);
 }
 
-.deck-read {
+.cine-detail {
   min-width: 0;
 }
 
-.deck-pip {
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 99px;
-  background: rgba(241, 239, 233, 0.22);
-  cursor: pointer;
-  transition:
-    width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.4s ease;
-}
+/* ---------- the Open Spotify button ----------
+   A pill that actually asks to be clicked: a slow idle pulse on its glow,
+   plus a light sweep that crosses it every few seconds, so it reads as
+   the section's one real call to action rather than a quiet text link. */
 
-.deck-pip[data-on] {
-  width: 24px;
+.spotify-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  overflow: hidden;
+  border-radius: 999px;
   background: var(--color-amber);
+  color: #f8f5ee;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: spotify-pulse 2.8s ease-in-out infinite;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
-[data-motion="off"] .deck-card {
-  transition: none;
+.spotify-cta:hover {
+  background: var(--color-amber-soft);
+  transform: translateY(-3px) scale(1.035);
+}
+
+.spotify-cta:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.spotify-cta-shine {
+  position: absolute;
+  top: 0;
+  left: -55%;
+  width: 35%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-18deg);
+  animation: spotify-shine 3.4s ease-in-out infinite;
+}
+
+@keyframes spotify-shine {
+  0% {
+    left: -55%;
+  }
+  35% {
+    left: 130%;
+  }
+  100% {
+    left: 130%;
+  }
+}
+
+@keyframes spotify-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 16px 32px -16px rgba(177, 80, 47, 0.6),
+      0 0 0 0 rgba(177, 80, 47, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 20px 40px -16px rgba(177, 80, 47, 0.75),
+      0 0 0 8px rgba(177, 80, 47, 0);
+  }
+}
+
+[data-motion="off"] .spotify-cta,
+[data-motion="off"] .spotify-cta-shine {
+  animation: none;
+}
+
+/* ---------- subpage background: a slow-drifting wash of colour ---------- */
+
+.subpage-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.subpage-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+}
+
+.subpage-blob--a {
+  top: -12%;
+  left: 4%;
+  width: min(46vw, 560px);
+  height: min(46vw, 560px);
+  opacity: 0.5;
+  animation: subpage-drift-a 24s ease-in-out infinite;
+}
+
+.subpage-blob--b {
+  top: 10%;
+  right: 2%;
+  width: min(34vw, 420px);
+  height: min(34vw, 420px);
+  background: var(--color-amber-soft);
+  opacity: 0.24;
+  animation: subpage-drift-b 28s ease-in-out infinite;
+}
+
+.subpage-blob--c {
+  bottom: -14%;
+  left: 26%;
+  width: min(38vw, 480px);
+  height: min(38vw, 480px);
+  background: var(--color-haze-lit);
+  opacity: 0.2;
+  animation: subpage-drift-c 32s ease-in-out infinite;
+}
+
+@keyframes subpage-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(5%, 7%) scale(1.08);
+  }
+}
+
+@keyframes subpage-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-7%, 5%) scale(1.1);
+  }
+}
+
+@keyframes subpage-drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6%, -6%) scale(1.06);
+  }
+}
+
+[data-motion="off"] .subpage-blob {
+  animation: none;
 }
 
 /* ---------- music: the front cover lifts ---------- */
@@ -1781,21 +1992,6 @@ section[id] {
 
 [data-motion="off"] .visit-dot {
   animation: none;
-}
-
-/* ---------- the hidden Spotify embed ----------
-   Off-screen rather than display:none — a hidden iframe is not allowed to
-   play, and this one is the whole point. */
-
-.embed-hide {
-  position: absolute;
-  bottom: 0;
-  left: -9999px;
-  width: 320px;
-  height: 90px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* ---------- the work deck ----------

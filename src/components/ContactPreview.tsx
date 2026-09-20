@@ -5,7 +5,7 @@
 
 import Link from "next/link";
 import { profile } from "@/lib/content";
-import { Reveal } from "./ui";
+import { Reveal, SectionHead } from "./ui";
 
 export default function ContactPreview() {
   return (
@@ -19,12 +19,7 @@ export default function ContactPreview() {
         }}
       />
 
-      <Reveal>
-        <div className="relative flex items-baseline justify-between border-b border-[var(--color-line-soft)] pb-3">
-          <span className="label !text-[var(--color-amber)]">/ CONTACT</span>
-          <span className="label">(06)</span>
-        </div>
-      </Reveal>
+      <SectionHead label="CONTACT" index="06" right="SAY HELLO" />
 
       <Reveal delay={80}>
         <h2 className="relative mt-12 sm:mt-20 display font-black text-[clamp(2.4rem,12vw,10rem)] leading-[0.88] text-[var(--color-ice)]">

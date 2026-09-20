@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import Overlays from "./Overlays";
 
@@ -32,14 +31,17 @@ export default function Subpage({
           }}
         />
 
+        <div aria-hidden className="subpage-aurora">
+          <span className="subpage-blob subpage-blob--a" style={{ background: tint }} />
+          <span className="subpage-blob subpage-blob--b" />
+          <span className="subpage-blob subpage-blob--c" />
+        </div>
+
         <div
           className="subpage relative mx-auto px-[var(--gutter)] pb-[clamp(72px,12vh,140px)] pt-[clamp(48px,8vh,96px)]"
           style={{ maxWidth: max }}
         >
-          <div className="flex items-center justify-between gap-4">
-            <Link href="/" className="label transition-colors hover:!text-[var(--color-amber)]">
-              ← BACK TO THE DESKTOP
-            </Link>
+          <div className="flex items-center justify-end gap-4">
             <span className="label">{right ?? kicker}</span>
           </div>
 

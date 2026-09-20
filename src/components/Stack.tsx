@@ -52,7 +52,7 @@ export default function Stack() {
 
   return (
     <Section id="stack" className="overflow-hidden">
-      <SectionHead label="STACK" index="04" right="(04)" />
+      <SectionHead label="STACK" index="04" right="THE TOOLKIT" />
 
       <div ref={scope} className="wheels">
         {stack.map((group, g) => {

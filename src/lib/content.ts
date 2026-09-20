@@ -302,7 +302,8 @@ export const cinema = {
  */
 export const music = {
   heading: "ON REPEAT",
-  profile: "https://open.spotify.com/user/31uy4y7eeqzxoau2qymzfv36idje",
+  profile:
+    "https://open.spotify.com/user/31uy4y7eeqzxoau2qymzfv36idje?si=UKuRneFMRpWy1LeJ1iUaIg&utm_source=copy-link",
   playlist: "",
   tracks: [
     {

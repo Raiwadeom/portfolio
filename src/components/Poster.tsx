@@ -30,9 +30,10 @@ export default function Poster() {
   useGSAP(
     () => {
       const rows = gsap.utils.toArray<HTMLElement>("[data-row]");
+      const clip = "[data-clip]";
 
       if (!motionOn()) {
-        gsap.set([rows, card.current, back.current], { clearProps: "all" });
+        gsap.set([rows, card.current, back.current, clip], { clearProps: "all" });
         return;
       }
 
@@ -53,6 +54,29 @@ export default function Poster() {
         stagger: 0.08,
         ease: "power3.out",
         delay: 0.45,
+      });
+
+      /* The clip snaps on after the polaroid's own fade-in, with a little
+         overshoot — like it was just pinched open and let go. Built as a
+         restartable timeline rather than a one-shot tween, so it plays
+         again whenever the cover comes back into view — not just once on
+         the initial load. */
+      const clipSnap = gsap.timeline({ paused: true }).from(clip, {
+        y: -14,
+        rotate: -22,
+        scale: 0.7,
+        opacity: 0,
+        transformOrigin: "50% 0%",
+        duration: 0.9,
+        ease: "elastic.out(1, 0.55)",
+      });
+      gsap.delayedCall(0.85, () => clipSnap.restart());
+
+      ScrollTrigger.create({
+        trigger: section.current,
+        start: "top top",
+        end: "bottom bottom",
+        onEnterBack: () => clipSnap.restart(),
       });
 
       /* Scrolling lifts it off and hands over to the page. */
@@ -157,7 +181,7 @@ export default function Poster() {
 /** The paperclip holding the polaroid to the card. */
 function Clip() {
   return (
-    <svg className="clip" viewBox="0 0 40 96" aria-hidden>
+    <svg className="clip" data-clip viewBox="0 0 40 96" aria-hidden>
       <defs>
         <linearGradient id="clipSteel" x1="0" y1="0" x2="1" y2="0.2">
           <stop offset="0" stopColor="#7c828a" />

@@ -17,7 +17,7 @@ export default function About() {
 
   return (
     <Section id="about">
-      <SectionHead label="ABOUT" index="01" right="ONE PAGE" />
+      <SectionHead label="ABOUT" index="01" right="THE PROFILE" />
 
       <Reveal className="mt-14 sm:mt-20">
         <div className="paper clipsheet mx-auto max-w-[1240px]">

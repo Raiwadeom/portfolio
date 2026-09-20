@@ -37,6 +37,24 @@ export function Reveal({
   );
 }
 
+/** Splits text into one span per character, each with its own reveal delay
+    baked in as a custom property — the cascade a plain fade can't give. */
+function Chars({ text, startDelay = 0 }: { text: string; startDelay?: number }) {
+  return (
+    <>
+      {text.split("").map((ch, i) => (
+        <span
+          key={i}
+          className="sectionhead-char"
+          style={{ ["--d" as string]: `${startDelay + i * 26}ms` }}
+        >
+          {ch === " " ? " " : ch}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export function SectionHead({
   label,
   index,
@@ -46,11 +64,18 @@ export function SectionHead({
   index: string;
   right?: string;
 }) {
+  const rightText = right ?? `(${index})`;
   return (
     <Reveal>
-      <div className="flex items-baseline justify-between border-b border-[var(--color-line-soft)] pb-3">
-        <span className="label !text-[var(--color-amber)]">/ {label}</span>
-        <span className="label">{right ?? `(${index})`}</span>
+      <div className="sectionhead relative flex items-baseline justify-between border-b border-[var(--color-line-soft)] pb-3">
+        <span className="label sectionhead-name">
+          <span className="sectionhead-dot" aria-hidden />/{" "}
+          <Chars text={label} />
+        </span>
+        <span className="label sectionhead-name sectionhead-name--right">
+          <Chars text={rightText} startDelay={label.length * 26 + 100} />
+        </span>
+        <span className="sectionhead-sweep" aria-hidden />
       </div>
     </Reveal>
   );

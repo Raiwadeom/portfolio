@@ -9,7 +9,7 @@ export default function Services() {
 
   return (
     <Section id="services">
-      <SectionHead label="WHAT I DO" index="02" />
+      <SectionHead label="WHAT I DO" index="02" right="THE OFFER" />
 
       <div className="mt-10 sm:mt-14 border-t border-[var(--color-line-soft)]">
         {services.map((s, i) => {

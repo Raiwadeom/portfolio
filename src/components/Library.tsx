@@ -63,10 +63,16 @@ const shelves: Shelf[] = [
 export default function Library() {
   const scope = useRef<HTMLDivElement>(null);
   const rig = useRef<HTMLDivElement>(null);
-  const [lean, setLean] = useState({ x: 0, y: 0 });
   const [over, setOver] = useState<string | null>(null);
   /** Set once a pointer actually moves, so scroll doesn't fight the cursor. */
   const pointing = useRef(false);
+  /** The lean and the per-card tilt go straight to the DOM through these
+      refs, throttled to one write per frame — through React state they
+      would re-render the whole rig on every pixel of raw mousemove, which
+      is what made the cursor feel like it was dragging the deck instead of
+      just tilting it. */
+  const leanFrame = useRef(0);
+  const tiltFrame = useRef(0);
 
   useGSAP(
     () => {
@@ -130,9 +136,13 @@ export default function Library() {
   const track = (e: React.MouseEvent<HTMLDivElement>) => {
     pointing.current = true;
     const r = e.currentTarget.getBoundingClientRect();
-    setLean({
-      y: ((e.clientX - (r.left + r.width / 2)) / r.width) * 12,
-      x: -((e.clientY - (r.top + r.height / 2)) / r.height) * 8,
+    const y = ((e.clientX - (r.left + r.width / 2)) / r.width) * 12;
+    const x = -((e.clientY - (r.top + r.height / 2)) / r.height) * 8;
+    if (leanFrame.current) return;
+    leanFrame.current = requestAnimationFrame(() => {
+      leanFrame.current = 0;
+      rig.current?.style.setProperty("--lx", `${x}deg`);
+      rig.current?.style.setProperty("--ly", `${y}deg`);
     });
   };
 
@@ -160,13 +170,14 @@ export default function Library() {
         onMouseMove={track}
         onMouseLeave={() => {
           pointing.current = false;
-          setLean({ x: 0, y: 0 });
+          rig.current?.style.setProperty("--lx", "0deg");
+          rig.current?.style.setProperty("--ly", "0deg");
         }}
       >
         <div
           ref={rig}
           className="lib-rig"
-          style={{ ["--lx" as string]: `${lean.x}deg`, ["--ly" as string]: `${lean.y}deg` }}
+          style={{ ["--lx" as string]: "0deg", ["--ly" as string]: "0deg" }}
         >
           {shelves.map((s, i) => (
             <div key={s.id} data-drift className="lib-drift">
@@ -181,6 +192,32 @@ export default function Library() {
                 setOver(s.id);
               }}
               onFocus={() => setOver(s.id)}
+              onPointerMove={(e) => {
+                /* Real desktop pointer only — a per-card tilt and a glare that
+                   follows the cursor, layered on top of the rig's own lean.
+                   The rect read forces layout, so it — and the writes that
+                   depend on it — are throttled to once per frame rather than
+                   once per raw pointer event. */
+                if (e.pointerType !== "mouse") return;
+                const el = e.currentTarget;
+                const { clientX, clientY } = e;
+                if (tiltFrame.current) return;
+                tiltFrame.current = requestAnimationFrame(() => {
+                  tiltFrame.current = 0;
+                  const r = el.getBoundingClientRect();
+                  const px = (clientX - r.left) / r.width;
+                  const py = (clientY - r.top) / r.height;
+                  el.style.setProperty("--tx", `${(px - 0.5) * 16}deg`);
+                  el.style.setProperty("--ty", `${(0.5 - py) * 12}deg`);
+                  el.style.setProperty("--gx", `${px * 100}%`);
+                  el.style.setProperty("--gy", `${py * 100}%`);
+                });
+              }}
+              onPointerLeave={(e) => {
+                if (e.pointerType !== "mouse") return;
+                e.currentTarget.style.setProperty("--tx", "0deg");
+                e.currentTarget.style.setProperty("--ty", "0deg");
+              }}
               style={{ ["--i" as string]: i - 1 }}
             >
               {/* the deck, popping out of the top-right corner */}
@@ -199,6 +236,7 @@ export default function Library() {
               </span>
 
               <span className="lib-face">
+                <span className="lib-glare" aria-hidden />
                 <span className="lib-bar" aria-hidden style={{ background: s.tint }} />
                 <span className="lib-k">{s.k}</span>
                 <span className="lib-v">{s.v}</span>
