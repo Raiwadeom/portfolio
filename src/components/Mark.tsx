@@ -8,7 +8,7 @@
  * ring plus a static comet — nothing spins, nothing is missing.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { motionOn } from "@/lib/motion";
 
 export default function Mark({
@@ -26,6 +26,7 @@ export default function Mark({
   const ref = useRef<SVGSVGElement>(null);
   const [armed, setArmed] = useState(false);
   const [drawing, setDrawing] = useState(false);
+  const gradientId = useId();
 
   useEffect(() => {
     if (!motionOn()) return;
@@ -62,6 +63,15 @@ export default function Mark({
       fill="none"
       aria-hidden
     >
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#b1502f" />
+          <stop offset="30%" stopColor="#c2413c" />
+          <stop offset="60%" stopColor="#c98a2b" />
+          <stop offset="100%" stopColor="#aab594" />
+        </linearGradient>
+      </defs>
+
       <circle className="mark-ring" cx="50" cy="50" r="27" pathLength={1} />
 
       <g className="mark-orbit">
@@ -73,8 +83,15 @@ export default function Mark({
           ry="18"
           transform="rotate(-28 50 50)"
           pathLength={1}
+          stroke={`url(#${gradientId})`}
         />
-        <circle className="mark-orbit-head" cx="91.5" cy="27.9" r="4.6" />
+        <circle
+          className="mark-orbit-head"
+          cx="91.5"
+          cy="27.9"
+          r="4.6"
+          fill={`url(#${gradientId})`}
+        />
       </g>
     </svg>
   );

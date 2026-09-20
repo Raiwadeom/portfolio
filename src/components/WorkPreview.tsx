@@ -14,7 +14,7 @@ export default function WorkPreview() {
   const featured = projects.slice(0, 2);
 
   return (
-    <section className="relative px-[var(--gutter)] py-[clamp(72px,12vh,140px)]">
+    <section id="work" className="relative px-[var(--gutter)] py-[clamp(72px,12vh,140px)]">
       <SectionHead label="SELECTED WORK" index="03" right={`(${projects.length} LICENCES)`} />
 
       <div className="mx-auto mt-12 flex max-w-[880px] flex-col gap-9 sm:mt-16 sm:gap-12">

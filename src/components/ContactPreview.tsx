@@ -9,7 +9,7 @@ import { Reveal, SectionHead } from "./ui";
 
 export default function ContactPreview() {
   return (
-    <section className="relative px-[var(--gutter)] pt-[clamp(72px,12vh,140px)] pb-20 sm:pb-28 overflow-hidden">
+    <section id="contact" className="relative px-[var(--gutter)] pt-[clamp(72px,12vh,140px)] pb-20 sm:pb-28 overflow-hidden">
       {/* screen glow from below */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%]"

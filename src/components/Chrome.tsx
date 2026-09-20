@@ -84,7 +84,11 @@ export default function Chrome() {
     const bar = indicator.current;
     if (!el || !bar) return;
     bar.style.opacity = "1";
-    bar.style.transform = `translateX(${el.offsetLeft + el.offsetWidth / 2}px) translateX(-50%)`;
+    /* the CSS breathing animation owns `transform` (it reads this custom
+       property), so the position is handed over through a variable rather
+       than written to transform directly, which an animation would win over
+       anyway. */
+    bar.style.setProperty("--x", `${el.offsetLeft + el.offsetWidth / 2}px`);
   }, [hovered, active]);
 
   const shown = nav.find((n) => n.id === (hovered ?? active)) ?? nav[0];
@@ -121,6 +125,15 @@ export default function Chrome() {
           onMouseLeave={() => setHovered(null)}
         >
           <div ref={row} className="relative flex items-center">
+            {/* a soft spotlight sitting behind the icons, not a line riding
+                the edge — rendered first so it stacks underneath them. The
+                outer span carries the position (a smooth transition), the
+                inner one just breathes in place, so the two motions never
+                fight over the same transform. */}
+            <span ref={indicator} aria-hidden className="navbar-indicator">
+              <span className="navbar-indicator-glow" />
+            </span>
+
             {nav.map((item) => {
               const on = active === item.id;
               return (
@@ -143,9 +156,6 @@ export default function Chrome() {
                 </button>
               );
             })}
-
-            {/* the tab riding the edge that faces the page */}
-            <span ref={indicator} aria-hidden className="navbar-indicator" />
           </div>
         </nav>
 
