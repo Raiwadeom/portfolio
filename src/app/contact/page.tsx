@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SmoothScroll from "@/components/SmoothScroll";
 import Overlays from "@/components/Overlays";
 import Chrome from "@/components/Chrome";
@@ -28,12 +27,6 @@ export default function ContactPage() {
               "radial-gradient(ellipse 75% 55% at 50% 0%, rgba(122,140,92,0.22), transparent 70%)",
           }}
         />
-        <div className="relative px-[var(--gutter)] pt-[clamp(88px,13vh,130px)]">
-          <Link href="/" className="label transition-colors hover:!text-[var(--color-amber)]">
-            ← BACK TO THE DESKTOP
-          </Link>
-        </div>
-
         <div className="relative">
           <Contact />
         </div>
