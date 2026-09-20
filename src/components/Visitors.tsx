@@ -12,13 +12,16 @@
  * should never show a broken counter.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { visitors } from "@/lib/content";
+import { motionOn } from "@/lib/motion";
 
 const SEEN = "om-visited";
 
 export default function Visitors() {
   const [count, setCount] = useState<number | null>(null);
+  const [shown, setShown] = useState(0);
+  const raf = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!visitors.namespace || !visitors.key) return;
@@ -48,12 +51,34 @@ export default function Visitors() {
       });
   }, []);
 
+  /* count up to the real number rather than just popping it in */
+  useEffect(() => {
+    if (count === null) return;
+    if (!motionOn()) {
+      setShown(count);
+      return;
+    }
+    const duration = 1200;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setShown(Math.round(count * eased));
+      if (t < 1) raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+    return () => {
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, [count]);
+
   if (count === null) return null;
 
   return (
-    <span className="label flex items-center gap-2">
+    <span className="visit-counter">
       <span className="visit-dot" aria-hidden />
-      {count.toLocaleString()} VISITS
+      <span className="visit-counter-num">{shown.toLocaleString()}</span>
+      <span className="visit-counter-label">visits, and counting</span>
     </span>
   );
 }

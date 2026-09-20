@@ -1,7 +1,6 @@
 "use client";
 
 import { links, profile } from "@/lib/content";
-import Visitors from "./Visitors";
 import { Reveal } from "./ui";
 
 export default function Contact() {
@@ -15,7 +14,7 @@ export default function Contact() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%]"
         style={{
           background:
-            "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(224,160,44,0.24), transparent 70%)",
+            "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(177,80,47,0.16), transparent 70%)",
         }}
       />
 
@@ -56,7 +55,7 @@ export default function Contact() {
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="group relative h-full flex flex-col justify-between gap-3 sm:gap-6 border-b border-r border-[var(--color-line-soft)] px-4 sm:px-5 py-3.5 sm:py-5 overflow-hidden hover:bg-[rgba(38,86,82,0.14)] transition-colors duration-400"
+              className="group relative h-full flex flex-col justify-between gap-3 sm:gap-6 border-b border-r border-[var(--color-line-soft)] px-4 sm:px-5 py-3.5 sm:py-5 overflow-hidden hover:bg-[rgba(122,140,92,0.14)] transition-colors duration-400"
             >
               <span className="flex items-center justify-between gap-3">
                 <span className="label group-hover:!text-[var(--color-amber)] transition-colors">
@@ -82,28 +81,6 @@ export default function Contact() {
           </Reveal>
         ))}
       </div>
-
-      <Reveal>
-        {/* A printed strip rather than a bare row of labels — the same
-            bordered, mono-set language as a chip, wide enough to be a plate.
-            Three cells divided by a rule; the rule runs vertical once there's
-            a row to divide, horizontal while everything is still stacked. */}
-        <footer className="footer-strip">
-          <span className="footer-cell">
-            <span className="footer-mark">{profile.logo}</span>
-            <span aria-hidden>·</span>
-            <span>
-              © {new Date().getFullYear()} {profile.name.toUpperCase()}
-            </span>
-          </span>
-
-          <span className="footer-cell footer-cell--mid">
-            <Visitors />
-          </span>
-
-          <span className="footer-cell">{profile.location.toUpperCase()}</span>
-        </footer>
-      </Reveal>
     </section>
   );
 }

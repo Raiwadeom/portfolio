@@ -9,7 +9,7 @@ import Overlays from "./Overlays";
 export default function Subpage({
   kicker,
   right,
-  tint = "rgba(29,74,72,0.35)",
+  tint = "rgba(122,140,92,0.22)",
   children,
   max = "1100px",
 }: {

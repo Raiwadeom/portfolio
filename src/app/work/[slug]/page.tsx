@@ -52,7 +52,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           className="pointer-events-none absolute inset-x-0 top-0 h-[120vh]"
           style={{
             background:
-              "radial-gradient(ellipse 80% 50% at 50% 10%, rgba(29,74,72,0.35), transparent 72%)",
+              "radial-gradient(ellipse 80% 50% at 50% 10%, rgba(122,140,92,0.22), transparent 72%)",
           }}
         />
 

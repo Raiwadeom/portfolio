@@ -44,7 +44,7 @@ export const heroVideo = {
  */
 export const cover = {
   /** The flat colour the whole screen is printed on. */
-  field: "#1c534f",
+  field: "#c9bb98",
   /** Micro-type running up the left edge of the card. */
   spine: "PORTFOLIO 2026 — UDGIR, MAHARASHTRA — OPEN TO WORK",
   /** The signature. Two lines, written by hand. */

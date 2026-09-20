@@ -12,11 +12,24 @@
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { nav } from "@/lib/content";
-import { scrollToId } from "@/lib/smooth";
+import { scrollToId, scrollToTop } from "@/lib/smooth";
+import Mark from "./Mark";
+
+/** work and contact are real pages now; about and services are still
+ *  anchors on the one-page scroll. */
+const ROUTED = new Set(["work", "contact"]);
 
 export default function Chrome() {
-  const [active, setActive] = useState(nav[0].id);
+  const pathname = usePathname();
+  const router = useRouter();
+  const onHome = pathname === "/";
+
+  const [active, setActive] = useState(() => {
+    const routed = pathname.split("/")[1];
+    return ROUTED.has(routed) ? routed : nav[0].id;
+  });
   const [hovered, setHovered] = useState<string | null>(null);
   const [lifted, setLifted] = useState(false);
 
@@ -24,7 +37,8 @@ export default function Chrome() {
   const indicator = useRef<HTMLSpanElement>(null);
   const progress = useRef<HTMLSpanElement>(null);
 
-  /* Which section is under the reader. */
+  /* Which section is under the reader — the routed pages only ever have
+     the one section, so this just confirms what the pathname already set. */
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => {
@@ -39,7 +53,7 @@ export default function Chrome() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [pathname]);
 
   /* Progress goes straight to the transform — through state it would
      re-render the whole bar every frame. */
@@ -84,9 +98,22 @@ export default function Chrome() {
         className="pointer-events-none fixed inset-x-0 top-0 z-[55] h-px origin-left"
         style={{
           transform: "scaleX(0)",
-          background: "linear-gradient(90deg, rgba(224,160,44,0.2), var(--color-amber))",
+          background: "linear-gradient(90deg, rgba(255,255,255,0.2), var(--color-amber))",
         }}
       />
+
+      {/* the mark, riding the corner the way a signature would */}
+      <div className="pointer-events-auto fixed left-[var(--gutter)] top-3 sm:top-4 z-50">
+        <button
+          type="button"
+          onClick={() => (onHome ? scrollToTop() : router.push("/"))}
+          aria-label="Back to top"
+          className="brand-mark"
+        >
+          <Mark size={28} />
+          <span className="brand-mark-text">mrushikesh</span>
+        </button>
+      </div>
 
       <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex flex-col items-center px-[var(--gutter)] pt-3 sm:pt-4">
         <nav
@@ -100,7 +127,11 @@ export default function Chrome() {
                 <button
                   key={item.id}
                   data-nav={item.id}
-                  onClick={() => scrollToId(item.id)}
+                  onClick={() => {
+                    if (ROUTED.has(item.id)) router.push(`/${item.id}`);
+                    else if (onHome) scrollToId(item.id);
+                    else router.push(`/#${item.id}`);
+                  }}
                   onMouseEnter={() => setHovered(item.id)}
                   onFocus={() => setHovered(item.id)}
                   onBlur={() => setHovered(null)}

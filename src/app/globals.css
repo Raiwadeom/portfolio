@@ -1,19 +1,20 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Ink and atmosphere: a near-black room, teal haze in the air, and amber
-     used only where something is meant to be looked at. */
-  --color-void: #050807;
-  --color-deep: #080c0b;
-  --color-panel: #0e1514;
-  --color-line: #253431;
-  --color-line-soft: #16201e;
-  --color-haze: #1d4a48;
-  --color-haze-lit: #3f8a83;
-  --color-amber: #e0a02c;
-  --color-amber-soft: #f0c069;
-  --color-ice: #f1efe9;
-  --color-dim: #7f8a86;
+  /* Light and paper: a warm off-white room, sage in the shadows, rust
+     where something is meant to be looked at — the minimal-editorial
+     palette, not the old dark room. */
+  --color-void: #f6f3ec;
+  --color-deep: #f3efe6;
+  --color-panel: #eae4d6;
+  --color-line: #d6cfbd;
+  --color-line-soft: #e2dccc;
+  --color-haze: #d8dcc8;
+  --color-haze-lit: #aab594;
+  --color-amber: #b1502f;
+  --color-amber-soft: #c97952;
+  --color-ice: #18140f;
+  --color-dim: #86796a;
   --font-display: var(--font-display), "Haettenschweiler", ui-sans-serif, sans-serif;
   --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-script: var(--font-script), "Segoe Script", cursive;
@@ -123,8 +124,8 @@ a {
   pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(214,226,220, 0.028) 0px,
-    rgba(214,226,220, 0.028) 1px,
+    rgba(24,20,15, 0.03) 0px,
+    rgba(24,20,15, 0.03) 1px,
     transparent 1px,
     transparent 3px
   );
@@ -146,8 +147,8 @@ a {
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 45%,
-    transparent 35%,
-    rgba(3,6,5, 0.55) 100%
+    transparent 45%,
+    rgba(24,20,15, 0.1) 100%
   );
 }
 
@@ -172,7 +173,7 @@ a {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-amber);
-  background: rgba(38,86,82, 0.16);
+  background: rgba(177,80,47, 0.1);
   white-space: nowrap;
 }
 
@@ -210,6 +211,46 @@ section[id] {
 
 
 
+/* ---------- brand mark ----------
+   The same O the footer signs off with, small enough to sit in the corner
+   like a signature, with the name trailing it. */
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.brand-mark-text {
+  max-width: 150px;
+  overflow: hidden;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(12px, 3vw, 15px);
+  letter-spacing: -0.005em;
+  color: var(--color-ice);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.25s ease;
+}
+
+.brand-mark:hover .brand-mark-text {
+  color: var(--color-amber);
+}
+
+@media (max-width: 480px) {
+  .brand-mark-text {
+    max-width: none;
+    font-size: 11px;
+  }
+
+  .brand-mark .mark {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 /* ---------- nav bar ----------
    A dark rounded bar of icons with a small tab riding the edge that faces
    the page. Only the tab and the icon colour move, so it stays cheap. */
@@ -232,7 +273,7 @@ section[id] {
 }
 
 .navbar.is-lifted {
-  border-color: rgba(224, 160, 44, 0.28);
+  border-color: rgba(201, 121, 82, 0.3);
   background: rgba(6, 10, 9, 0.88);
   box-shadow:
     0 22px 50px -16px rgba(0, 0, 0, 0.95),
@@ -312,6 +353,19 @@ section[id] {
   animation: none;
 }
 
+/* A touch narrower on small phones, so the corner signature has room to
+   read in full without the pill crowding it. */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 6px 6px 8px;
+  }
+
+  .navbar-item {
+    width: clamp(38px, 9.5vw, 62px);
+    height: 34px;
+  }
+}
+
 .cover-screen {
   /* The card is centred inside this reduced box, not the full 100svh — the
      --w formula above assumes exactly this padding is here. */
@@ -331,8 +385,8 @@ section[id] {
   width: min(150vh, 190vw);
   aspect-ratio: 9 / 16;
   transform: translate(-52%, -46%);
-  filter: blur(26px) saturate(0.5) contrast(1.1) brightness(0.72);
-  opacity: 0.55;
+  filter: blur(26px) saturate(0.55) contrast(1.05) brightness(0.92);
+  opacity: 0.5;
   will-change: transform;
 }
 
@@ -341,8 +395,8 @@ section[id] {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 44%, transparent 30%, rgba(4, 18, 17, 0.55) 100%),
-    linear-gradient(to bottom, rgba(4, 18, 17, 0.35), transparent 26%, transparent 66%, rgba(3, 14, 13, 0.6));
+    radial-gradient(ellipse 70% 60% at 50% 44%, transparent 30%, rgba(24, 20, 15, 0.32) 100%),
+    linear-gradient(to bottom, rgba(24, 20, 15, 0.2), transparent 26%, transparent 66%, rgba(20, 17, 12, 0.4));
 }
 
 /* ---------- the card ---------- */
@@ -598,7 +652,7 @@ section[id] {
   font-size: clamp(1.35rem, 3.4vw, 2.15rem);
   line-height: 1;
   letter-spacing: -0.028em;
-  color: rgba(241, 239, 233, 0.55);
+  color: rgba(24, 20, 15, 0.4);
   transition: color 0.6s ease;
 }
 
@@ -611,7 +665,7 @@ section[id] {
   width: clamp(18px, 2.2vw, 26px);
   height: clamp(18px, 2.2vw, 26px);
   flex-shrink: 0;
-  color: var(--color-amber);
+  color: var(--tint, var(--color-amber));
   opacity: 0;
   transform: translateX(-10px);
   transition:
@@ -1175,7 +1229,7 @@ section[id] {
 .paper {
   --ink: #16161c;
   --ink-soft: #5c5a54;
-  --accent: #1d4a48;
+  --accent: #b1502f;
   position: relative;
   background: #efe9dd;
   color: var(--ink);
@@ -1471,7 +1525,7 @@ section[id] {
 
 .playbar-item.is-on {
   color: var(--color-amber);
-  background: rgba(224, 160, 44, 0.12);
+  background: rgba(177, 80, 47, 0.1);
 }
 
 [data-motion="off"] .playlist {
@@ -1669,45 +1723,35 @@ section[id] {
     font-size: 8px;
   }
 
-  /* the card lies on its side: photo beside the details, no lanyard */
-  .badge-strap,
-  .badge-ring,
-  .badge-slot,
-  .badge-top,
-  .badge-code {
-    display: none;
-  }
-
+  /* the badge stays the same hung-up card on a phone — strap, ring, swing
+     and all — just narrower, same as the reference. */
   .badge-wrap {
     max-width: 100%;
   }
+}
 
-  .badge-hang {
-    margin-top: 0;
-    animation: none;
-  }
+/* the visit count — a number that ticks up, not just appears */
+.visit-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
 
-  .badge-card {
-    border-radius: 10px;
-    padding: 10px;
-  }
+.visit-counter-num {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 4vw, 30px);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  color: var(--color-amber-soft);
+  text-shadow: 0 0 18px rgba(177, 80, 47, 0.3);
+}
 
-  .badge-inner {
-    display: grid;
-    grid-template-columns: 88px minmax(0, 1fr);
-    gap: 12px;
-    align-items: start;
-    margin-top: 0;
-    padding: 0;
-  }
-
-  .badge-photo {
-    margin-top: 0;
-  }
-
-  .badge-text h3 {
-    margin-top: 0;
-  }
+.visit-counter-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-dim);
 }
 
 /* the pulse beside the visit count */
@@ -1788,7 +1832,7 @@ section[id] {
   font-size: clamp(0.95rem, 2.6vw, 1.15rem);
   line-height: 1;
   text-transform: uppercase;
-  color: rgba(241, 239, 233, 0.62);
+  color: rgba(24, 20, 15, 0.55);
   transition: color 0.35s ease;
 }
 
@@ -1799,7 +1843,7 @@ section[id] {
 
 .work-tab[data-on] {
   border-color: var(--color-amber);
-  background: rgba(224, 160, 44, 0.1);
+  background: rgba(177, 80, 47, 0.1);
 }
 
 .work-tab[data-on] .work-tab-t {
@@ -1894,68 +1938,136 @@ section[id] {
   outline-offset: -3px;
 }
 
-/* ---------- the footer strip ----------
-   A printed plate rather than a bare row of labels — the same bordered,
-   mono-set language a chip uses, just wide. Stacked and centred on a phone,
-   where a divider is a hairline above each cell; a row on a desktop, where
-   the dividers turn vertical between cells. */
+/* ---------- the Orbit mark ----------
+   A ring with a comet swinging around it. The ring draws itself in once,
+   the first time it's seen; the comet fades in after and keeps orbiting
+   quietly, forever. Resting state (no JS, or `data-motion="off"`) is the
+   ring plus a static comet — nothing spins, nothing is missing. */
 
-.footer-strip {
+.mark-ring {
+  fill: none;
+  stroke: var(--color-ice);
+  stroke-width: 9;
+}
+
+.mark-orbit {
+  transform-origin: 50px 50px;
+  opacity: 1;
+}
+
+.mark-orbit-path {
+  fill: none;
+  stroke: var(--color-amber);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.58 0.42;
+}
+
+.mark-orbit-head {
+  fill: var(--color-amber);
+}
+
+.mark.mark-armed .mark-ring {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.mark.mark-armed .mark-orbit {
+  opacity: 0;
+}
+
+.mark.is-drawing .mark-ring {
+  animation: mark-ring-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mark.is-drawing .mark-orbit {
+  animation:
+    mark-orbit-in 0.6s ease-out 0.7s forwards,
+    mark-orbit-spin 16s linear 0.7s infinite;
+}
+
+@keyframes mark-ring-draw {
+  from {
+    stroke-dashoffset: 1;
+    stroke-dasharray: 1;
+  }
+  99% {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    stroke-dasharray: none;
+  }
+}
+
+@keyframes mark-orbit-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mark-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+[data-motion="off"] .mark.mark-armed .mark-ring {
+  stroke-dashoffset: 0;
+}
+
+[data-motion="off"] .mark.mark-armed .mark-orbit {
+  opacity: 1;
+}
+
+/* ---------- the signature ----------
+   The mark, then the name set quietly underneath it — lowercase, two
+   lines, the way the lockup sheet has it, not a shout across the page. */
+
+.signature {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.signature-mark {
+  flex: none;
+}
+
+.signature-name {
   display: flex;
   flex-direction: column;
-  margin-top: clamp(56px, 9vw, 96px);
-  border: 1px solid var(--color-line-soft);
-  border-radius: 3px;
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-dim);
-}
-
-.footer-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 18px;
-  border-top: 1px solid var(--color-line-soft);
-  text-align: center;
-}
-
-.footer-cell:first-child {
-  border-top: 0;
-}
-
-.footer-mark {
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: var(--color-ice);
 }
 
-@media (min-width: 640px) {
-  .footer-strip {
-    flex-direction: row;
-  }
-
-  .footer-cell {
-    flex: 1;
-    justify-content: flex-start;
-    border-top: 0;
-    border-left: 1px solid var(--color-line-soft);
-  }
-
-  .footer-cell:first-child {
-    border-left: 0;
-  }
-
-  .footer-cell--mid {
-    justify-content: center;
-  }
-
-  .footer-cell:last-child {
-    justify-content: flex-end;
-  }
+.signature-line {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.signature.is-in .signature-line {
+  opacity: 1;
+  transform: none;
+}
+
+[data-motion="off"] .signature-line {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+

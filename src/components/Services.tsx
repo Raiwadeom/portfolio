@@ -36,8 +36,8 @@ export default function Services() {
                       color: isOpen ? "var(--color-ice)" : "transparent",
                       WebkitTextStroke: isOpen
                         ? "0px transparent"
-                        : "1px rgba(224,160,44,0.42)",
-                      textShadow: isOpen ? "0 0 50px rgba(224,160,44,0.35)" : "none",
+                        : "1px rgba(177,80,47,0.5)",
+                      textShadow: isOpen ? "0 0 50px rgba(177,80,47,0.3)" : "none",
                     }}
                   >
                     {s.word}

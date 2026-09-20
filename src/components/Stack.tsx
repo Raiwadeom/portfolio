@@ -19,6 +19,10 @@ import { Section, SectionHead } from "./ui";
 
 const STEP_MS = 2200;
 
+/** Each column gets its own accent, rather than every wheel sharing the
+ *  one site accent — frontend rust, backend sage, tooling dusty blue. */
+const TINTS = ["#b1502f", "#7a8a5a", "#5b7690"];
+
 export default function Stack() {
   const scope = useRef<HTMLDivElement>(null);
   const [at, setAt] = useState<number[]>(() => stack.map((_, i) => i));
@@ -59,11 +63,14 @@ export default function Stack() {
             <div
               key={group.group}
               className="wheel-col"
+              style={{ ["--tint" as string]: TINTS[g % TINTS.length] }}
               onPointerEnter={() => setHeld(g)}
               onPointerLeave={() => setHeld(null)}
             >
               <div className="wheel-tag">
-                <span className="label !text-[var(--color-amber)]">{group.n}</span>
+                <span className="label" style={{ color: "var(--tint)" }}>
+                  {group.n}
+                </span>
                 <span className="label">{group.group}</span>
               </div>
 

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 /** Everything that isn't work: the music, the books and the films, one room. */
 export default function LibraryPage() {
   return (
-    <Subpage kicker="LIBRARY" right="OFF THE CLOCK" tint="rgba(29,74,72,0.4)" max="1100px">
+    <Subpage kicker="LIBRARY" right="OFF THE CLOCK" tint="rgba(122,140,92,0.25)" max="1100px">
       <header className="mt-10 sm:mt-14">
         <h1 className="display text-[clamp(2.6rem,13vw,7rem)] leading-[0.86] text-[var(--color-ice)]">
           The Library
