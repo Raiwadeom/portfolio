@@ -145,7 +145,7 @@ export const projects = [
     notes: [
       "One bilingual (English / मराठी) portal replaces the scattered places a student used to look: faculty notes sorted by branch, semester and subject, previous-year papers, and scholarships with eligibility and required documents.",
       "Practice tests run in three tiers — Beginner, Intermediate, Advanced — and clearing all three unlocks the final exam, with every attempt recorded against the student's account.",
-      "RaktSetu, first shipped as a standalone Android app, now lives inside the site as a full section: patients who need blood reach student and staff volunteers nearby, by real red-cell compatibility, with push and email alerts.",
+      "RaktSetu, the student blood-donation network, runs as a full section of the site: patients who need blood reach student and staff volunteers nearby, by real red-cell compatibility, with push and email alerts.",
       "Supabase handles email and Google sign-in on Postgres with row-level security, so the database — not the browser — decides who can read and write what. Admin rights are enforced in SQL.",
       "Vercel serverless functions sign Cloudinary uploads, send RaktSetu alerts, and run a daily cron that expires old blood requests and applies data-retention rules.",
     ],
