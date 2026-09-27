@@ -43,6 +43,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // RaktSetu now lives inside DnyanSetu, so its old case page points there.
+  async redirects() {
+    return [{ source: "/work/raktsetu", destination: "/work/dyan-setu", permanent: true }];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
