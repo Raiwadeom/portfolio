@@ -14,7 +14,7 @@
   --color-amber: #b1502f;
   --color-amber-soft: #c97952;
   --color-ice: #18140f;
-  --color-dim: #86796a;
+  --color-dim: #6b5f52;
   --font-display: var(--font-display), "Haettenschweiler", ui-sans-serif, sans-serif;
   --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-script: var(--font-script), "Segoe Script", cursive;
@@ -107,9 +107,9 @@ a {
 }
 
 .outline-text {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--color-amber);
-  paint-order: stroke fill;
+  /* Solid rust, not a hairline outline: a 1px stroke on huge letters read
+     faint and blurry, especially on paper. */
+  color: var(--color-amber);
 }
 
 /* ---------- global overlays ----------
@@ -117,26 +117,12 @@ a {
    as cheap as possible: no blend modes, no animation, no filters. Each
    one is a single static painted layer the compositor can reuse. */
 
-.scanlines {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(24,20,15, 0.03) 0px,
-    rgba(24,20,15, 0.03) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
 .grain {
   position: fixed;
   inset: 0;
   z-index: 59;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -148,14 +134,13 @@ a {
   background: radial-gradient(
     ellipse at 50% 45%,
     transparent 45%,
-    rgba(24,20,15, 0.1) 100%
+    rgba(24,20,15, 0.04) 100%
   );
 }
 
-/* Phones do the least work: drop the two full-screen texture layers. */
+/* Phones do the least work: drop the full-screen grain layer. */
 @media (max-width: 640px) {
-  .grain,
-  .scanlines {
+  .grain {
     display: none;
   }
 }
