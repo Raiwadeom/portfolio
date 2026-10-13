@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { projects } from "@/lib/content";
+import { getCaseStudy } from "@/lib/case-studies";
+import ProjectMedia from "./ProjectMedia";
 
 type Project = (typeof projects)[number];
 
@@ -12,10 +14,15 @@ type Project = (typeof projects)[number];
 export function LicenceCard({
   p,
   compact = false,
+  paused = false,
 }: {
   p: Project;
   compact?: boolean;
+  /** a card hidden behind another keeps its preview still */
+  paused?: boolean;
 }) {
+  const media = compact ? getCaseStudy(p.slug)?.solution.media : undefined;
+
   return (
     <article className="paper rounded-[14px] p-2.5 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.95)]">
       <div className="paper-dash rounded-[10px] px-4 py-5 sm:px-6 sm:py-6">
@@ -107,6 +114,21 @@ export function LicenceCard({
           </div>
         </div>
 
+        {/* ── live preview: plays on hover, or on screen on a phone ── */}
+        {media?.image ? (
+          <div className="mt-5">
+            <ProjectMedia
+              image={media.image}
+              video={media.video || undefined}
+              alt={`Preview of ${p.title}: ${media.alt}`}
+              url={p.live}
+              mode="hover"
+              paused={paused}
+              sizes="(min-width: 900px) 820px, 92vw"
+            />
+          </div>
+        ) : null}
+
         {/* ── bottom rule ── */}
         <div className="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t border-dashed border-[rgba(22,22,28,0.4)] pt-3">
           <span className="text-[9px] leading-[1.5] tracking-[0.14em] uppercase text-[var(--ink-soft)]">
@@ -131,7 +153,7 @@ export function LicenceCard({
             ) : null}
             {p.live ? (
               <a href={p.live} target="_blank" rel="noreferrer" className="hover:text-[var(--accent)]">
-                Live ↗
+                Visit live site ↗
               </a>
             ) : null}
             {p.repo ? (

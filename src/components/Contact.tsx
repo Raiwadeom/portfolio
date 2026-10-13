@@ -2,6 +2,8 @@
 
 import { links, profile } from "@/lib/content";
 import { Reveal } from "./ui";
+import ContactForm from "./ContactForm";
+import { Availability } from "./Hire";
 
 export default function Contact() {
   return (
@@ -22,6 +24,12 @@ export default function Contact() {
         <div className="relative flex items-baseline justify-between border-b border-[var(--color-line-soft)] pb-3">
           <span className="label !text-[var(--color-amber)]">/ CONTACT</span>
           <span className="label">(06)</span>
+        </div>
+      </Reveal>
+
+      <Reveal delay={40}>
+        <div className="relative mt-10 sm:mt-14">
+          <Availability />
         </div>
       </Reveal>
 
@@ -81,6 +89,16 @@ export default function Contact() {
           </Reveal>
         ))}
       </div>
+
+      {/* the enquiry form */}
+      <Reveal>
+        <div className="relative mt-16 max-w-[760px] sm:mt-24">
+          <p className="label !text-[var(--color-amber)]">/ SEND A MESSAGE</p>
+          <div className="mt-6">
+            <ContactForm />
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

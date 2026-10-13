@@ -3,6 +3,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Overlays from "@/components/Overlays";
 import Chrome from "@/components/Chrome";
 import Work from "@/components/Work";
+import Services from "@/components/Services";
+import Stack from "@/components/Stack";
 import Footer from "@/components/Footer";
 import { profile } from "@/lib/content";
 
@@ -29,6 +31,8 @@ export default function WorkPage() {
         />
         <div className="relative">
           <Work />
+          <Services />
+          <Stack />
         </div>
         <Footer />
       </main>

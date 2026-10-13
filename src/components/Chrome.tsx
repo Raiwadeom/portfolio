@@ -17,9 +17,9 @@ import { nav } from "@/lib/content";
 import { scrollToId, scrollToTop } from "@/lib/smooth";
 import Mark from "./Mark";
 
-/** work and contact are real pages now; about and services are still
- *  anchors on the one-page scroll. */
-const ROUTED = new Set(["work", "contact"]);
+/** Every section except About is its own page; About is the anchor on
+ *  the short home page. */
+const ROUTED = new Set(["work", "hire", "contact"]);
 
 export default function Chrome() {
   const pathname = usePathname();
@@ -195,6 +195,14 @@ function NavIcon({ name, on }: { name: string; on: boolean }) {
       return (
         <svg {...p}>
           <path d="M12 3.2 14 9.1l5.9 2-5.9 2-2 5.9-2-5.9-5.9-2 5.9-2Z" />
+        </svg>
+      );
+    case "case":
+      return (
+        <svg {...p}>
+          <rect x="3" y="7.5" width="18" height="12" rx="2.2" />
+          <path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" />
+          <path d="M3 13h18" />
         </svg>
       );
     case "grid":

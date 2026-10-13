@@ -1,0 +1,27 @@
+{
+  "problem": "When a patient needs blood, finding a willing donor of a compatible group nearby, quickly, is hard.",
+  "why": "TODO: your personal reason in one or two lines.",
+  "solution": {
+    "summary": "A donor network inside DnyanSetu. A request reaches every compatible verified donor in the same city, not just exact group matches, and safety rules (age, weight, health check, 4-month rest) are enforced automatically.",
+    "media": {
+      "video": "/work/raktsetu.mp4",
+      "image": "/work/raktsetu.webp",
+      "alt": "RaktSetu blood-donor page inside DnyanSetu"
+    }
+  },
+  "tech": ["React", "Supabase", "Postgres + RLS", "Web Push", "Resend email", "Vercel Cron"],
+  "wentWrong": [
+    {
+      "title": "TODO: what went wrong",
+      "body": "TODO: one honest problem you hit and how you solved it."
+    }
+  ],
+  "learned": [
+    "TODO: takeaway 1",
+    "TODO: takeaway 2"
+  ],
+  "result": [
+    { "value": "TODO", "label": "registered donors" },
+    { "value": "TODO", "label": "blood requests handled" }
+  ]
+}

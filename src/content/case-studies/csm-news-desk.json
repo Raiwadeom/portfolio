@@ -1,0 +1,26 @@
+{
+  "problem": "The college's newspaper coverage existed as cuttings that most people could never see, search or download.",
+  "why": "TODO: your personal reason in one or two lines.",
+  "solution": {
+    "summary": "A public, Pinterest-style archive: anyone can browse, open a cutting full-screen and download it without signing in. Admins upload scans, set the date each story ran and sort them into collections.",
+    "media": {
+      "video": "/work/csmnewsdesk.mp4",
+      "image": "/work/csmnewsdesk.webp",
+      "alt": "CSM News Desk archive grid of newspaper cuttings"
+    }
+  },
+  "tech": ["Next.js", "Firebase Auth", "Firestore", "Cloudinary signed uploads", "Tailwind"],
+  "wentWrong": [
+    {
+      "title": "TODO: what went wrong",
+      "body": "TODO: one honest problem you hit and how you solved it."
+    }
+  ],
+  "learned": [
+    "TODO: takeaway 1",
+    "TODO: takeaway 2"
+  ],
+  "result": [
+    { "value": "445", "label": "cuttings archived (Oct 2026)" }
+  ]
+}

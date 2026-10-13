@@ -32,7 +32,7 @@ export default function Work() {
 
   return (
     <Section id="work">
-      <SectionHead label="SELECTED WORK" index="03" right={`(${projects.length} LICENCES)`} />
+      <SectionHead label="SELECTED WORK" index="01" right={`(${projects.length} LICENCES)`} />
       {stacked ? <Deck /> : <Column />}
     </Section>
   );
@@ -74,7 +74,7 @@ function Deck() {
               aria-hidden={o !== 0}
               style={{ ["--o" as string]: Math.abs(o), zIndex: projects.length - Math.abs(o) }}
             >
-              <LicenceCard p={p} compact />
+              <LicenceCard p={p} compact paused={o !== 0} />
             </div>
           );
         })}

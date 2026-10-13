@@ -1,0 +1,28 @@
+{
+  "problem": "Students at Chhatrapati Shivajiraje Mahavidyalaya, Udgir had to look in many scattered places for notes, previous-year papers, scholarship details and college notices.",
+  "why": "TODO: your personal reason in one or two lines, e.g. what you saw students struggling with and why you decided to build it yourself.",
+  "solution": {
+    "summary": "One bilingual (English and Marathi) portal for the whole college: faculty notes sorted by branch, semester and subject, past papers, tiered practice tests, scholarships with eligibility, notices and a Talent Corner for student work. It installs like an app and sends phone alerts.",
+    "media": {
+      "video": "/work/dnyansetu.mp4",
+      "image": "/work/dnyansetu.webp",
+      "alt": "DnyanSetu home page showing the student portal"
+    }
+  },
+  "tech": ["React", "Vite", "Supabase", "Postgres + RLS", "Google sign-in", "Firebase → Supabase", "Vercel serverless", "Web Push", "Cloudinary", "Resend"],
+  "wentWrong": [
+    {
+      "title": "Switching sign-in from Firebase to Supabase",
+      "body": "The first version ran on Firebase. I moved accounts and data to Supabase, but real students already had Firebase logins, so I built a legacy-login route that moves each account across the first time it signs in. TODO: add why you switched and what was hardest about it."
+    }
+  ],
+  "learned": [
+    "TODO: takeaway 1 (e.g. about planning the database before building)",
+    "TODO: takeaway 2 (e.g. about working with real users)",
+    "TODO: takeaway 3"
+  ],
+  "result": [
+    { "value": "TODO", "label": "registered students" },
+    { "value": "TODO", "label": "notes and papers uploaded" }
+  ]
+}

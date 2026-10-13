@@ -169,8 +169,38 @@ export const projects = [
   },
   {
     n: "02",
-    slug: "csm-news-desk",
+    slug: "raktsetu",
     licence: "0002",
+    title: "RaktSetu",
+    kind: "Donor Network",
+    blurb:
+      "The blood-donor network inside DnyanSetu. Patients who need blood reach verified student and staff volunteers in the same city, matched on real red-cell compatibility, with safety rules built into every step.",
+    stack: ["React", "Supabase", "Web Push", "Resend", "Vercel Cron"],
+    year: "2026",
+    role: "Full Stack",
+    status: "LIVE",
+    tint: "#c0392b",
+    live: "https://www.dnyansetu.online/raktsetu",
+    repo: "",
+    notes: [
+      "A request for blood reaches every compatible donor, not just exact matches: an A+ request also reaches O−, O+ and A− donors.",
+      "Donors are verified students and staff of the college, matched within the same city.",
+      "Safety rules are enforced, not suggested: adults only, 45 kg minimum, a health check at registration, and an automatic 4-month rest after a donation.",
+      "Alerts go out by phone push and Resend email; a daily Vercel cron expires old requests so donors never chase a stale one.",
+    ],
+    features: [
+      "Compatibility-based donor matching",
+      "Verified student and staff donors",
+      "Built-in donation safety rules",
+      "Push and email alerts",
+      "Automatic expiry of old requests",
+      "Clear no-payment guidance",
+    ],
+  },
+  {
+    n: "03",
+    slug: "csm-news-desk",
+    licence: "0003",
     title: "CSM News Desk",
     kind: "Archive",
     blurb:
@@ -478,10 +508,55 @@ export const links = [
   },
 ];
 
+/**
+ * The Hire me page.
+ *
+ * `open` switches the availability badge: true shows "Open for projects",
+ * false shows `closedText`. `proof` links a service to the project that
+ * shows it; leave it out when there is no example yet.
+ */
+export const hire = {
+  open: true,
+  openText: "Open for projects",
+  closedText: "Fully booked right now",
+  intro:
+    "I build websites and web apps for colleges, libraries and small teams, from the first conversation to the day it goes live.",
+  services: [
+    {
+      title: "College websites",
+      body: "A fast, bilingual site for your college: notices, departments, admissions and everything students look for, easy for staff to update.",
+      proof: { label: "DnyanSetu", href: "/work/dyan-setu" },
+    },
+    {
+      title: "Library & archive sites",
+      body: "Catalogues and archives people can actually search and browse, with simple uploads for whoever manages them.",
+      proof: { label: "CSM News Desk", href: "/work/csm-news-desk" },
+    },
+    {
+      title: "Web apps",
+      body: "Custom tools with sign-in, roles, a real database and alerts, built to be safe with real people's data.",
+      proof: { label: "RaktSetu", href: "/work/raktsetu" },
+    },
+    {
+      title: "Student platforms",
+      body: "Notes, papers, practice tests and scholarships in one place, installable on a phone with push alerts.",
+      proof: { label: "DnyanSetu", href: "/work/dyan-setu" },
+    },
+  ],
+  process: [
+    { step: "Discuss", body: "We talk through what you need, who will use it and the deadline." },
+    { step: "Design", body: "I show you how it will look and work before any code is written." },
+    { step: "Build", body: "I build it and share a working preview link you can try as it grows." },
+    { step: "Launch", body: "It goes live on your domain, and I hand over everything you need to run it." },
+  ],
+  /** options in the contact form's "project type" menu */
+  projectTypes: ["College website", "Library / archive site", "Web app", "Student platform", "Something else"],
+};
+
 /** The nav bar. `icon` picks the glyph in Chrome.tsx. */
 export const nav = [
   { n: "01", label: "ABOUT", id: "about", icon: "user" },
-  { n: "02", label: "WHAT I DO", id: "services", icon: "spark" },
-  { n: "03", label: "WORK", id: "work", icon: "grid" },
+  { n: "02", label: "WORK", id: "work", icon: "grid" },
+  { n: "03", label: "HIRE ME", id: "hire", icon: "case" },
   { n: "04", label: "CONTACT", id: "contact", icon: "mail" },
 ];
