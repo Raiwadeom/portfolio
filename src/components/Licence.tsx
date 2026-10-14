@@ -114,7 +114,7 @@ export function LicenceCard({
           </div>
         </div>
 
-        {/* ── live preview: plays on hover, or on screen on a phone ── */}
+        {/* ── live preview: plays while on screen ── */}
         {media?.image ? (
           <div className="mt-5">
             <ProjectMedia
@@ -122,7 +122,6 @@ export function LicenceCard({
               video={media.video || undefined}
               alt={`Preview of ${p.title}: ${media.alt}`}
               url={p.live}
-              mode="hover"
               paused={paused}
               sizes="(min-width: 900px) 820px, 92vw"
             />

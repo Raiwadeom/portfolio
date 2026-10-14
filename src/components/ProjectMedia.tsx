@@ -2,15 +2,12 @@
 
 /**
  * A project's screenshot in a browser-style frame, with an optional short
- * muted clip on top.
+ * muted clip on top that plays while it is on screen, on every device.
  *
- *  inline — the clip plays while it is on screen (case-study pages).
- *  hover  — the clip plays while the pointer is over it; on touch screens,
- *           which have no hover, it plays while on screen instead.
- *
- * The clip only loads once it is near the viewport, and never plays for
- * anyone who has asked their system for reduced motion. With no clip, the
- * screenshot is all there is.
+ * The clip only loads once it is near the viewport. Anyone whose system asks
+ * for reduced motion gets it on hover instead of by itself, and the site's
+ * own motion switch keeps it still. With no clip, the screenshot is all
+ * there is.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -21,19 +18,18 @@ type Props = {
   alt: string;
   video?: string;
   url?: string;
-  mode?: "inline" | "hover";
   priority?: boolean;
   sizes?: string;
   /** hold the clip still, e.g. for a card hidden behind another */
   paused?: boolean;
 };
 
-function stillOnly() {
-  if (typeof window === "undefined") return true;
-  return (
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-    document.documentElement.getAttribute("data-motion") === "off"
-  );
+function motionOff() {
+  return document.documentElement.getAttribute("data-motion") === "off";
+}
+
+function calmer() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 export default function ProjectMedia({
@@ -41,7 +37,6 @@ export default function ProjectMedia({
   alt,
   video,
   url,
-  mode = "inline",
   priority,
   sizes = "(min-width: 900px) 880px, 100vw",
   paused = false,
@@ -51,17 +46,15 @@ export default function ProjectMedia({
   const [near, setNear] = useState(false);
   const [playing, setPlaying] = useState(false);
 
-  /* load the clip once it is close, play it while it is visible (inline,
-     or hover mode on a touch screen) */
+  /* load the clip once it is close, play it while it is visible */
   useEffect(() => {
     const el = box.current;
     if (paused) {
       clip.current?.pause();
       return;
     }
-    if (!video || !el || stillOnly()) return;
-    const touch = window.matchMedia("(hover: none)").matches;
-    const autoplay = mode === "inline" || touch;
+    if (!video || !el || motionOff()) return;
+    const autoplay = !calmer();
 
     const io = new IntersectionObserver(
       ([e]) => {
@@ -78,15 +71,16 @@ export default function ProjectMedia({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [video, mode, near, paused]);
+  }, [video, near, paused]);
 
+  /* reduced-motion visitors: play only while the pointer is over it */
   const onEnter = () => {
-    if (mode !== "hover" || !video || paused || stillOnly()) return;
+    if (!video || paused || motionOff() || !calmer()) return;
     setNear(true);
     clip.current?.play().then(() => setPlaying(true)).catch(() => {});
   };
   const onLeave = () => {
-    if (mode !== "hover" || !clip.current) return;
+    if (!calmer() || !clip.current) return;
     clip.current.pause();
     setPlaying(false);
   };
