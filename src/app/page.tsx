@@ -3,10 +3,11 @@ import Overlays from "@/components/Overlays";
 import Chrome from "@/components/Chrome";
 import Poster from "@/components/Poster";
 import About from "@/components/About";
+import Library from "@/components/Library";
 import Footer from "@/components/Footer";
 
-/* The home page is the cover and the introduction. Work, hiring, contact
-   and the library each live on their own page, reached from the nav. */
+/* The home page is the cover, the introduction and a doorway into the
+   library. Work, hiring, contact and the full library are their own pages. */
 export default function Home() {
   return (
     <>
@@ -36,6 +37,7 @@ export default function Home() {
 
           <div className="relative">
             <About />
+            <Library />
           </div>
 
           <Footer />

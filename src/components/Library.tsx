@@ -148,7 +148,7 @@ export default function Library() {
 
   return (
     <Section id="library" className="overflow-hidden">
-      <SectionHead label="OFF THE CLOCK" index="05" right="THE LIBRARY" />
+      <SectionHead label="OFF THE CLOCK" index="02" right="THE LIBRARY" />
 
       <Reveal className="mt-10 sm:mt-14">
         <div className="flex flex-wrap items-end justify-between gap-4">
