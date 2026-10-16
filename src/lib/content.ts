@@ -8,12 +8,10 @@ export const profile = {
   name: "Omrushikesh Raiwade",
   handle: "oruim",
   logo: "OM/RW",
-  role: "Web Developer · AI Engineer",
-  tagline: "Project & Team Management",
-  location: "Udgir, Maharashtra, India",
-  openTo: "Pune City — On-site / Hybrid / Remote",
+  role: "Websites, Web Apps & AI for Business",
+  tagline: "Web development studio",
   email: "raiwadeomrushikesh@gmail.com",
-  status: "OPEN TO WORK",
+  status: "TAKING NEW PROJECTS",
   /** Printed on the lanyard badge in the about section. */
   badgeNo: "SR-VISUAL-0051",
   dob: "—",
@@ -46,11 +44,11 @@ export const cover = {
   /** The flat colour the whole screen is printed on. */
   field: "#c9bb98",
   /** Micro-type running up the left edge of the card. */
-  spine: "PORTFOLIO 2026 — UDGIR, MAHARASHTRA — OPEN TO WORK",
+  spine: "WEB DEVELOPMENT STUDIO — 2026 — TAKING NEW PROJECTS",
   /** The signature. Two lines, written by hand. */
   sign: ["Omrushikesh", "Raiwade"],
   /** The row along the bottom of the card. */
-  foot: ["WEB DEVELOPER", "AI ENGINEER", "FULL-STACK", "2026"],
+  foot: ["WEBSITES", "WEB APPS", "AI TOOLS", "2026"],
   cue: "SCROLL",
 };
 
@@ -61,10 +59,10 @@ export const cover = {
 export const about = {
   hello: "Hello!",
   paras: [
-    "My name is Omrushikesh, and I build web interfaces and AI systems out of Udgir, Maharashtra. Full-stack by training — a complete bootcamp end to end, then competitive programming to sharpen the parts a bootcamp doesn't reach.",
+    "My name is Omrushikesh, and I build websites, web apps and AI tools for businesses and organisations. Full-stack by training — a complete bootcamp end to end, then competitive programming to sharpen the parts a bootcamp doesn't reach.",
     "I care about the details nobody is paid to notice: how a layout breathes, how a transition lands, how fast the thing actually is on a bad connection. I ran the technical side of a competitive programming club for eight months, so I have learned to care about the people around the code too.",
     "Along the way: 1st prize in Web Designing at TECHNOVA 2026, and a place among the 20 teams selected for Hackathon 2026 at SRTMU Nanded, where I presented ARC-SAS — an AI-based career-readiness and skills-assessment system.",
-    "Currently open to work — Pune, on-site, hybrid or remote. Some of what I have shipped is further down the page. Thanks for reading.",
+    "Taking on new projects now — remote or on-site, big or small. Some of what I have shipped is on the Work page. If you have something in mind, let's talk.",
   ],
   skillsHeading: "What I work with",
   skills: [
@@ -88,10 +86,9 @@ export const about = {
   ],
   /** Printed on the ID card clipped to the sheet. */
   meta: [
-    { k: "BASED", v: "Udgir, MH, India" },
     { k: "STUDYING", v: "BSc Computer Science" },
     { k: "FOCUS", v: "Web · AI · Python" },
-    { k: "STATUS", v: "Open to work" },
+    { k: "STATUS", v: "Taking projects" },
   ],
 };
 
@@ -137,7 +134,7 @@ export const projects = [
     title: "DnyanSetu",
     kind: "Web Platform",
     blurb:
-      "The live student-services platform for Chhatrapati Shivajiraje Mahavidyalaya, Udgir — notes, papers, practice tests, scholarships, notices and a student Talent Corner in English and Marathi, installable with phone notifications. It brings the RaktSetu blood-donor network and CSM News Desk together under one account.",
+      "The live student-services platform for Chhatrapati Shivajiraje Mahavidyalaya — notes, papers, practice tests, scholarships, notices and a student Talent Corner in English and Marathi, installable with phone notifications. It brings the RaktSetu blood-donor network and CSM News Desk together under one account.",
     stack: ["React", "Vite", "Supabase", "Serverless", "Web Push", "Cloudinary"],
     year: "2026",
     role: "Full Stack",
@@ -475,13 +472,6 @@ export const books = {
  * count lives in; change it and the count starts again from zero. Clear
  * `namespace` to take the counter off the page entirely.
  */
-/** The CV, linked from the cover. Clicking it downloads — no landing page,
-    no viewer. Drop a new file in /public under the same name to update it. */
-export const resume = {
-  file: "/Om_Raiwade_Resume.pdf",
-  label: "Résumé",
-};
-
 export const visitors = {
   namespace: "omraiwade-portfolio",
   key: "visits",
@@ -520,11 +510,11 @@ export const hire = {
   openText: "Open for projects",
   closedText: "Fully booked right now",
   intro:
-    "I build websites and web apps for colleges, libraries and small teams, from the first conversation to the day it goes live.",
+    "I build websites, web apps and AI tools for businesses, institutions and small teams, from the first conversation to the day it goes live.",
   services: [
     {
-      title: "College websites",
-      body: "A fast, bilingual site for your college: notices, departments, admissions and everything students look for, easy for staff to update.",
+      title: "Business websites",
+      body: "A fast, mobile-first site for your business or institution: services, enquiries, notices and everything customers look for, easy for your team to update.",
       proof: { label: "DnyanSetu", href: "/work/dyan-setu" },
     },
     {
@@ -550,13 +540,13 @@ export const hire = {
     { step: "Launch", body: "It goes live on your domain, and I hand over everything you need to run it." },
   ],
   /** options in the contact form's "project type" menu */
-  projectTypes: ["College website", "Library / archive site", "Web app", "Student platform", "Something else"],
+  projectTypes: ["Business website", "Library / archive site", "Web app", "Student platform", "Something else"],
 };
 
 /** The nav bar. `icon` picks the glyph in Chrome.tsx. */
 export const nav = [
   { n: "01", label: "ABOUT", id: "about", icon: "user" },
   { n: "02", label: "WORK", id: "work", icon: "grid" },
-  { n: "03", label: "HIRE ME", id: "hire", icon: "case" },
+  { n: "03", label: "SERVICES", id: "hire", icon: "case" },
   { n: "04", label: "CONTACT", id: "contact", icon: "mail" },
 ];

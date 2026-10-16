@@ -6,9 +6,9 @@ import Hire from "@/components/Hire";
 import Footer from "@/components/Footer";
 import { profile } from "@/lib/content";
 
-const title = `Hire me — ${profile.name}`;
+const title = `Services — ${profile.name}`;
 const description =
-  "College websites, library and archive sites, web apps and student platforms, from first conversation to launch. Each service comes with a real project as proof.";
+  "Business websites, library and archive sites, web apps and student platforms, from first conversation to launch. Each service comes with a real project as proof.";
 
 export const metadata: Metadata = {
   title,

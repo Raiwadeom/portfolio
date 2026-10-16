@@ -9,7 +9,8 @@ import { Reveal } from "./ui";
 /** Every page, including the ones the nav bar leaves out. */
 const pages = [
   { label: "Work", href: "/work" },
-  { label: "Hire me", href: "/hire" },
+  { label: "Services", href: "/hire" },
+  { label: "Episode notes", href: "/notes" },
   { label: "Contact", href: "/contact" },
   { label: "Library", href: "/library" },
 ];

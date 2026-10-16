@@ -16,7 +16,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { cover, photo, profile, resume } from "@/lib/content";
+import { cover, photo, profile } from "@/lib/content";
 import { motionOn } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -141,20 +141,6 @@ export default function Poster() {
             ))}
           </h1>
 
-          {/* the CV, on a tab out of the card's edge */}
-          <a href={resume.file} download className="cv-tab" data-row>
-            <span>{resume.label}</span>
-            <svg viewBox="0 0 24 24" aria-hidden>
-              <path
-                d="M12 4v11M7.6 11.2 12 15.6l4.4-4.4M5 19.5h14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </a>
 
           {/* the footer row */}
           <div data-row className="cover-foot">

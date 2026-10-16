@@ -44,7 +44,7 @@ test.describe("navigation", () => {
   test("the nav bar opens each page", async ({ page }) => {
     await page.goto("/work");
     for (const [label, path] of [
-      ["HIRE ME", "/hire"],
+      ["SERVICES", "/hire"],
       ["CONTACT", "/contact"],
       ["WORK", "/work"],
     ]) {
@@ -56,7 +56,7 @@ test.describe("navigation", () => {
   test("the footer links to every page", async ({ page }) => {
     await page.goto("/");
     const footer = page.getByRole("navigation", { name: "Pages" });
-    for (const name of ["Work", "Hire me", "Contact", "Library"]) {
+    for (const name of ["Work", "Services", "Contact", "Library", "Episode notes"]) {
       await expect(footer.getByRole("link", { name })).toBeVisible();
     }
   });
@@ -126,7 +126,7 @@ test.describe("hire me", () => {
   test("badge, services with proof, and process", async ({ page }) => {
     await page.goto("/hire");
     await expect(page.getByText("Open for projects").first()).toBeVisible();
-    for (const s of ["College websites", "Library & archive sites", "Web apps", "Student platforms"]) {
+    for (const s of ["Business websites", "Library & archive sites", "Web apps", "Student platforms"]) {
       await expect(page.getByRole("heading", { name: s })).toBeVisible();
     }
     await page.getByRole("link", { name: /RaktSetu/ }).first().click();
@@ -173,5 +173,19 @@ test.describe("contact form", () => {
 
     const bot = await request.post("/api/contact", { data: { ...base, website: "spam.io" }, headers });
     expect(await bot.json()).toEqual({ ok: true });
+  });
+});
+
+test.describe("episode notes", () => {
+  test("lists every episode; missing PDFs show Coming soon", async ({ page }) => {
+    await page.goto("/notes");
+    await expect(page).toHaveTitle("Episode Notes | oruim.tech");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Full Stack, explained simply/i);
+    await expect(page.getByRole("heading", { level: 2 })).toHaveCount(15);
+    // Every card is either a real download link or a disabled "Coming soon".
+    const ready = await page.getByRole("link", { name: /Download PDF notes/ }).count();
+    const soon = await page.getByText("Coming soon", { exact: true }).count();
+    expect(ready + soon).toBe(15);
+    await expect(page.locator('a[href="https://instagram.com/oruim.tech"]')).toBeVisible();
   });
 });

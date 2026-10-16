@@ -1,5 +1,5 @@
 {
-  "problem": "Students at Chhatrapati Shivajiraje Mahavidyalaya, Udgir had to look in many scattered places for notes, previous-year papers, scholarship details and college notices.",
+  "problem": "Students at Chhatrapati Shivajiraje Mahavidyalaya had to look in many scattered places for notes, previous-year papers, scholarship details and college notices.",
   "why": "TODO: your personal reason in one or two lines, e.g. what you saw students struggling with and why you decided to build it yourself.",
   "solution": {
     "summary": "One bilingual (English and Marathi) portal for the whole college: faculty notes sorted by branch, semester and subject, past papers, tiered practice tests, scholarships with eligibility, notices and a Talent Corner for student work. It installs like an app and sends phone alerts.",

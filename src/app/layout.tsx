@@ -35,7 +35,7 @@ const mono = JetBrains_Mono({
 
 const SITE_URL = "https://omrushikeshraiwade.space";
 const DESCRIPTION =
-  "Web developer and AI engineer from Udgir, Maharashtra. Full-stack interfaces, Python tooling and the details nobody is paid to notice.";
+  "Websites, web apps and AI tools for businesses and organisations. Fast, mobile-first, built end to end — from the first conversation to launch.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
