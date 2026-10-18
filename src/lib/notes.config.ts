@@ -9,7 +9,7 @@
 /** Paste your WhatsApp community invite link here (https://chat.whatsapp.com/...). */
 export const WHATSAPP_LINK = "https://chat.whatsapp.com/REPLACE_ME";
 
-export const INSTAGRAM_URL = "https://instagram.com/oruim.tech";
+export const INSTAGRAM_URL = "https://www.instagram.com/oruim.tech";
 export const INSTAGRAM_HANDLE = "@oruim.tech";
 
 export const series = {
@@ -42,3 +42,7 @@ export const episodes: Episode[] = [
   { ep: 13, title: "What is Docker?", file: "/notes/ep13-docker.pdf" },
   { ep: 14, title: "What is MCP?", file: "/notes/ep14-mcp.pdf" },
 ];
+
+/** The YouTube channel. Leave empty to show "coming soon" instead. */
+export const YOUTUBE_URL = "https://www.youtube.com/@oruimtech";
+export const YOUTUBE_HANDLE = "@oruimtech";

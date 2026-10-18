@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import SmoothScroll from "@/components/SmoothScroll";
 import Overlays from "@/components/Overlays";
 import Chrome from "@/components/Chrome";
-import Work from "@/components/Work";
+import WorkCarousel from "@/components/WorkCarousel";
 import Services from "@/components/Services";
 import Stack from "@/components/Stack";
 import Footer from "@/components/Footer";
@@ -10,7 +10,7 @@ import { profile } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: `Work — ${profile.name}`,
-  description: "Selected projects, printed as licences.",
+  description: "Selected projects: websites, apps and tools built end to end.",
 };
 
 export default function WorkPage() {
@@ -30,7 +30,7 @@ export default function WorkPage() {
           }}
         />
         <div className="relative">
-          <Work />
+          <WorkCarousel />
           <Services />
           <Stack />
         </div>

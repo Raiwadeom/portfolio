@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Caveat, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "./landing.css";
+import "./services.css";
 import { profile, photo } from "@/lib/content";
 
 /* Poster type for anything that shouts, a plain grotesque for anything that

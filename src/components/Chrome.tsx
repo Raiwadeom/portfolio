@@ -3,12 +3,12 @@
 /**
  * The nav bar.
  *
- * A dark rounded bar of icons with a small indicator riding the edge that
- * faces the page. The bar is at the top here, so the indicator sits along the
- * bottom — the same relationship the reference has with a bottom bar.
+ * A dark rounded bar of icons standing on the left edge, vertically centred.
+ * The section you are on is a white tile, and its name appears in a
+ * bracketed label beside the bar. The signature sits top-left and a
+ * "Get in touch" button top-right.
  *
- * One bar at every width: icons are compact enough for a phone, and the name
- * of the section under the bar does the job labels would.
+ * One bar at every width: icons are compact enough for a phone.
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -34,12 +34,15 @@ export default function Chrome() {
   const [lifted, setLifted] = useState(false);
 
   const row = useRef<HTMLDivElement>(null);
-  const indicator = useRef<HTMLSpanElement>(null);
+  const label = useRef<HTMLSpanElement>(null);
   const progress = useRef<HTMLSpanElement>(null);
 
   /* Which section is under the reader — the routed pages only ever have
      the one section, so this just confirms what the pathname already set. */
   useEffect(() => {
+    /* only the home page has several sections to follow; elsewhere the footer
+       would otherwise light up "Contact" on a page that isn't Contact */
+    if (!onHome) return;
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -53,7 +56,7 @@ export default function Chrome() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, [pathname]);
+  }, [pathname, onHome]);
 
   /* Progress goes straight to the transform — through state it would
      re-render the whole bar every frame. */
@@ -77,18 +80,14 @@ export default function Chrome() {
     };
   }, []);
 
-  /* The indicator follows the pointer, and falls back to the live section. */
+  /* The label rides beside whichever icon is hovered, else the live one. */
   useLayoutEffect(() => {
     const id = hovered ?? active;
     const el = row.current?.querySelector<HTMLElement>(`[data-nav="${id}"]`);
-    const bar = indicator.current;
-    if (!el || !bar) return;
-    bar.style.opacity = "1";
-    /* the CSS breathing animation owns `transform` (it reads this custom
-       property), so the position is handed over through a variable rather
-       than written to transform directly, which an animation would win over
-       anyway. */
-    bar.style.setProperty("--x", `${el.offsetLeft + el.offsetWidth / 2}px`);
+    const tag = label.current;
+    if (!el || !tag) return;
+    tag.style.opacity = "1";
+    tag.style.setProperty("--y", `${el.offsetTop + el.offsetHeight / 2}px`);
   }, [hovered, active]);
 
   const shown = nav.find((n) => n.id === (hovered ?? active)) ?? nav[0];
@@ -119,51 +118,47 @@ export default function Chrome() {
         </button>
       </div>
 
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex flex-col items-center px-[var(--gutter)] pt-3 sm:pt-4">
-        <nav
-          className={`navbar pointer-events-auto ${lifted ? "is-lifted" : ""}`}
-          onMouseLeave={() => setHovered(null)}
-        >
-          <div ref={row} className="relative flex items-center">
-            {/* a soft spotlight sitting behind the icons, not a line riding
-                the edge — rendered first so it stacks underneath them. The
-                outer span carries the position (a smooth transition), the
-                inner one just breathes in place, so the two motions never
-                fight over the same transform. */}
-            <span ref={indicator} aria-hidden className="navbar-indicator">
-              <span className="navbar-indicator-glow" />
-            </span>
+      <div className="pointer-events-auto fixed right-[var(--gutter)] top-3 sm:top-4 z-50">
+        <button type="button" onClick={() => router.push("/contact")} className="touch-btn">
+          Get in touch
+          <span aria-hidden>↗</span>
+        </button>
+      </div>
 
-            {nav.map((item) => {
-              const on = active === item.id;
-              return (
-                <button
-                  key={item.id}
-                  data-nav={item.id}
-                  onClick={() => {
-                    if (ROUTED.has(item.id)) router.push(`/${item.id}`);
-                    else if (onHome) scrollToId(item.id);
-                    else router.push(`/#${item.id}`);
-                  }}
-                  onMouseEnter={() => setHovered(item.id)}
-                  onFocus={() => setHovered(item.id)}
-                  onBlur={() => setHovered(null)}
-                  aria-label={item.label}
-                  aria-current={on ? "true" : undefined}
-                  className={`navbar-item ${on ? "is-on" : ""}`}
-                >
-                  <NavIcon name={item.icon} on={on} />
-                </button>
-              );
-            })}
-          </div>
-        </nav>
+      <nav
+        aria-label="Sections"
+        className={`vnav pointer-events-auto ${lifted ? "is-lifted" : ""}`}
+        onMouseLeave={() => setHovered(null)}
+      >
+        <div ref={row} className="vnav-row">
+          {nav.map((item) => {
+            const on = active === item.id;
+            return (
+              <button
+                key={item.id}
+                data-nav={item.id}
+                onClick={() => {
+                  if (ROUTED.has(item.id)) router.push(`/${item.id}`);
+                  else if (onHome) scrollToId(item.id);
+                  else router.push(`/#${item.id}`);
+                }}
+                onMouseEnter={() => setHovered(item.id)}
+                onFocus={() => setHovered(item.id)}
+                onBlur={() => setHovered(null)}
+                aria-label={item.label}
+                aria-current={on ? "true" : undefined}
+                className={`vnav-item ${on ? "is-on" : ""}`}
+              >
+                <NavIcon name={item.icon} on={on} />
+              </button>
+            );
+          })}
 
-        {/* the label the icons don't carry */}
-        <span key={shown.id} className="navbar-caption pointer-events-none">
-          {shown.label}
-        </span>
-      </header>
+          <span ref={label} key={shown.id} aria-hidden className="vnav-label">
+            {shown.label}
+          </span>
+        </div>
+      </nav>
     </>
   );
 }

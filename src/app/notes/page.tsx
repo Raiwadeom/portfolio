@@ -3,10 +3,13 @@ import { Anton } from "next/font/google";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import DownloadLink from "@/components/notes/DownloadLink";
+import BizNav from "@/components/BizNav";
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   WHATSAPP_LINK,
+  YOUTUBE_HANDLE,
+  YOUTUBE_URL,
   episodes,
   series,
 } from "@/lib/notes.config";
@@ -45,6 +48,8 @@ export default function NotesPage() {
       <a href="#episodes" className={styles.skip}>
         Skip to episodes
       </a>
+
+      <BizNav current="notes" />
 
       <header className={styles.header}>
         <p className={styles.brand}>oruim.tech</p>
@@ -92,6 +97,11 @@ export default function NotesPage() {
         <a href={INSTAGRAM_URL} target="_blank" rel="noopener" className={styles.follow}>
           Follow {INSTAGRAM_HANDLE} on Instagram
         </a>
+        {YOUTUBE_URL ? (
+          <a href={YOUTUBE_URL} target="_blank" rel="noopener" className={styles.follow}>
+            Subscribe {YOUTUBE_HANDLE} on YouTube
+          </a>
+        ) : null}
         {whatsappSet ? (
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener" className={styles.join}>
             Join the Student Developers Hub

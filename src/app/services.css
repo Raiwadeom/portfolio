@@ -1,0 +1,301 @@
+/* ---------- services: pinned cards under a spotlight ---------- */
+
+.sv {
+  --lime: #b8ff1c;
+  position: relative;
+  isolation: isolate;
+  min-height: max(100svh, 760px);
+  overflow: hidden;
+  padding: clamp(110px, 16vh, 160px) var(--gutter) 110px clamp(66px, 13vw, 200px);
+  background: radial-gradient(ellipse 70% 60% at 50% 40%, #151515, #050505 75%);
+  color: #fff;
+}
+
+.sv-beam {
+  position: absolute;
+  top: -8%;
+  left: 40%;
+  z-index: 0;
+  width: 70%;
+  height: 120%;
+  background:
+    radial-gradient(ellipse 22% 14% at 52% 14%, #fff 0%, rgba(255, 255, 255, 0.55) 35%, transparent 100%),
+    linear-gradient(168deg, rgba(255, 255, 255, 0.34), transparent 62%);
+  clip-path: polygon(42% 8%, 66% 8%, 100% 100%, 8% 100%);
+  filter: blur(26px);
+  transform-origin: 50% 8%;
+  animation: sv-sway 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sv-sway {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+.sv-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.2 -0.1'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.sv-ghost {
+  position: absolute;
+  top: 26%;
+  right: 0;
+  left: clamp(66px, 13vw, 200px);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(2.6rem, 9vw, 8.6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.sv-ghost span:nth-child(2) {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.sv-ghost span:nth-child(3) {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.sv-note {
+  position: relative;
+  z-index: 4;
+  max-width: 300px;
+  margin: 0 0 0 auto;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sv-note em {
+  display: block;
+  margin-top: 8px;
+  text-align: right;
+  font-size: 10px;
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.sv-x {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sv-note--bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.sv-cta {
+  border-bottom: 1px solid var(--lime);
+  font-size: 13px;
+  color: var(--lime);
+}
+
+.sv-cards {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 18px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sv-slot:nth-child(1) {
+  rotate: -6deg;
+}
+.sv-slot:nth-child(2) {
+  rotate: 5deg;
+}
+.sv-slot:nth-child(3) {
+  rotate: -4deg;
+}
+.sv-slot:nth-child(4) {
+  rotate: 6deg;
+}
+
+.sv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 210px;
+  padding: 26px 20px 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.06), transparent 40%, rgba(255, 255, 255, 0.04) 70%, transparent),
+    repeating-linear-gradient(80deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 9px), #262626;
+  box-shadow: 0 30px 50px -22px rgba(0, 0, 0, 0.95);
+  color: #fff;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s ease;
+}
+
+.sv-card:hover {
+  transform: translateY(-8px) rotate(calc(var(--i) * -1deg));
+  box-shadow:
+    0 40px 60px -20px rgba(0, 0, 0, 1),
+    0 0 40px -10px rgba(184, 255, 28, 0.35);
+}
+
+.sv-pin {
+  position: absolute;
+  top: -2px;
+  right: 22px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e9ff9a, var(--lime) 45%, #5a8f00);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.55);
+}
+
+.sv-card-body {
+  max-width: 24ch;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.sv-card-n {
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.sv-card-title {
+  position: absolute;
+  right: 18px;
+  bottom: 38px;
+  max-width: 11ch;
+  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.sv-card-proof {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--lime);
+}
+
+@media (min-width: 900px) {
+  .sv {
+    padding-bottom: 90px;
+  }
+
+  .sv-note--top {
+    position: absolute;
+    top: clamp(110px, 16vh, 150px);
+    right: var(--gutter);
+    margin: 0;
+  }
+
+  .sv-note--bottom {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 60px;
+    align-items: flex-end;
+    margin: 0;
+  }
+
+  .sv-cards {
+    display: block;
+    height: 560px;
+    margin-top: 60px;
+  }
+
+  .sv-slot {
+    position: absolute;
+    width: 23%;
+  }
+
+  .sv-slot:nth-child(1) {
+    top: 60px;
+    left: 0;
+  }
+  .sv-slot:nth-child(2) {
+    top: 150px;
+    left: 24%;
+    rotate: 9deg;
+  }
+  .sv-slot:nth-child(3) {
+    top: 190px;
+    left: 47%;
+    rotate: -12deg;
+  }
+  .sv-slot:nth-child(4) {
+    top: 40px;
+    left: 70%;
+    rotate: 8deg;
+  }
+
+  .sv-card {
+    min-height: 230px;
+  }
+}
+
+@media (max-width: 899px) {
+  .sv {
+    padding-left: 66px;
+  }
+
+  .sv-ghost {
+    top: 12%;
+    left: 56px;
+  }
+
+  .sv-note--top {
+    max-width: none;
+    margin: 30px 0 0;
+  }
+
+  .sv-cards {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .sv-slot {
+    width: 86%;
+  }
+
+  .sv-slot:nth-child(even) {
+    margin-left: auto;
+  }
+}
+
+[data-motion="off"] .sv-beam {
+  animation: none;
+}

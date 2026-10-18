@@ -339,196 +339,188 @@ section[id] {
 
 
 
-/* ---------- brand mark ----------
-   The same O the footer signs off with, small enough to sit in the corner
-   like a signature, with the name trailing it. */
+/* ---------- brand mark + top bar ---------- */
 
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  padding: 4px 12px 4px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(10, 8, 8, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
   cursor: pointer;
 }
 
-.brand-mark-text {
-  max-width: 150px;
-  overflow: hidden;
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(12px, 3vw, 15px);
-  letter-spacing: -0.005em;
-  color: var(--color-ice);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  transition: color 0.25s ease;
+.brand-mark .mark {
+  color: #fff;
 }
 
-.brand-mark:hover .brand-mark-text {
-  color: var(--color-amber);
+.brand-mark-text {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: -0.005em;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.touch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: #fff;
+  color: #0b0908;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.touch-btn:hover {
+  transform: translateY(-1px);
+}
+
+.touch-btn:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 480px) {
   .brand-mark-text {
-    max-width: none;
-    font-size: 10px;
-    letter-spacing: -0.01em;
+    display: none;
   }
 
   .brand-mark {
-    gap: 0;
+    padding: 4px;
   }
 
-  .brand-mark .mark {
-    width: 17px;
-    height: 17px;
+  .touch-btn {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
 
-/* ---------- nav bar ----------
-   A dark rounded bar of icons with a small tab riding the edge that faces
-   the page. Only the tab and the icon colour move, so it stays cheap. */
+/* ---------- side nav ----------
+   A dark rounded bar of icons on the left edge. The live section is a white
+   tile; its name sits beside the bar in a bracketed tag. */
 
-.navbar {
-  position: relative;
-  padding: 7px 8px 9px;
-  border: 1px solid rgba(241, 239, 233, 0.1);
-  border-radius: 20px;
-  background: rgba(8, 12, 11, 0.72);
+.vnav {
+  position: fixed;
+  left: clamp(8px, 2vw, 28px);
+  top: 50%;
+  z-index: 50;
+  transform: translateY(-50%);
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background: rgba(10, 8, 8, 0.72);
   box-shadow:
     0 18px 40px -16px rgba(0, 0, 0, 0.9),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition:
-    background-color 0.5s ease,
-    border-color 0.5s ease,
-    box-shadow 0.5s ease;
+  transition: background-color 0.4s ease;
 }
 
-.navbar.is-lifted {
-  border-color: rgba(201, 121, 82, 0.3);
-  background: rgba(6, 10, 9, 0.88);
-  box-shadow:
-    0 22px 50px -16px rgba(0, 0, 0, 0.95),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.vnav.is-lifted {
+  background: rgba(6, 5, 5, 0.9);
 }
 
-.navbar-item {
+.vnav-row {
   position: relative;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vnav-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(46px, 13vw, 62px);
-  height: 38px;
+  width: 46px;
+  height: 46px;
   padding: 0;
   border: 0;
-  border-radius: 13px;
+  border-radius: 14px;
   background: none;
-  color: rgba(241, 239, 233, 0.38);
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.navbar-item:hover,
-.navbar-item:focus-visible {
-  color: rgba(241, 239, 233, 0.85);
-  background: rgba(241, 239, 233, 0.06);
+.vnav-item:hover,
+.vnav-item:focus-visible {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
   outline: none;
 }
 
-.navbar-item.is-on {
-  color: var(--color-ice);
+.vnav-item.is-on {
+  background: #fff;
+  color: #0b0908;
 }
 
-.navbar-item:active {
+.vnav-item:active {
   transform: scale(0.93);
 }
 
-/* a soft light sitting behind the active icon rather than a line riding
-   the edge. The outer span drifts to whichever icon is live — a plain
-   transition, so it isn't fighting a keyframe animation over `transform` —
-   and the inner one breathes gently in place. */
-.navbar-indicator {
+.vnav-label {
   position: absolute;
-  z-index: 0;
-  top: 50%;
-  left: 0;
-  width: 44px;
-  height: 44px;
-  margin-top: -22px;
-  margin-left: -22px;
+  left: calc(100% + 14px);
+  top: var(--y, 0);
+  padding: 7px 12px;
+  transform: translateY(-50%);
+  border-radius: 6px;
+  background: rgba(10, 8, 8, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transform: translateX(var(--x, 0px));
-  transition:
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3s ease;
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: vnav-in 0.3s ease both;
 }
 
-.navbar-indicator-glow {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(170, 181, 148, 0.65), rgba(170, 181, 148, 0.18) 55%, transparent 75%);
-  animation: navbar-spotlight-breathe 2.6s ease-in-out infinite;
-}
-
-@keyframes navbar-spotlight-breathe {
-  0%,
-  100% {
-    transform: scale(0.85);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
-}
-
-[data-motion="off"] .navbar-indicator-glow {
-  animation: none;
-}
-
-.navbar-caption {
-  margin-top: 12px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(241, 239, 233, 0.42);
-  animation: caption-in 0.35s ease both;
-}
-
-@keyframes caption-in {
+@keyframes vnav-in {
   from {
     opacity: 0;
-    transform: translateY(-3px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+    margin-left: -6px;
   }
 }
 
-[data-motion="off"] .navbar-caption {
+[data-motion="off"] .vnav-label {
   animation: none;
 }
 
-/* A touch narrower on small phones, so the corner signature has room to
-   read in full without the pill crowding it. */
-@media (max-width: 480px) {
-  .navbar {
-    padding: 4px 4px 6px;
+@media (max-width: 640px) {
+  .vnav {
+    padding: 5px;
+    border-radius: 18px;
   }
 
-  .navbar-item {
-    width: clamp(28px, 8vw, 50px);
-    height: 32px;
+  .vnav-item {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .vnav-label {
+    display: none;
   }
 }
 
@@ -2225,3 +2217,169 @@ section[id] {
 }
 
 
+
+/* ---------- what I do: the 3D ring (orbit) ---------- */
+.orbit {
+  --w: min(300px, 74vw);
+  --r: calc(var(--w) * 1.35);
+  margin-top: clamp(28px, 6vh, 56px);
+  padding: clamp(28px, 6vh, 56px) 0 24px;
+  border-radius: 28px;
+  background: radial-gradient(ellipse 70% 80% at 50% 40%, #1c1713, #0a0807 75%);
+  color: #fff;
+  outline-offset: 4px;
+  touch-action: pan-y;
+  user-select: none;
+}
+.orbit-stage {
+  perspective: 1500px;
+  height: clamp(340px, 52vh, 420px);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.orbit-spin {
+  position: relative;
+  width: var(--w);
+  height: clamp(280px, 44vh, 340px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.22, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.orbit-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 24px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, #2a2420, #14100d);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backface-visibility: hidden;
+  opacity: 0.55;
+  transition: opacity 0.6s ease, background 0.6s ease;
+}
+.orbit-card[data-on] {
+  opacity: 1;
+  background: linear-gradient(160deg, #fff, #ebe4d9);
+  color: #14100d;
+}
+.orbit-n {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--color-amber);
+}
+.orbit-card h3 {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 11vw, 3.6rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+}
+.orbit-card p {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  opacity: 0.8;
+}
+.orbit-card ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: auto 0 0;
+  padding: 14px 0 0;
+  list-style: none;
+}
+.orbit-card ul li {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  opacity: 0.75;
+}
+.orbit-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.7);
+}
+.orbit-ctrl button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #0a0807;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.orbit-ctrl button:active {
+  transform: scale(0.92);
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-spin {
+    transition-duration: 0.01s;
+  }
+}
+
+/* ---------- the toolkit wheels, on the same dark stage as the ring ---------- */
+.wheels {
+  padding: clamp(22px, 4vw, 40px);
+  border-radius: 28px;
+  background: radial-gradient(ellipse 70% 80% at 50% 40%, #1c1713, #0a0807 75%);
+}
+.wheels .wheel-col {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+.wheels .label {
+  color: rgba(255, 255, 255, 0.6);
+}
+.wheels .wheel-word {
+  color: rgba(255, 255, 255, 0.4);
+}
+.wheels .wheel-item[data-on] .wheel-word {
+  color: #fff;
+}
+.wheels .wheel-arrow {
+  color: var(--tint, #ff4a14);
+}
+
+/* Phones: the three wheels sit side by side, so the toolkit is one short
+   landscape band instead of three tall rows. */
+@media (max-width: 759px) {
+  .wheels {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 16px 10px 12px;
+  }
+  .wheels .wheel {
+    --rise: 34px;
+    height: 150px;
+    perspective: 420px;
+  }
+  .wheels .wheel-word {
+    font-size: 0.78rem;
+    letter-spacing: -0.01em;
+  }
+  .wheels .wheel-arrow {
+    display: none;
+  }
+  .wheels .wheel-item {
+    gap: 0;
+  }
+  .wheels .wheel-tag {
+    gap: 6px;
+  }
+  .wheels .label {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+}

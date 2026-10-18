@@ -1,0 +1,980 @@
+/* The "Kinetic" look for the DnyanSetu case study. Everything is scoped to
+   .kin so none of it touches the rest of the site. */
+
+.kin {
+  --k-black: #050505;
+  --k-card: #161616;
+  --k-white: #ffffff;
+  --k-orange: #ff4a14;
+  --k-grey: #d6d6d6;
+  --k-ink: #0b0b0b;
+  --k-dim: #8b8b8b;
+  font-family: var(--font-body);
+  color: var(--k-white);
+}
+
+.kin-wrap {
+  position: relative;
+  width: min(1120px, 100% - 2 * var(--gutter, 20px));
+  margin-inline: auto;
+}
+
+/* ───────── black stage ───────── */
+.kin-dark {
+  position: relative;
+  overflow: hidden;
+  background: var(--k-black);
+  padding: clamp(84px, 12vh, 130px) 0 clamp(56px, 9vh, 100px);
+}
+
+/* the motion-blurred streak of orange light */
+.kin-glow {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 70vh;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 38% 9% at 72% 34%, rgba(255, 98, 28, 0.85), transparent 70%),
+    radial-gradient(ellipse 60% 6% at 58% 38%, rgba(255, 150, 60, 0.45), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(255, 74, 20, 0.18), transparent 70%);
+  filter: blur(14px);
+  transform: rotate(-9deg) scale(1.2);
+  transform-origin: 70% 30%;
+}
+
+.kin-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--k-dim);
+}
+.kin-back {
+  color: var(--k-white);
+  text-decoration: none;
+}
+.kin-back:hover {
+  color: var(--k-orange);
+}
+
+.kin-hero {
+  margin-top: clamp(40px, 8vh, 90px);
+}
+.kin-eyebrow {
+  margin: 0;
+  font-size: 13px;
+  color: var(--k-orange);
+}
+.kin-h1 {
+  margin: 10px 0 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(3.2rem, 13vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+}
+.kin-lede {
+  margin: 22px 0 0;
+  max-width: 60ch;
+  font-size: clamp(14px, 1.6vw, 16.5px);
+  line-height: 1.6;
+  color: #b4b4b4;
+}
+.kin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* pills */
+.kin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+.kin-pill:hover {
+  transform: translateY(-2px);
+}
+.kin-pill-orange {
+  background: var(--k-orange);
+  color: #fff;
+}
+.kin-pill-white {
+  background: #fff;
+  color: var(--k-ink);
+}
+.kin-pill-line {
+  border-color: var(--k-ink);
+  background: transparent;
+  color: var(--k-ink);
+}
+.kin-pill-line:hover {
+  background: var(--k-ink);
+  color: #fff;
+}
+.kin-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 40%, #ff9a3c, var(--k-orange) 55%, #7a1d00);
+}
+
+.kin-media {
+  margin-top: clamp(40px, 7vh, 72px);
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.kin-h2 {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.kin-center {
+  text-align: center;
+}
+.kin-sub {
+  margin: 14px auto 0;
+  max-width: 44ch;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--k-dim);
+}
+
+.kin-summary {
+  margin-top: clamp(48px, 8vh, 80px);
+}
+.kin-summary p {
+  margin: 16px 0 0;
+  max-width: 62ch;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #b4b4b4;
+}
+
+/* the numbers */
+.kin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: clamp(40px, 7vh, 64px);
+  margin-bottom: 0;
+}
+.kin-stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 22px;
+  border-radius: 22px;
+  background: var(--k-card);
+}
+.kin-stats dd {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--k-orange);
+}
+.kin-stats dt {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--k-dim);
+}
+
+.kin-cols {
+  display: grid;
+  gap: 40px;
+  margin-top: clamp(48px, 8vh, 80px);
+}
+@media (min-width: 820px) {
+  .kin-cols {
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 64px;
+  }
+}
+.kin-kicker {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--k-orange);
+}
+.kin-cols ul,
+.kin-cols ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kin-cols ul li {
+  padding: 11px 0;
+  border-top: 1px solid #222;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #c4c4c4;
+}
+.kin-cols ol li {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #222;
+}
+.kin-cols ol span {
+  flex: none;
+  padding-top: 2px;
+  font-size: 12px;
+  color: var(--k-orange);
+}
+.kin-cols ol p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #c4c4c4;
+}
+
+.kin-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 40px;
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+.kin-tech li {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--k-card);
+  font-size: 12.5px;
+  color: #c4c4c4;
+}
+
+/* ───────── the story rail ───────── */
+.kin-stories {
+  margin-top: clamp(72px, 12vh, 130px);
+}
+.kin-rail {
+  display: flex;
+  gap: 16px;
+  margin: clamp(32px, 6vh, 56px) 0 0;
+  padding: 24px max(20px, calc(50% - 150px));
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  align-items: center;
+}
+.kin-rail::-webkit-scrollbar {
+  display: none;
+}
+.kin-card {
+  flex: none;
+  width: min(300px, 78vw);
+  scroll-snap-align: center;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--k-card);
+  color: #5f5f5f;
+  transform: scale(0.92);
+  opacity: 0.8;
+  transition: transform 0.35s, opacity 0.35s, background 0.35s, color 0.35s;
+}
+.kin-card[data-on] {
+  transform: scale(1);
+  opacity: 1;
+  background: #fff;
+  color: #4a4a4a;
+}
+.kin-card-art {
+  height: 108px;
+  background:
+    radial-gradient(ellipse 60% 22% at 70% 55%, rgba(255, 110, 30, 0.9), transparent 70%),
+    radial-gradient(ellipse 70% 14% at 40% 70%, rgba(255, 170, 80, 0.4), transparent 70%),
+    #101010;
+  filter: saturate(0.6);
+  transition: filter 0.35s;
+}
+.kin-card[data-on] .kin-card-art {
+  filter: none;
+}
+.kin-card-body {
+  padding: 20px 22px 24px;
+}
+.kin-card-k {
+  margin: 0;
+  font-size: 12px;
+  color: #555;
+}
+.kin-card[data-on] .kin-card-k {
+  color: var(--k-orange);
+}
+.kin-card h3 {
+  margin: 6px 0 0;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #666;
+  transition: color 0.35s;
+}
+.kin-card[data-on] h3 {
+  color: var(--k-ink);
+}
+.kin-card-body > p:last-child {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.kin-arrows {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.kin-arrow {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--k-ink);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.kin-arrow-on {
+  background: var(--k-orange);
+  color: #fff;
+}
+.kin-arrow:hover {
+  transform: translateY(-2px);
+}
+
+.kin-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: clamp(64px, 10vh, 110px);
+  padding-top: 24px;
+  border-top: 1px solid #222;
+}
+.kin-pager a {
+  font-size: clamp(1.2rem, 4.5vw, 2rem);
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-decoration: none;
+}
+.kin-pager a:hover {
+  color: var(--k-orange);
+}
+.kin-pager small {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--k-dim);
+}
+
+/* ───────── pale stage ───────── */
+.kin-light {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(#e9e9e9, var(--k-grey) 70%);
+  color: var(--k-ink);
+  padding-top: clamp(56px, 10vh, 110px);
+}
+.kin-light::before {
+  content: "";
+  position: absolute;
+  right: -10%;
+  top: 8%;
+  width: 55%;
+  height: 40%;
+  pointer-events: none;
+  background: radial-gradient(ellipse 50% 14% at 60% 50%, rgba(255, 98, 28, 0.55), transparent 70%);
+  filter: blur(18px);
+  transform: rotate(-14deg);
+}
+
+.kin-cta {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .kin-cta {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+    gap: 64px;
+  }
+}
+.kin-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--k-ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.kin-cta-copy h2 {
+  margin: 22px 0 0;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.kin-cta-copy p {
+  margin: 14px 0 22px;
+  max-width: 34ch;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.kin-form {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: clamp(24px, 4vw, 36px);
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.35);
+}
+.kin-form h2 {
+  margin: 0 0 8px;
+  text-align: center;
+  font-weight: 500;
+  font-size: clamp(1.4rem, 3.4vw, 1.8rem);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+.kin-form h2 em {
+  font-style: normal;
+  color: var(--k-orange);
+}
+.kin-form input,
+.kin-form select,
+.kin-form textarea {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #efefef;
+  font: inherit;
+  font-size: 14px;
+  color: var(--k-ink);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.kin-form textarea {
+  border-radius: 22px;
+  resize: vertical;
+}
+.kin-form input::placeholder,
+.kin-form textarea::placeholder {
+  color: #8a8a8a;
+}
+.kin-form input:focus-visible,
+.kin-form select:focus-visible,
+.kin-form textarea:focus-visible {
+  border-color: var(--k-orange);
+  background: #fff;
+}
+.kin-submit {
+  min-height: 48px;
+  border: 1px solid var(--k-ink);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--k-ink);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.kin-submit:hover:not(:disabled) {
+  background: var(--k-ink);
+  color: #fff;
+}
+.kin-submit:disabled {
+  opacity: 0.6;
+}
+.kin-form-note {
+  margin: 0;
+  min-height: 1em;
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+}
+.kin-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* the giant wordmark */
+.kin-word {
+  margin-top: clamp(24px, 6vh, 64px);
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: clamp(3.4rem, 19.5vw, 17rem);
+  line-height: 1;
+  padding-bottom: 0.08em;
+  letter-spacing: -0.07em;
+  color: #fff;
+  user-select: none;
+}
+
+.kin-foot {
+  display: grid;
+  gap: 36px 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: clamp(40px, 8vh, 80px) 0 clamp(32px, 6vh, 56px);
+}
+.kin-foot-lead {
+  grid-column: 1 / -1;
+}
+@media (min-width: 820px) {
+  .kin-foot {
+    grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+    gap: 48px 40px;
+  }
+  .kin-foot-lead {
+    grid-column: auto;
+  }
+}
+.kin-foot-lead h2 {
+  margin: 0 0 22px;
+  font-weight: 500;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+.kin-copy {
+  margin: 40px 0 0;
+  font-size: 12px;
+  color: #777;
+}
+.kin-foot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #555;
+}
+.kin-foot-col h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--k-ink);
+}
+.kin-foot-col h3:first-child {
+  margin-top: 0;
+}
+.kin-foot-col p {
+  margin: 0;
+}
+.kin-foot-col a {
+  width: fit-content;
+  color: #555;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.kin-foot-col a:hover {
+  color: var(--k-orange);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kin-card,
+  .kin-pill,
+  .kin-arrow {
+    transition: none;
+  }
+}
+
+/* ───────── services page: the four steps ───────── */
+.kin-process {
+  padding-top: clamp(56px, 10vh, 110px);
+  padding-bottom: clamp(56px, 10vh, 110px);
+}
+.kin-steps {
+  display: grid;
+  gap: 12px;
+  margin: clamp(28px, 5vh, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) {
+  .kin-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1000px) {
+  .kin-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.kin-steps li {
+  padding: 26px 24px 30px;
+  border-radius: 26px;
+  background: var(--k-card);
+  transition: background 0.3s, color 0.3s;
+}
+.kin-steps li:hover {
+  background: #fff;
+}
+.kin-steps span {
+  font-size: 12px;
+  color: var(--k-orange);
+}
+.kin-steps h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 0;
+  font-size: clamp(1.7rem, 3.4vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.kin-steps li:hover h3 {
+  color: var(--k-ink);
+}
+.kin-steps h3 b {
+  font-weight: 400;
+  font-size: 0.6em;
+  color: var(--k-orange);
+}
+.kin-steps p {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #9a9a9a;
+}
+.kin-steps li:hover p {
+  color: #4a4a4a;
+}
+
+/* long wordmarks (a whole name) shrink so they still fit on one line */
+.kin-word[data-long] {
+  font-size: clamp(2.6rem, 15vw, 13rem);
+}
+.kin-extra {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
+}
+.kin-extra .visit-counter-num {
+  color: var(--k-orange);
+}
+.kin-extra * {
+  color: inherit;
+}
+
+/* ───────── contact page: the black top ───────── */
+.kin-contact {
+  padding-bottom: clamp(56px, 10vh, 110px);
+}
+.kin-contact .kin-h1 {
+  font-size: clamp(3rem, 12vw, 8rem);
+}
+.kin-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--k-card);
+  font-size: 13px;
+  color: #c4c4c4;
+}
+.kin-status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+.kin-mail {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: clamp(1.1rem, 3.2vw, 1.9rem);
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid #333;
+  padding-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+.kin-mail:hover {
+  color: var(--k-orange);
+  border-color: var(--k-orange);
+}
+.kin-links {
+  display: grid;
+  gap: 12px;
+  margin: clamp(40px, 7vh, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 720px) {
+  .kin-links {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.kin-links a {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 150px;
+  padding: 22px;
+  border-radius: 26px;
+  background: var(--k-card);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.kin-links a:hover {
+  background: #fff;
+  color: var(--k-ink);
+  transform: translateY(-3px);
+}
+.kin-links small {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--k-orange);
+}
+.kin-links strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.kin-links span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: #8b8b8b;
+}
+
+/* ───────── contact page: pale stage with frosted cards ───────── */
+.kin-gm {
+  position: relative;
+  overflow: hidden;
+  background: #e8e7e4;
+  color: var(--k-ink);
+  padding: clamp(96px, 14vh, 150px) 0 clamp(64px, 10vh, 120px);
+}
+/* a soft, stone-coloured form behind the cards */
+.kin-gm-stone {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: min(760px, 92vw);
+  height: 64%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 36% 46% at 62% 36%, #c9b9a6, transparent 70%),
+    radial-gradient(ellipse 42% 60% at 40% 58%, #a89580, transparent 72%),
+    radial-gradient(ellipse 30% 30% at 74% 78%, #d8cbbb, transparent 70%);
+  border-radius: 46% 54% 40% 60% / 52% 44% 56% 48%;
+  filter: blur(6px);
+}
+.kin-gm-head {
+  position: relative;
+  text-align: center;
+}
+.kin-gm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid #1a1a1a33;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.kin-gm-status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3f9d4f;
+}
+.kin-gm-head h1 {
+  margin: 26px 0 0;
+  font-weight: 500;
+  font-size: clamp(2.8rem, 9vw, 6.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+.kin-gm-mail {
+  display: inline-block;
+  margin-top: 26px;
+  font-size: clamp(1rem, 2.6vw, 1.4rem);
+  letter-spacing: -0.02em;
+  color: var(--k-ink);
+  text-decoration: none;
+  border-bottom: 1px solid #1a1a1a55;
+  padding-bottom: 4px;
+  overflow-wrap: anywhere;
+}
+.kin-gm-mail:hover {
+  color: var(--k-orange);
+  border-color: var(--k-orange);
+}
+
+.kin-gm-cards {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  margin-top: clamp(40px, 8vh, 80px);
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 760px) {
+  .kin-gm-cards {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+    gap: 22px;
+  }
+  .kin-gm-cards li:nth-child(2) {
+    margin-top: 28px;
+  }
+}
+.kin-gm-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  min-height: 300px;
+  padding: 18px 18px 26px;
+  border-radius: 22px;
+  color: var(--k-ink);
+  text-decoration: none;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.55), rgba(200, 180, 160, 0.38));
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 24px 50px -30px rgba(60, 40, 20, 0.5);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.kin-gm-card:hover {
+  transform: translateY(-6px);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.75), rgba(255, 74, 20, 0.16));
+}
+.kin-gm-tag {
+  align-self: flex-start;
+  padding: 7px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+}
+.kin-gm-glyph {
+  width: 38px;
+  height: 38px;
+  fill: none;
+  stroke: var(--k-ink);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.kin-gm-name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+.kin-gm-name small {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #555;
+}
+@media (max-width: 759px) {
+  .kin-gm-card {
+    min-height: 190px;
+  }
+}
+
+/* ───────── business page: episode notes link above contact ───────── */
+.kin-notes {
+  padding: 0 0 clamp(48px, 8vh, 90px);
+}
+.kin-notes-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: clamp(22px, 4vw, 34px);
+  border-radius: 28px;
+  background: var(--k-card);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.kin-notes-card:hover {
+  background: #fff;
+  color: var(--k-ink);
+  transform: translateY(-3px);
+}
+.kin-notes-card small {
+  display: block;
+  font-size: 12px;
+  color: var(--k-orange);
+}
+.kin-notes-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.kin-notes-card em {
+  display: block;
+  margin-top: 8px;
+  max-width: 46ch;
+  font-style: normal;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #9a9a9a;
+}
+.kin-notes-card:hover em {
+  color: #555;
+}
+.kin-notes-card b {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--k-orange);
+}

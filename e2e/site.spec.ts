@@ -61,10 +61,11 @@ test.describe("navigation", () => {
     }
   });
 
-  test("home is just the cover and About", async ({ page }) => {
+  test("home is the cover, About, projects and the library", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("#about")).toHaveCount(1);
-    await expect(page.locator("#services, #work, #contact")).toHaveCount(0);
+    await expect(page.locator("#projects, #library")).toHaveCount(2);
+    await expect(page.locator("#services, #work")).toHaveCount(0);
   });
 });
 
@@ -73,9 +74,7 @@ test.describe("case studies", () => {
     test(`${c.title}: sections, live link, prev/next`, async ({ page }) => {
       await page.goto(`/work/${c.slug}`);
       await expect(page.getByRole("heading", { level: 1, name: c.title })).toBeVisible();
-      for (const section of ["The problem", "The solution", "Tech used"]) {
-        await expect(page.getByRole("heading", { name: new RegExp(section, "i") })).toBeVisible();
-      }
+      await expect(page.getByRole("heading", { name: /What.s inside/ })).toBeVisible();
       await expect(page.getByRole("link", { name: /visit live site/i }).first()).toHaveAttribute("href", c.live);
 
       const more = page.getByRole("navigation", { name: "More projects" });
@@ -127,7 +126,7 @@ test.describe("hire me", () => {
     await page.goto("/hire");
     await expect(page.getByText("Open for projects").first()).toBeVisible();
     for (const s of ["Business websites", "Library & archive sites", "Web apps", "Student platforms"]) {
-      await expect(page.getByRole("heading", { name: s })).toBeVisible();
+      await expect(page.getByText(s, { exact: true }).first()).toBeVisible();
     }
     await page.getByRole("link", { name: /RaktSetu/ }).first().click();
     await expect(page).toHaveURL(/\/work\/raktsetu$/);
@@ -136,17 +135,17 @@ test.describe("hire me", () => {
 
 test.describe("contact form", () => {
   async function fill(page: Page) {
-    await page.getByLabel("Name").fill("Test Person");
-    await page.getByLabel("Email").fill("test@example.com");
+    await page.getByLabel("Your name").fill("Test Person");
+    await page.getByLabel("Contact email").fill("test@example.com");
     await page.getByLabel("Project type").selectOption("Web app");
-    await page.getByLabel("Message").fill("I need a website for my college library.");
+    await page.getByLabel("Message", { exact: true }).fill("I need a website for my college library.");
   }
 
   test("shows success when the message is sent", async ({ page }) => {
     await page.route("**/api/contact", (r) => r.fulfill({ json: { ok: true } }));
     await page.goto("/hire");
     await fill(page);
-    await page.getByRole("button", { name: /Send message/ }).click();
+    await page.getByRole("button", { name: /Start now/ }).click();
     await expect(page.getByText("Message sent")).toBeVisible();
   });
 
@@ -156,7 +155,7 @@ test.describe("contact form", () => {
     );
     await page.goto("/contact");
     await fill(page);
-    await page.getByRole("button", { name: /Send message/ }).click();
+    await page.getByRole("button", { name: /Start now/ }).click();
     await expect(page.getByText("Sending failed. Please email me.")).toBeVisible();
   });
 
@@ -186,6 +185,22 @@ test.describe("episode notes", () => {
     const ready = await page.getByRole("link", { name: /Download PDF notes/ }).count();
     const soon = await page.getByText("Coming soon", { exact: true }).count();
     expect(ready + soon).toBe(15);
-    await expect(page.locator('a[href="https://instagram.com/oruim.tech"]')).toBeVisible();
+    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]')).toBeVisible();
+  });
+});
+
+test.describe("business side", () => {
+  test("hero Business button opens /business with its own nav and a way back", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: /^Business/ }).first().click();
+    await expect(page).toHaveURL(/\/business$/);
+    const nav = page.getByRole("navigation", { name: "oruim.tech" });
+    for (const name of ["About", "Services", "Episode notes", "Follow", "Contact"]) {
+      await expect(nav.getByRole("link", { name })).toBeVisible();
+    }
+    await expect(page.locator('a[href="https://www.youtube.com/@oruimtech"]')).toBeVisible();
+    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]')).toBeVisible();
+    await nav.getByRole("link", { name: /Portfolio/ }).click();
+    await expect(page).toHaveURL(/localhost:\d+\/$/);
   });
 });

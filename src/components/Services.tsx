@@ -1,83 +1,108 @@
 "use client";
 
-import { useState } from "react";
+/**
+ * What I do, as a ring of cards turning in 3D. Drag or swipe, use the arrows
+ * or the left and right keys, or leave it: it turns on its own while it is on
+ * screen. Only transforms animate, so it stays smooth.
+ */
+
+import { useEffect, useRef, useState } from "react";
 import { services } from "@/lib/content";
-import { Section, SectionHead, Reveal } from "./ui";
+import { motionOn } from "@/lib/motion";
+import { Section, SectionHead } from "./ui";
 
 export default function Services() {
-  const [open, setOpen] = useState(0);
+  /* the four are repeated round the ring so the neighbours show at an angle */
+  const slots = [...services, ...services];
+  const n = slots.length;
+  const count = services.length;
+  const [turn, setTurn] = useState(0); // whole steps, can go negative
+  const [paused, setPaused] = useState(false);
+  const [seen, setSeen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const drag = useRef<number | null>(null);
+  const active = ((turn % n) + n) % n;
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting), { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  /* turns by itself while in view, unless the visitor is holding it */
+  useEffect(() => {
+    if (!seen || paused || !motionOn()) return;
+    const t = setInterval(() => setTurn((v) => v + 1), 4200);
+    return () => clearInterval(t);
+  }, [seen, paused]);
+
+  const go = (d: number) => setTurn((v) => v + d);
 
   return (
     <Section id="services">
       <SectionHead label="WHAT I DO" index="02" right="THE SKILLS" />
 
-      <div className="mt-10 sm:mt-14 border-t border-[var(--color-line-soft)]">
-        {services.map((s, i) => {
-          const isOpen = open === i;
-          return (
-            <Reveal key={s.n} delay={i * 60}>
-              <div
-                onMouseEnter={() => setOpen(i)}
-                onClick={() => setOpen(i)}
-                className="group border-b border-[var(--color-line-soft)] py-5 sm:py-7 cursor-pointer transition-colors"
-              >
-                <div className="flex items-center gap-4 sm:gap-8">
-                  <span
-                    className={`label shrink-0 transition-colors ${
-                      isOpen ? "!text-[var(--color-amber)]" : ""
-                    }`}
-                  >
-                    {s.n}
-                  </span>
-
-                  <h3
-                    className="display font-black text-[clamp(2.1rem,9.5vw,7.5rem)] transition-all duration-500"
-                    style={{
-                      color: isOpen ? "var(--color-ice)" : "transparent",
-                      WebkitTextStroke: isOpen
-                        ? "0px transparent"
-                        : "1px rgba(177,80,47,0.5)",
-                      textShadow: isOpen ? "0 0 50px rgba(177,80,47,0.3)" : "none",
-                    }}
-                  >
-                    {s.word}
-                  </h3>
-
-                  <span
-                    className={`ml-auto shrink-0 text-[var(--color-amber)] text-lg transition-transform duration-500 ${
-                      isOpen ? "rotate-45" : ""
-                    }`}
-                  >
-                    +
-                  </span>
-                </div>
-
-                <div
-                  className="grid transition-all duration-500 ease-out"
-                  style={{
-                    gridTemplateRows: isOpen ? "1fr" : "0fr",
-                    opacity: isOpen ? 1 : 0,
-                  }}
+      <div
+        ref={root}
+        className="orbit"
+        tabIndex={0}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="What I do"
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") go(-1);
+          if (e.key === "ArrowRight") go(1);
+        }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onPointerDown={(e) => {
+          drag.current = e.clientX;
+        }}
+        onPointerUp={(e) => {
+          const from = drag.current;
+          drag.current = null;
+          if (from !== null && Math.abs(e.clientX - from) > 40) go(e.clientX < from ? 1 : -1);
+        }}
+      >
+        <div className="orbit-stage">
+          <ol className="orbit-spin" style={{ transform: `translateZ(calc(var(--r) * -1)) rotateY(${-turn * (360 / n)}deg)` }}>
+            {slots.map((s, i) => {
+              const on = i === active;
+              return (
+                <li
+                  key={`${s.n}-${i}`}
+                  className="orbit-card"
+                  data-on={on ? "" : undefined}
+                  aria-hidden={on ? undefined : true}
+                  style={{ transform: `rotateY(${i * (360 / n)}deg) translateZ(var(--r))` }}
                 >
-                  <div className="overflow-hidden">
-                    <div className="pt-4 sm:pt-6 sm:pl-[calc(2rem+32px)] max-w-[62ch]">
-                      <p className="text-[13px] sm:text-[14px] leading-relaxed text-[var(--color-dim)]">
-                        {s.body}
-                      </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {s.tags.map((t) => (
-                          <span key={t} className="chip">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          );
-        })}
+                  <span className="orbit-n">{s.n}</span>
+                  <h3>{s.word}</h3>
+                  <p>{s.body}</p>
+                  <ul>
+                    {s.tags.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        <div className="orbit-ctrl">
+          <button type="button" onClick={() => go(-1)} aria-label="Previous">
+            ‹
+          </button>
+          <span aria-live="polite">
+            {String((active % count) + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+          </span>
+          <button type="button" onClick={() => go(1)} aria-label="Next">
+            ›
+          </button>
+        </div>
       </div>
     </Section>
   );

@@ -152,6 +152,16 @@ export const projects = [
       "RaktSetu's safety rules are built in: adults only, 45 kg minimum, a health check at registration, an automatic 4-month rest after a donation, and clear no-payment guidance. Alerts go out by push and Resend email; a daily Vercel cron expires old requests.",
       "Supabase handles sign-in on Postgres with row-level security, so the database — not the browser — decides who can read and write what.",
     ],
+    highlights: [
+      { title: "Notes and papers", body: "Faculty notes sorted by branch, semester and subject, plus previous-year question papers, in English and Marathi." },
+      { title: "Practice tests", body: "Beginner, Intermediate and Advanced tiers. Clearing all three unlocks the final exam, and scoring runs on the server so answers never reach the browser." },
+      { title: "Scholarships", body: "Eligibility, required documents and deadlines in one place, instead of notice boards." },
+      { title: "Role-based accounts", body: "Student, faculty, staff, scholarship admin and main admin, with Google sign-in. Faculty and staff go live only after admin approval." },
+      { title: "Talent Corner", body: "Students share poems, shayari and creative work, with likes, comments, follows and admin moderation." },
+      { title: "Installable, with alerts", body: "Works as an app on the phone and sends push alerts for new notices, notes, scholarships and posts." },
+      { title: "RaktSetu inside", body: "The blood-donor network runs as a module of the site, under the same account." },
+      { title: "Safe by design", body: "Supabase row-level security means the database, not the browser, decides who can read and write what." },
+    ],
     features: [
       "Unit-wise faculty notes and question papers",
       "Tiered practice tests and a final exam",
@@ -185,6 +195,14 @@ export const projects = [
       "Safety rules are enforced, not suggested: adults only, 45 kg minimum, a health check at registration, and an automatic 4-month rest after a donation.",
       "Alerts go out by phone push and Resend email; a daily Vercel cron expires old requests so donors never chase a stale one.",
     ],
+    highlights: [
+      { title: "Real compatibility", body: "A request for A+ also reaches O−, O+ and A− donors, not just exact matches." },
+      { title: "Verified donors", body: "Donors are verified students and staff of the college, matched within the same city." },
+      { title: "Safety rules built in", body: "Adults only, 45 kg minimum, a health check at registration and an automatic 4-month rest after a donation." },
+      { title: "Alerts that arrive", body: "Phone push and Resend email go out to every compatible donor." },
+      { title: "No stale requests", body: "A daily Vercel cron expires old requests so donors never chase one that is over." },
+      { title: "No-payment guidance", body: "Clear guidance that blood is never to be paid for." },
+    ],
     features: [
       "Compatibility-based donor matching",
       "Verified student and staff donors",
@@ -214,6 +232,14 @@ export const projects = [
       "Administrators sign in separately to upload cuttings, set the date each story ran in the paper, and tag them into collections — Shivjayanti, Sports, Events — without ever moving or duplicating a cutting.",
       "Scans upload straight from the browser to Cloudinary through server-signed requests, so large images never pass through a serverless function.",
       "One set of components serves both the public feed and the admin area; a read-only switch hides the controls visitors shouldn't see.",
+    ],
+    highlights: [
+      { title: "Open to everyone", body: "The archive is fully public and needs no account, because an archive nobody can open is not an archive." },
+      { title: "Browse and download", body: "Masonry browsing, full-screen view of any cutting, and download without signing in." },
+      { title: "Collections", body: "Admins tag cuttings into collections such as Shivjayanti, Sports and Events without moving or duplicating them." },
+      { title: "Date it ran", body: "Admins set the date each story ran in the paper while uploading." },
+      { title: "Direct uploads", body: "Scans go from the browser to Cloudinary through server-signed requests, so large images never pass through a function." },
+      { title: "Public read, admin write", body: "Firestore rules let anyone read and only admins write; one set of components serves both views." },
     ],
     features: [
       "Masonry browsing, no sign-in",

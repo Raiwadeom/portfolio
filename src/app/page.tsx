@@ -1,13 +1,14 @@
 import SmoothScroll from "@/components/SmoothScroll";
 import Overlays from "@/components/Overlays";
 import Chrome from "@/components/Chrome";
-import Poster from "@/components/Poster";
+import Hero from "@/components/Hero";
 import About from "@/components/About";
+import WorkCarousel from "@/components/WorkCarousel";
 import Library from "@/components/Library";
 import Footer from "@/components/Footer";
 
-/* The home page is the cover, the introduction and a doorway into the
-   library. Work, hiring, contact and the full library are their own pages. */
+/* The home page is the race-mode cover, the introduction, the project cards
+   and the library. Hiring and contact are their own pages. */
 export default function Home() {
   return (
     <>
@@ -16,9 +17,8 @@ export default function Home() {
       <Chrome />
 
       <main className="relative">
-        <Poster />
+        <Hero />
 
-        {/* everything below is what the sheet was covering */}
         <div className="relative overflow-hidden bg-[var(--color-deep)]">
           {/* sage haze drifting down the page */}
           <div
@@ -37,9 +37,13 @@ export default function Home() {
 
           <div className="relative">
             <About />
-            <Library />
           </div>
+        </div>
 
+        <WorkCarousel id="projects" />
+
+        <div className="relative overflow-hidden bg-[var(--color-deep)]">
+          <Library />
           <Footer />
         </div>
       </main>
