@@ -9,7 +9,7 @@ import {
   INSTAGRAM_URL,
   YOUTUBE_HANDLE,
   YOUTUBE_URL,
-  episodes,
+  notes,
   series,
 } from "@/lib/notes.config";
 import styles from "./biz.module.css";
@@ -23,7 +23,7 @@ const anton = Anton({
 
 const title = "oruim.tech — Web apps and websites for business";
 const description =
-  "oruim.tech builds web apps, websites and AI tools for businesses and institutions, and teaches full stack in plain language with free episode notes.";
+  "oruim.tech builds web apps, websites and AI tools for businesses and institutions, and shares free PDF notes on building with AI.";
 
 export const metadata: Metadata = {
   title,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function BusinessPage() {
   const youtubeSet = YOUTUBE_URL.length > 0;
-  const latest = [...episodes].reverse().slice(0, 4);
+  const latest = notes.slice(0, 4);
 
   return (
     <div className={`${styles.page} ${anton.variable}`}>
@@ -54,7 +54,7 @@ export default function BusinessPage() {
               Start a project →
             </a>
             <Link href="/notes" className={`${styles.btn} ${styles.btnGhost}`}>
-              Free episode notes
+              Free notes
             </Link>
           </div>
         </section>
@@ -66,8 +66,7 @@ export default function BusinessPage() {
           <p className={styles.copy}>
             oruim.tech is the business side of {profile.name}. It builds websites, web apps and AI tools for
             businesses, institutions and small teams, from the first conversation to the day it goes live. It
-            also runs &ldquo;{series.title}&rdquo;, a series that explains how the web works, with a free PDF
-            note for every episode.
+            also shares free PDF notes on building with AI, ready to download.
           </p>
         </section>
 
@@ -114,22 +113,22 @@ export default function BusinessPage() {
           </div>
         </section>
 
-        {/* ── episode notes ── */}
-        <section id="episodes" className={`${styles.wrap} ${styles.section}`}>
-          <p className={styles.kicker}>Episode notes</p>
+        {/* ── free notes ── */}
+        <section id="notes" className={`${styles.wrap} ${styles.section}`}>
+          <p className={styles.kicker}>Free notes</p>
           <h2 className={styles.h2}>{series.title}</h2>
           <p className={styles.copy}>{series.line}</p>
           <ol className={styles.eps}>
-            {latest.map((e) => (
-              <li key={e.ep} className={styles.ep}>
-                <span className={styles.epNum}>EP {String(e.ep).padStart(2, "0")}</span>
-                <span className={styles.epTitle}>{e.title}</span>
+            {latest.map((n) => (
+              <li key={n.slug} className={styles.ep}>
+                <span className={styles.epNum}>{n.tag}</span>
+                <span className={styles.epTitle}>{n.title}</span>
               </li>
             ))}
           </ol>
           <div className={styles.actions}>
             <Link href="/notes" className={styles.btn}>
-              All episodes and downloads →
+              All notes and downloads →
             </Link>
           </div>
         </section>

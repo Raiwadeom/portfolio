@@ -71,74 +71,131 @@
   margin: 0 auto;
 }
 
+.tools {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.search input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  font: 500 1rem var(--font-mono), monospace;
+  color: var(--ink);
+  background: #fffdf7;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  min-height: 44px;
+  padding: 0 16px;
+  font: 700 0.8rem var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: transparent;
+  border: 2px solid var(--ink);
+  cursor: pointer;
+}
+.chipOn {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.count {
+  margin: 0 0 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 22px;
+  gap: 16px;
 }
 
-.item {
-  filter: drop-shadow(0 6px 10px rgba(17, 17, 17, 0.16));
-  transform: rotate(var(--tilt));
-  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--i) * 70ms);
+.row {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  background: #fffdf7;
+  border: 2px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px) rotate(var(--tilt));
+    transform: translateY(14px);
   }
 }
 
-/* torn bottom edge: the shadow sits on .item so the clip doesn't cut it */
-.card {
-  position: relative;
-  background: #fffdf7;
-  padding: 26px 20px 30px;
+.rowBody {
   display: grid;
-  gap: 14px;
-  clip-path: polygon(
-    0 0, 100% 0, 100% 94%, 96% 98%, 91% 94%, 86% 99%, 80% 95%, 74% 98%, 68% 94%,
-    61% 99%, 55% 95%, 48% 98%, 42% 94%, 35% 99%, 29% 95%, 22% 98%, 15% 94%, 8% 99%, 3% 95%, 0 98%
-  );
-}
-
-.tape {
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  width: 84px;
-  height: 22px;
-  transform: translateX(-50%) rotate(-3deg);
-  background: rgba(255, 77, 31, 0.35);
-}
-
-.num {
-  font-family: var(--font-anton), Impact, sans-serif;
-  font-size: 3rem;
-  line-height: 1;
-  color: var(--accent);
-  display: flex;
-  align-items: baseline;
   gap: 8px;
-}
-.numLabel {
-  font-size: 1rem;
-  color: var(--ink);
-  letter-spacing: 0.08em;
+  justify-items: start;
 }
 
-.cardTitle {
+.rowTag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  padding: 2px 8px;
+}
+
+.rowTitle {
   font-family: var(--font-anton), Impact, sans-serif;
   font-weight: 400;
-  font-size: clamp(1.5rem, 7vw, 2rem);
-  line-height: 1.1;
+  font-size: clamp(1.6rem, 7vw, 2.2rem);
+  line-height: 1.08;
   letter-spacing: 0.01em;
   text-transform: uppercase;
   margin: 0;
+}
+
+.rowBlurb {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.rowMeta {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4a4740;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.empty {
+  margin: 20px 0 0;
+  font-weight: 700;
 }
 
 .btn {
@@ -179,12 +236,6 @@
   transform: none;
   box-shadow: none;
 }
-
-.soon .num,
-.soon .cardTitle {
-  opacity: 0.75;
-}
-
 .footer {
   max-width: 720px;
   margin: 44px auto 0;
@@ -220,7 +271,9 @@
   box-shadow: 6px 6px 0 var(--accent);
 }
 
-.page a:focus-visible {
+.page a:focus-visible,
+.page button:focus-visible,
+.page input:focus-visible {
   outline: 3px solid var(--ink);
   outline-offset: 3px;
   box-shadow: 0 0 0 6px var(--accent);
@@ -233,21 +286,22 @@
   .header {
     padding-top: 72px;
   }
-  .list {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+  .row {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 28px;
+    padding: 24px 28px;
   }
-  .card {
-    min-height: 230px;
-    align-content: space-between;
+  .row .btn {
+    white-space: nowrap;
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .item {
+  .row {
     animation: none;
   }
   .btn {
     transition: none;
   }
 }
+

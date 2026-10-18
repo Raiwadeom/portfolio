@@ -61,8 +61,8 @@ export default function Hire() {
           <Link href="/notes" className="kin-notes-card">
             <span>
               <small>Free for students</small>
-              <strong>Episode notes</strong>
-              <em>PDF cheat sheets for every Full Stack episode, explained simply.</em>
+              <strong>Free notes</strong>
+              <em>PDF guides on building with AI, ready to download.</em>
             </span>
             <b aria-hidden>→</b>
           </Link>

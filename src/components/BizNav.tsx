@@ -21,7 +21,7 @@ export default function BizNav({ current }: { current?: "home" | "notes" }) {
           </li>
           <li>
             <Link href="/notes" aria-current={current === "notes" ? "page" : undefined}>
-              Episode notes
+              Free notes
             </Link>
           </li>
           <li>

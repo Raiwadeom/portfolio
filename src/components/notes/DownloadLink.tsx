@@ -3,12 +3,12 @@
 /** The download button. Fires a `notes:download` event so any analytics
     script can listen for it; nothing is sent anywhere by default. */
 export default function DownloadLink({
-  ep,
+  slug,
   title,
   file,
   className,
 }: {
-  ep: number;
+  slug: string;
   title: string;
   file: string;
   className: string;
@@ -17,12 +17,10 @@ export default function DownloadLink({
     <a
       href={file}
       download
-      target="_blank"
-      rel="noopener"
       className={className}
-      aria-label={`Download PDF notes for episode ${ep}: ${title}`}
+      aria-label={`Download PDF: ${title}`}
       onClick={() =>
-        window.dispatchEvent(new CustomEvent("notes:download", { detail: { ep, file } }))
+        window.dispatchEvent(new CustomEvent("notes:download", { detail: { slug, file } }))
       }
     >
       Download PDF

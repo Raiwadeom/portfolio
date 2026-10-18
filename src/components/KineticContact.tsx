@@ -81,7 +81,7 @@ export default function KineticContact({
             <h3>Pages</h3>
             <Link href="/work">Work</Link>
             <Link href="/hire">Services</Link>
-            <Link href="/notes">Episode notes</Link>
+            <Link href="/notes">Free notes</Link>
             <Link href="/library">Library</Link>
             <Link href="/contact">Contact</Link>
           </nav>

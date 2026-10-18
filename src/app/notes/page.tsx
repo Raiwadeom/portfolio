@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Anton } from "next/font/google";
-import { existsSync } from "node:fs";
+import { statSync } from "node:fs";
 import path from "node:path";
-import DownloadLink from "@/components/notes/DownloadLink";
+import NotesList, { type NoteItem } from "@/components/notes/NotesList";
 import BizNav from "@/components/BizNav";
 import {
   INSTAGRAM_HANDLE,
@@ -10,7 +10,7 @@ import {
   WHATSAPP_LINK,
   YOUTUBE_HANDLE,
   YOUTUBE_URL,
-  episodes,
+  notes,
   series,
 } from "@/lib/notes.config";
 import styles from "./notes.module.css";
@@ -22,9 +22,9 @@ const anton = Anton({
   display: "swap",
 });
 
-const title = "Episode Notes | oruim.tech";
+const title = "Free Notes | oruim.tech";
 const description =
-  "Free PDF notes for every episode of Full Stack, explained simply — cheat sheets on URLs, HTML/CSS/JS, React, APIs, databases and sign-in. By oruim.tech.";
+  "Free PDF notes on building with AI: Claude Code skills, the Vibe Coder's Playbook and more. Tap to download. By oruim.tech.";
 
 export const metadata: Metadata = {
   title,
@@ -34,19 +34,29 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
-/** A file counts as ready only if it is really in /public (checked at build). */
-function isReady(file: string) {
-  if (!file || !file.startsWith("/")) return false;
-  return existsSync(path.join(process.cwd(), "public", file));
+/** A note counts as ready only if its PDF is really in /public (checked at build). */
+function sizeOf(file: string): string | null {
+  if (!file.startsWith("/")) return null;
+  try {
+    const bytes = statSync(path.join(process.cwd(), "public", file)).size;
+    return bytes >= 1_000_000 ? `${(bytes / 1_000_000).toFixed(1)} MB` : `${Math.round(bytes / 1000)} KB`;
+  } catch {
+    return null;
+  }
 }
 
 export default function NotesPage() {
   const whatsappSet = !WHATSAPP_LINK.includes("REPLACE_ME");
 
+  const items: NoteItem[] = notes.flatMap((n) => {
+    const size = sizeOf(n.file);
+    return size ? [{ ...n, size }] : [];
+  });
+
   return (
     <div className={`${styles.page} ${anton.variable}`}>
-      <a href="#episodes" className={styles.skip}>
-        Skip to episodes
+      <a href="#notes" className={styles.skip}>
+        Skip to notes
       </a>
 
       <BizNav current="notes" />
@@ -57,40 +67,8 @@ export default function NotesPage() {
         <p className={styles.line}>{series.line}</p>
       </header>
 
-      <main id="episodes" className={styles.main}>
-        <ol className={styles.list}>
-          {episodes.map((e, i) => {
-            const ready = isReady(e.file);
-            return (
-              <li
-                key={e.ep}
-                className={styles.item}
-                style={{ ["--i" as string]: i, ["--tilt" as string]: `${i % 2 ? 1.1 : -1.1}deg` }}
-              >
-                <article className={`${styles.card} ${ready ? "" : styles.soon}`}>
-                  <span className={styles.tape} aria-hidden />
-                  <span className={styles.num}>
-                    <span className={styles.numLabel}>EP</span>
-                    {String(e.ep).padStart(2, "0")}
-                  </span>
-                  <h2 className={styles.cardTitle}>{e.title}</h2>
-                  {ready ? (
-                    <DownloadLink
-                      ep={e.ep}
-                      title={e.title}
-                      file={e.file}
-                      className={styles.btn}
-                    />
-                  ) : (
-                    <span className={`${styles.btn} ${styles.btnOff}`} aria-disabled="true">
-                      Coming soon
-                    </span>
-                  )}
-                </article>
-              </li>
-            );
-          })}
-        </ol>
+      <main id="notes" className={styles.main}>
+        <NotesList items={items} />
       </main>
 
       <footer className={styles.footer}>

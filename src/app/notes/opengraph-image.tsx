@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Episode Notes | oruim.tech";
+export const alt = "Free Notes | oruim.tech";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -24,10 +24,10 @@ export default function Image() {
           oruim.tech
         </div>
         <div style={{ display: "flex", fontSize: 120, fontWeight: 900, lineHeight: 1, marginTop: 40, textTransform: "uppercase" }}>
-          Full Stack, explained simply
+          Free notes
         </div>
         <div style={{ display: "flex", fontSize: 40, marginTop: 36, color: "#FF4D1F", fontWeight: 700 }}>
-          Free PDF notes for every episode
+          PDF guides on building with AI
         </div>
       </div>
     ),
