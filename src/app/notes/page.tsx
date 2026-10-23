@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Anton } from "next/font/google";
 import { statSync } from "node:fs";
 import path from "node:path";
 import NotesList, { type NoteItem } from "@/components/notes/NotesList";
+import { coverIcons } from "@/lib/covers";
 import BizNav from "@/components/BizNav";
+import BizSocial from "@/components/BizSocial";
+import BizScroll from "@/components/BizScroll";
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
@@ -14,13 +16,6 @@ import {
   series,
 } from "@/lib/notes.config";
 import styles from "./notes.module.css";
-
-const anton = Anton({
-  variable: "--font-anton",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
 
 const title = "Free Notes | oruim.tech";
 const description =
@@ -50,11 +45,11 @@ export default function NotesPage() {
 
   const items: NoteItem[] = notes.flatMap((n) => {
     const size = sizeOf(n.file);
-    return size ? [{ ...n, size }] : [];
+    return size ? [{ ...n, size, icons: coverIcons(n.slug) }] : [];
   });
 
   return (
-    <div className={`${styles.page} ${anton.variable}`}>
+    <div className={styles.page}>
       <a href="#notes" className={styles.skip}>
         Skip to notes
       </a>
@@ -63,7 +58,9 @@ export default function NotesPage() {
 
       <header className={styles.header}>
         <p className={styles.brand}>oruim.tech</p>
-        <h1 className={styles.title}>{series.title}</h1>
+        <h1 className={styles.title}>
+          Free <span style={{ color: "#a9a8a0" }}>notes</span>
+        </h1>
         <p className={styles.line}>{series.line}</p>
       </header>
 
@@ -84,12 +81,10 @@ export default function NotesPage() {
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener" className={styles.join}>
             Join the Student Developers Hub
           </a>
-        ) : (
-          <span className={`${styles.join} ${styles.btnOff}`} aria-disabled="true">
-            Student Developers Hub — link coming soon
-          </span>
-        )}
+        ) : null}
       </footer>
+      <BizSocial />
+      <BizScroll />
     </div>
   );
 }

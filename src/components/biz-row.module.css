@@ -1,0 +1,77 @@
+.wrap {
+  position: relative;
+}
+.arrows {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+.arrows button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: #0e0e0e;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(14, 14, 14, 0.08);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.arrows button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.arrows button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.arrows button:focus-visible,
+.row:focus-visible {
+  outline: 2px solid #e0603a;
+  outline-offset: 3px;
+}
+.row {
+  display: flex;
+  gap: 14px;
+  margin: 14px 0 0;
+  padding: 4px 0 20px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #0e0e0e rgba(14, 14, 14, 0.12);
+  -webkit-overflow-scrolling: touch;
+}
+.row::-webkit-scrollbar {
+  height: 8px;
+}
+.row::-webkit-scrollbar-track {
+  border-radius: 99px;
+  background: rgba(14, 14, 14, 0.12);
+}
+.row::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+  background: #0e0e0e;
+}
+.row > li {
+  flex: 0 0 min(250px, 72vw);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 701px) {
+  .gridDesktop .arrows {
+    display: none;
+  }
+  .gridDesktop .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    overflow: visible;
+    margin-top: 8px;
+  }
+  .gridDesktop .row > li {
+    flex: none;
+  }
+}

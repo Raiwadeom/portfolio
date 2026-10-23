@@ -4,7 +4,7 @@ import { projects } from "@/lib/content";
 const BASE_URL = "https://omrushikeshraiwade.space";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/work", "/business", "/hire", "/contact", "/library", "/notes"].map((path) => ({
+  const staticRoutes = ["", "/work", "/business", "/business/about", "/business/services", "/business/guide", "/business/links", "/hire", "/contact", "/library", "/notes"].map((path) => ({
     url: `${BASE_URL}${path}`,
     lastModified: new Date(),
   }));

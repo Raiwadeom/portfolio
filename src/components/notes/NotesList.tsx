@@ -2,6 +2,9 @@
 
 import { useMemo, useState } from "react";
 import DownloadLink from "./DownloadLink";
+import BizCover from "@/components/BizCover";
+import BizRow from "@/components/BizRow";
+import type { CoverIcon } from "@/lib/covers";
 import styles from "@/app/notes/notes.module.css";
 
 export type NoteItem = {
@@ -12,6 +15,7 @@ export type NoteItem = {
   pages: number;
   file: string;
   size: string;
+  icons: CoverIcon[];
 };
 
 /** Search + tag filter over the notes. Shows the filters only once there are enough notes to need them. */
@@ -65,9 +69,14 @@ export default function NotesList({ items }: { items: NoteItem[] }) {
         {shown.length} {shown.length === 1 ? "note" : "notes"}
       </p>
 
-      <ul className={styles.list}>
+      <BizRow label="Free notes" gridOnDesktop className={styles.list}>
         {shown.map((n) => (
           <li key={n.slug} className={styles.row}>
+            {n.icons.length ? (
+              <div className={styles.cardCover}>
+                <BizCover icons={n.icons} />
+              </div>
+            ) : null}
             <div className={styles.rowBody}>
               <span className={styles.rowTag}>{n.tag}</span>
               <h2 className={styles.rowTitle}>{n.title}</h2>
@@ -79,7 +88,7 @@ export default function NotesList({ items }: { items: NoteItem[] }) {
             <DownloadLink slug={n.slug} title={n.title} file={n.file} className={styles.btn} />
           </li>
         ))}
-      </ul>
+      </BizRow>
 
       {shown.length === 0 ? <p className={styles.empty}>No notes match. Try another word.</p> : null}
     </>

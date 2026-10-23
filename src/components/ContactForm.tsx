@@ -7,13 +7,16 @@
 
 import { useState, type FormEvent } from "react";
 import { hire, profile } from "@/lib/content";
+import b from "./biz-form.module.css";
 
 type State = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; msg: string };
 
 const field =
   "mt-2 w-full rounded-[2px] border border-[var(--color-line)] bg-[var(--color-void)] px-3.5 py-3 text-[15px] text-[var(--color-ice)] outline-none transition-colors placeholder:text-[var(--color-dim)] focus-visible:border-[var(--color-amber)] focus-visible:ring-2 focus-visible:ring-[rgba(177,80,47,0.25)]";
 
-export default function ContactForm() {
+/** `variant="biz"` is the light rounded look used on the /business pages. */
+export default function ContactForm({ variant }: { variant?: "biz" }) {
+  const biz = variant === "biz";
   const [state, setState] = useState<State>({ kind: "idle" });
   const [startedAt] = useState(() => Date.now());
 
@@ -40,6 +43,18 @@ export default function ContactForm() {
     }
   }
 
+  if (state.kind === "sent" && biz) {
+    return (
+      <div role="status" className={b.sent}>
+        <p className={b.sentTitle}>Message sent</p>
+        <p className={b.sentCopy}>Thanks. I&rsquo;ll reply to your email soon.</p>
+        <button type="button" onClick={() => setState({ kind: "idle" })} className={b.again}>
+          Send another
+        </button>
+      </div>
+    );
+  }
+
   if (state.kind === "sent") {
     return (
       <div role="status" className="border border-[var(--color-line)] bg-[var(--color-void)] p-6 sm:p-8">
@@ -51,6 +66,62 @@ export default function ContactForm() {
           Send another
         </button>
       </div>
+    );
+  }
+
+  if (biz) {
+    return (
+      <form onSubmit={onSubmit} className={b.form}>
+        <label className={b.label}>
+          <span className={b.labelText}>Name</span>
+          <input name="name" required minLength={2} maxLength={80} autoComplete="name" className={b.field} />
+        </label>
+        <label className={b.label}>
+          <span className={b.labelText}>Email</span>
+          <input name="email" type="email" required maxLength={120} autoComplete="email" inputMode="email" className={b.field} />
+        </label>
+        <label className={`${b.label} ${b.wide}`}>
+          <span className={b.labelText}>Project type</span>
+          <select name="type" required defaultValue="" className={b.field}>
+            <option value="" disabled>
+              Choose one
+            </option>
+            {hire.projectTypes.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className={`${b.label} ${b.wide}`}>
+          <span className={b.labelText}>Message</span>
+          <textarea
+            name="message"
+            required
+            minLength={10}
+            maxLength={2000}
+            rows={5}
+            placeholder="What do you need, and by when?"
+            className={b.field}
+          />
+        </label>
+
+        {/* a field people never see; bots fill it in */}
+        <label aria-hidden className={b.hp}>
+          Website
+          <input name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+
+        <div className={b.actions}>
+          <button type="submit" disabled={state.kind === "sending"} className={b.submit}>
+            <span className={b.submitIcon}>→</span>
+            {state.kind === "sending" ? "Sending…" : "Send message"}
+          </button>
+          <p aria-live="polite" className={b.error}>
+            {state.kind === "error" ? state.msg : ""}
+          </p>
+        </div>
+      </form>
     );
   }
 
