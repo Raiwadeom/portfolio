@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: "/business/guide" },
   openGraph: { title, description, url: "/business/guide", siteName: "oruim.tech", type: "website" },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 export default function GuidePage() {
