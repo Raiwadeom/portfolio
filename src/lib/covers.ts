@@ -11,7 +11,6 @@ import {
   siHostinger,
   siHtml5,
   siCss,
-  siElevenlabs,
   siInstagram,
   siJavascript,
   siModelcontextprotocol,
@@ -55,7 +54,6 @@ const covers: Record<string, SimpleIcon[]> = {
   "ep13-docker": [siDocker],
   "ep14-mcp": [siModelcontextprotocol, siClaude],
   // guides
-  "video-edits": [siClaude, siElevenlabs],
   "ai-ml-roadmap": [siPython, siPytorch, siScikitlearn],
   "analyst-vs-scientist": [siPandas, siNumpy, siPostgresql],
   "website-checklist": [siGoogle, siVercel, siCloudflare],
