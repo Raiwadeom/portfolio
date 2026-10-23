@@ -14,6 +14,8 @@ export const steps = [
 
 /** Newest first: add a new guide at the TOP of this list. */
 export const guides = [
+  { label: "AI / ML", title: "AI & ML Roadmap", blurb: "A step-by-step path to learn AI and machine learning.", file: "/guides/Oruim-AI-ML-Roadmap-Guide.pdf", cover: "ai-ml-roadmap" },
+  { label: "Data", title: "Data Analyst vs Data Scientist", blurb: "How the two careers differ and which one to pick.", file: "/guides/Oruim-Analyst-vs-Scientist-Guide.pdf", cover: "analyst-vs-scientist" },
   { label: "Checklist", title: "Website Checklist", blurb: "Everything to check before your website goes live.", file: "/guides/Oruim-Website-Checklist-Guide.pdf", cover: "website-checklist" },
   { label: "Stack", title: "SaaS Tech Stack", blurb: "Which tools to pick to build a SaaS product.", file: "/guides/Oruim-SaaS-Tech-Stack-Guide.pdf", cover: "saas-stack" },
   { label: "Pay", title: "Razorpay Payments", blurb: "Take payments on your site with Razorpay.", file: "/guides/Oruim-Razorpay-Payment-Guide.pdf", cover: "razorpay" },
