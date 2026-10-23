@@ -49,6 +49,7 @@ const covers: Record<string, SimpleIcon[]> = {
   "ep13-docker": [siDocker],
   "ep14-mcp": [siModelcontextprotocol, siClaude],
   // guides
+  "website-checklist": [siGoogle, siVercel, siCloudflare],
   "saas-stack": [siNextdotjs, siSupabase, siVercel],
   razorpay: [siRazorpay],
   "claude-workflow": [siClaude],

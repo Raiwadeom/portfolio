@@ -14,6 +14,7 @@ export const steps = [
 
 /** Newest first: add a new guide at the TOP of this list. */
 export const guides = [
+  { label: "Checklist", title: "Website Checklist", blurb: "Everything to check before your website goes live.", file: "/guides/Oruim-Website-Checklist-Guide.pdf", cover: "website-checklist" },
   { label: "Stack", title: "SaaS Tech Stack", blurb: "Which tools to pick to build a SaaS product.", file: "/guides/Oruim-SaaS-Tech-Stack-Guide.pdf", cover: "saas-stack" },
   { label: "Pay", title: "Razorpay Payments", blurb: "Take payments on your site with Razorpay.", file: "/guides/Oruim-Razorpay-Payment-Guide.pdf", cover: "razorpay" },
   { label: "Prompts", title: "Claude Code Workflow Prompts", blurb: "Copy-paste prompts for a smooth Claude Code workflow.", file: "/guides/Oruim-Claude-Code-Workflow-Prompts.pdf", cover: "claude-workflow" },
