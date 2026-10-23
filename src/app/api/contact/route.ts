@@ -37,6 +37,17 @@ const escape = (s: string) =>
 const bad = (error: string, status = 400) => Response.json({ ok: false, error }, { status });
 
 export async function POST(request: Request) {
+  /* only accept posts that come from this site's own pages */
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("host");
+  if (origin) {
+    let sameSite = false;
+    try {
+      sameSite = new URL(origin).host === host;
+    } catch {}
+    if (!sameSite) return bad("Not allowed.", 403);
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();

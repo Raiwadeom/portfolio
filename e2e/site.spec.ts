@@ -56,7 +56,7 @@ test.describe("navigation", () => {
   test("the footer links to every page", async ({ page }) => {
     await page.goto("/");
     const footer = page.getByRole("navigation", { name: "Pages" });
-    for (const name of ["Work", "Services", "Contact", "Library", "Episode notes"]) {
+    for (const name of ["Work", "Services", "Contact", "Library", "Free notes"]) {
       await expect(footer.getByRole("link", { name })).toBeVisible();
     }
   });
@@ -175,17 +175,14 @@ test.describe("contact form", () => {
   });
 });
 
-test.describe("episode notes", () => {
-  test("lists every episode; missing PDFs show Coming soon", async ({ page }) => {
+test.describe("free notes", () => {
+  test("lists every note with a download button", async ({ page }) => {
     await page.goto("/notes");
-    await expect(page).toHaveTitle("Episode Notes | oruim.tech");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Full Stack, explained simply/i);
-    await expect(page.getByRole("heading", { level: 2 })).toHaveCount(15);
-    // Every card is either a real download link or a disabled "Coming soon".
-    const ready = await page.getByRole("link", { name: /Download PDF notes/ }).count();
-    const soon = await page.getByText("Coming soon", { exact: true }).count();
-    expect(ready + soon).toBe(15);
-    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]')).toBeVisible();
+    await expect(page).toHaveTitle("Free Notes | oruim.tech");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Free\s+notes/i);
+    await expect(page.getByRole("heading", { level: 2 })).toHaveCount(17);
+    await expect(page.getByRole("button", { name: /Download PDF/ }).or(page.getByRole("link", { name: /Download PDF/ }))).toHaveCount(17);
+    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]').first()).toBeVisible();
   });
 });
 
@@ -195,12 +192,26 @@ test.describe("business side", () => {
     await page.getByRole("link", { name: /^Business/ }).first().click();
     await expect(page).toHaveURL(/\/business$/);
     const nav = page.getByRole("navigation", { name: "oruim.tech" });
-    for (const name of ["About", "Services", "Episode notes", "Follow", "Contact"]) {
+    for (const name of ["Home", "About", "Services", "Free notes", "Guide", "Links"]) {
       await expect(nav.getByRole("link", { name })).toBeVisible();
     }
-    await expect(page.locator('a[href="https://www.youtube.com/@oruimtech"]')).toBeVisible();
-    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]')).toBeVisible();
-    await nav.getByRole("link", { name: /Portfolio/ }).click();
+    // the floating channel links are on every business page
+    await expect(page.locator('a[href="https://www.youtube.com/@oruimtech"]').first()).toBeVisible();
+    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]').first()).toBeVisible();
+    // on phones the nav hides the back link; the footer one is always there
+    await page.locator("a:visible", { hasText: /Portfolio/ }).last().click();
     await expect(page).toHaveURL(/localhost:\d+\/$/);
+  });
+
+  test("each business section has its own page", async ({ page }) => {
+    for (const [path, heading] of [
+      ["/business/about", /Who is behind/],
+      ["/business/services", /What I can/],
+      ["/business/guide", /Guides to/],
+      ["/business/links", /Everything/],
+    ] as const) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
+    }
   });
 });

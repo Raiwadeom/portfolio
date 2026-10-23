@@ -9,14 +9,12 @@ export default function BizRow({
   label,
   gridOnDesktop = false,
   className,
-  itemClassName,
 }: {
   children: React.ReactNode;
   label: string;
   /** Keep a wrapping grid on wide screens; the arrows and scrollbar only show on phones. */
   gridOnDesktop?: boolean;
   className?: string;
-  itemClassName?: string;
 }) {
   const ref = useRef<HTMLUListElement>(null);
   const [edge, setEdge] = useState({ start: true, end: false });

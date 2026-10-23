@@ -664,9 +664,6 @@
   .cardR:hover { transform: rotate(5deg) translateY(4%); }
   .cardC:hover { transform: translateX(-50%) translateY(-2%); }
 }
-.h2Sub {
-  margin-top: clamp(56px, 9vh, 96px);
-}
 
 /* ───────── detail pages ───────── */
 .pageHead {
@@ -778,14 +775,6 @@
   padding: clamp(24px, 4vw, 44px);
   border-radius: 28px;
   background: var(--card);
-}
-.tileGrid {
-  display: grid;
-  gap: 14px;
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
 }
 
 /* ───────── floating social tiles: fixed bottom-right on every /business page ───────── */
