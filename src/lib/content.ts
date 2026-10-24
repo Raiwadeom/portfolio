@@ -10,7 +10,7 @@ export const profile = {
   logo: "OM/RW",
   role: "Websites, Web Apps & AI for Business",
   tagline: "Web development studio",
-  email: "raiwadeomrushikesh@gmail.com",
+  email: "oruimtech@gmail.com",
   status: "TAKING NEW PROJECTS",
   /** Printed on the lanyard badge in the about section. */
   badgeNo: "SR-VISUAL-0051",

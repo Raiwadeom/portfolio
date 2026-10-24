@@ -64,6 +64,7 @@ const covers: Record<string, SimpleIcon[]> = {
   "saas-stack": [siNextdotjs, siSupabase, siVercel],
   razorpay: [siRazorpay],
   "claude-workflow": [siClaude],
+  "security-prompts": [siClaude, siGithub],
   // links
   instagram: [siInstagram],
   youtube: [siYoutube],

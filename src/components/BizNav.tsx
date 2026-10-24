@@ -34,11 +34,6 @@ export default function BizNav({ current }: { current?: "home" | "notes" }) {
             </Link>
           </li>
           <li>
-            <Link href="/business/about" aria-current={on("/business/about")}>
-              About
-            </Link>
-          </li>
-          <li>
             <Link href="/business/services" aria-current={on("/business/services")}>
               Services
             </Link>

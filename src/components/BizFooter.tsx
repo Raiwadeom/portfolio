@@ -6,7 +6,6 @@ export default function BizFooter() {
     <footer className={`${styles.wrap} ${styles.footer}`}>
       <span>© oruim.tech 2026</span>
       <nav className={styles.footerLinks} aria-label="Footer">
-        <Link href="/business/about">About</Link>
         <Link href="/business/services">Services</Link>
         <Link href="/notes">Free notes</Link>
         <Link href="/business/guide">Guide</Link>

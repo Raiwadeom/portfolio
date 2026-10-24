@@ -14,6 +14,7 @@ export const steps = [
 
 /** Newest first: add a new guide at the TOP of this list. */
 export const guides = [
+  { label: "Security", title: "5 Security Checks Before Launch", blurb: "Five copy-paste prompts that make your AI app builder find and fix security mistakes.", file: "/guides/vibe-coding-security-prompts.pdf", cover: "security-prompts" },
   { label: "Video", title: "Unlimited Reels from Code", blurb: "One Claude skill turns HTML into real video, with no credits per clip.", file: "/guides/Oruim-Unlimited-Reels-Guide.pdf", cover: "unlimited-reels" },
   { label: "Skills", title: "find-skills", blurb: "Ask Claude for a skill in plain words and it installs it for you.", file: "/guides/Oruim-find-skills-Guide.pdf", cover: "find-skills" },
   { label: "YouTube", title: "YouTube Agent Skill", blurb: "Eleven free Claude skills for scripts, edits, SEO and planning.", file: "/guides/Oruim-YouTube-Agent-Skill-Guide.pdf", cover: "youtube-agent" },

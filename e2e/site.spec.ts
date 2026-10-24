@@ -192,7 +192,7 @@ test.describe("business side", () => {
     await page.getByRole("link", { name: /^Business/ }).first().click();
     await expect(page).toHaveURL(/\/business$/);
     const nav = page.getByRole("navigation", { name: "oruim.tech" });
-    for (const name of ["Home", "About", "Services", "Free notes", "Guide", "Links"]) {
+    for (const name of ["Home", "Services", "Free notes", "Guide", "Links"]) {
       await expect(nav.getByRole("link", { name })).toBeVisible();
     }
     // the floating channel links are on every business page
@@ -205,7 +205,6 @@ test.describe("business side", () => {
 
   test("each business section has its own page", async ({ page }) => {
     for (const [path, heading] of [
-      ["/business/about", /Who is behind/],
       ["/business/services", /What I can/],
       ["/business/guide", /Guides to/],
       ["/business/links", /Everything/],

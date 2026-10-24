@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
-import { hire, profile } from "@/lib/content";
+import { about, hire, photo, profile, stack } from "@/lib/content";
 import { notes } from "@/lib/notes.config";
 import BizRow from "@/components/BizRow";
 import BizCover from "@/components/BizCover";
@@ -126,14 +126,37 @@ export default function BusinessPage() {
             Introducing oruim.tech. <em>Websites, web apps and AI tools,</em> built for real businesses.
           </h2>
           <p className={styles.copy}>
-            oruim.tech is the business side of {profile.name}. It builds for businesses, institutions and small
+            oruim.tech is the business side of oruim. It builds for businesses, institutions and small
             teams, from the first conversation to the day it goes live. It also shares free PDF notes on building
             with AI, ready to download.
           </p>
-          <Link href="/business/about" className={`${styles.pill} ${styles.pillLight} ${styles.seeAll}`}>
-            <span className={styles.pillIcon}>→</span>
-            Read more about us
-          </Link>
+          <div className={styles.split}>
+            <div className={styles.portrait}>
+              <Image src={photo} alt="oruim" width={560} height={700} className={styles.portraitImg} />
+              <span className={styles.portraitCap}>oruim · {profile.role}</span>
+            </div>
+            <div className={styles.prose}>
+              {about.paras.map((p) => (
+                <p key={p}>{p.replace("Omrushikesh", "oruim")}</p>
+              ))}
+            </div>
+          </div>
+          <h3 className={styles.h2}>
+            The tools <em>I build with</em>
+          </h3>
+          <div className={styles.stackGrid}>
+            {stack.map((g) => (
+              <div key={g.group} className={styles.stackCard}>
+                <span className={`${styles.cardNum} ${styles.dot}`}>{g.n}</span>
+                <h3>{g.group.charAt(0) + g.group.slice(1).toLowerCase()}</h3>
+                <ul className={styles.chips}>
+                  {g.items.map((i) => (
+                    <li key={i}>{i}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* ── services ── */}
