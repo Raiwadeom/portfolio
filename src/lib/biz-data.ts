@@ -14,6 +14,7 @@ export const steps = [
 
 /** Newest first: add a new guide at the TOP of this list. */
 export const guides = [
+  { label: "Video", title: "Unlimited Reels from Code", blurb: "One Claude skill turns HTML into real video, with no credits per clip.", file: "/guides/Oruim-Unlimited-Reels-Guide.pdf", cover: "unlimited-reels" },
   { label: "Skills", title: "find-skills", blurb: "Ask Claude for a skill in plain words and it installs it for you.", file: "/guides/Oruim-find-skills-Guide.pdf", cover: "find-skills" },
   { label: "YouTube", title: "YouTube Agent Skill", blurb: "Eleven free Claude skills for scripts, edits, SEO and planning.", file: "/guides/Oruim-YouTube-Agent-Skill-Guide.pdf", cover: "youtube-agent" },
   { label: "Video", title: "5 Claude Skills for Video Styles", blurb: "Five free skills that make your videos look different.", file: "/guides/Oruim-5-Claude-Video-Skills-Guide.pdf", cover: "video-skills" },

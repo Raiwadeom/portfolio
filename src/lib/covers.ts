@@ -54,6 +54,7 @@ const covers: Record<string, SimpleIcon[]> = {
   "ep13-docker": [siDocker],
   "ep14-mcp": [siModelcontextprotocol, siClaude],
   // guides
+  "unlimited-reels": [siClaude, siHtml5, siInstagram],
   "find-skills": [siClaude, siVercel, siGithub],
   "youtube-agent": [siYoutube, siClaude],
   "video-skills": [siClaude, siYoutube],
