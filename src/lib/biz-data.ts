@@ -14,6 +14,8 @@ export const steps = [
 
 /** Newest first: add a new guide at the TOP of this list. */
 export const guides = [
+  { label: "YouTube", title: "YouTube Agent Skill", blurb: "Eleven free Claude skills for scripts, edits, SEO and planning.", file: "/guides/Oruim-YouTube-Agent-Skill-Guide.pdf", cover: "youtube-agent" },
+  { label: "Video", title: "5 Claude Skills for Video Styles", blurb: "Five free skills that make your videos look different.", file: "/guides/Oruim-5-Claude-Video-Skills-Guide.pdf", cover: "video-skills" },
   { label: "AI / ML", title: "AI & ML Roadmap", blurb: "A step-by-step path to learn AI and machine learning.", file: "/guides/Oruim-AI-ML-Roadmap-Guide.pdf", cover: "ai-ml-roadmap" },
   { label: "Data", title: "Data Analyst vs Data Scientist", blurb: "How the two careers differ and which one to pick.", file: "/guides/Oruim-Analyst-vs-Scientist-Guide.pdf", cover: "analyst-vs-scientist" },
   { label: "Checklist", title: "Website Checklist", blurb: "Everything to check before your website goes live.", file: "/guides/Oruim-Website-Checklist-Guide.pdf", cover: "website-checklist" },
