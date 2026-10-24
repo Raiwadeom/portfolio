@@ -11,7 +11,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { profile, projects } from "@/lib/content";
 import NitroCanvas from "./NitroCanvas";
 import { scrollToId } from "@/lib/smooth";
@@ -112,14 +111,9 @@ export default function Hero() {
               ↓
             </span>
           </a>
-          <Link href="/business" className="hero-btn hero-btn--glass">
-            Business
-            <span aria-hidden> →</span>
-          </Link>
         </div>
         <p className="hero-lanes">
           <span>Portfolio: about me and my work</span>
-          <span>Business: what I can build for you</span>
         </p>
       </div>
     </section>

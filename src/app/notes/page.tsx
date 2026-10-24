@@ -3,7 +3,7 @@ import { statSync } from "node:fs";
 import path from "node:path";
 import NotesList, { type NoteItem } from "@/components/notes/NotesList";
 import { coverIcons } from "@/lib/covers";
-import BizNav from "@/components/BizNav";
+import Link from "next/link";
 import BizSocial from "@/components/BizSocial";
 import BizScroll from "@/components/BizScroll";
 import {
@@ -54,7 +54,9 @@ export default function NotesPage() {
         Skip to notes
       </a>
 
-      <BizNav current="notes" />
+      <Link href="/" className={styles.follow} style={{ display: "inline-block", margin: "20px" }}>
+        ← Back to portfolio
+      </Link>
 
       <header className={styles.header}>
         <p className={styles.brand}>oruim.tech</p>

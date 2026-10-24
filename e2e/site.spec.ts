@@ -186,31 +186,11 @@ test.describe("free notes", () => {
   });
 });
 
-test.describe("business side", () => {
-  test("hero Business button opens /business with its own nav and a way back", async ({ page }) => {
-    await page.goto("/");
-    await page.getByRole("link", { name: /^Business/ }).first().click();
-    await expect(page).toHaveURL(/\/business$/);
-    const nav = page.getByRole("navigation", { name: "oruim.tech" });
-    for (const name of ["Home", "Services", "Free notes", "Guide", "Links"]) {
-      await expect(nav.getByRole("link", { name })).toBeVisible();
-    }
-    // the floating channel links are on every business page
-    await expect(page.locator('a[href="https://www.youtube.com/@oruimtech"]').first()).toBeVisible();
-    await expect(page.locator('a[href="https://www.instagram.com/oruim.tech"]').first()).toBeVisible();
-    // on phones the nav hides the back link; the footer one is always there
-    await page.locator("a:visible", { hasText: /Portfolio/ }).last().click();
-    await expect(page).toHaveURL(/localhost:\d+\/$/);
-  });
-
-  test("each business section has its own page", async ({ page }) => {
-    for (const [path, heading] of [
-      ["/business/services", /What I can/],
-      ["/business/guide", /Guides to/],
-      ["/business/links", /Everything/],
-    ] as const) {
-      await page.goto(path);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
+test.describe("business side removed", () => {
+  test("/business pages are gone", async ({ page }) => {
+    for (const path of ["/business", "/business/guide", "/business/links", "/business/services"]) {
+      const res = await page.goto(path);
+      expect(res?.status()).toBe(404);
     }
   });
 });

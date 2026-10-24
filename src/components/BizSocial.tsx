@@ -1,4 +1,4 @@
-import styles from "@/app/business/biz.module.css";
+import styles from "./biz.module.css";
 import { INSTAGRAM_HANDLE, INSTAGRAM_URL, YOUTUBE_HANDLE, YOUTUBE_URL } from "@/lib/notes.config";
 
 /** Floating tilted icon tiles fixed bottom-right on every /business page. Each opens the channel in a new tab. */
