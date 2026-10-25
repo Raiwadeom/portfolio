@@ -517,6 +517,12 @@ export const links = [
     href: "https://www.linkedin.com/in/om-raiwade/",
   },
   {
+    label: "INSTAGRAM",
+    short: "IG",
+    handle: "@oruim.tech",
+    href: "https://www.instagram.com/oruim.tech",
+  },
+  {
     label: "LETTERBOXD",
     short: "LB",
     handle: "@oruim",
