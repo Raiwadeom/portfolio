@@ -8,7 +8,8 @@
 
 import { useState, type FormEvent, type MouseEvent, type ReactNode } from "react";
 import Link from "next/link";
-import { profile, hire } from "@/lib/content";
+import { links, profile, hire } from "@/lib/content";
+import SocialLogo from "./SocialLogo";
 import "@/app/kinetic.css";
 
 /**
@@ -97,9 +98,12 @@ export default function KineticContact({
 
           <div className="kin-foot-col">
             <h3>Elsewhere</h3>
-            <a href="https://github.com/Raiwadeom" target="_blank" rel="noreferrer">
-              GitHub
-            </a>
+            {links.map((l) => (
+              <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="kin-foot-social">
+                <SocialLogo short={l.short} className="h-6 w-6" />
+                {l.label.charAt(0) + l.label.slice(1).toLowerCase()}
+              </a>
+            ))}
             {live ? (
               <a href={live} target="_blank" rel="noreferrer">
                 {liveLabel}

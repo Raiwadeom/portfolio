@@ -1,15 +1,10 @@
 "use client";
 
 import { links, profile, hire } from "@/lib/content";
+import SocialLogo from "./SocialLogo";
 import "@/app/kinetic.css";
 
-/** a small line-drawn mark for each card, in the spirit of the reference */
-const glyphs = [
-  <path key="g" d="M16 4v24M4 16h24M9 9l14 14M23 9L9 23" />,
-  <rect key="l" x="6" y="6" width="20" height="20" rx="6" />,
-  <path key="b" d="M7 7l18 18M25 7L7 25" />,
-];
-const tags = ["Code", "Network", "Films"];
+const tags = ["Code", "Network", "Social", "Films"];
 
 /**
  * The top of the contact page: a pale stage with frosted glass cards laid
@@ -41,9 +36,7 @@ export default function Contact() {
           <li key={l.label}>
             <a href={l.href} target="_blank" rel="noreferrer" className="kin-gm-card">
               <span className="kin-gm-tag">{tags[i] ?? "Link"}</span>
-              <svg viewBox="0 0 32 32" aria-hidden className="kin-gm-glyph">
-                {glyphs[i % glyphs.length]}
-              </svg>
+              <SocialLogo short={l.short} className="h-[72px] w-[72px]" />
               <span className="kin-gm-name">
                 {l.label}
                 <small>{l.handle}</small>
