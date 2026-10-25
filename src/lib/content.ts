@@ -266,7 +266,7 @@ export const stack = [
   {
     n: "03",
     group: "TOOLING",
-    items: ["EXPO", "VITE", "GIT", "VERCEL", "GSAP"],
+    items: ["EXPO", "VITE", "GIT", "VERCEL", "CLOUDFLARE", "GSAP"],
   },
 ];
 
