@@ -26,9 +26,10 @@ export default function Chrome() {
   const router = useRouter();
   const onHome = pathname === "/";
 
-  const [active, setActive] = useState(() => {
+  /* null on the home page's hero: no icon is lit until a section is reached */
+  const [active, setActive] = useState<string | null>(() => {
     const routed = pathname.split("/")[1];
-    return ROUTED.has(routed) ? routed : nav[0].id;
+    return ROUTED.has(routed) ? routed : null;
   });
   const [hovered, setHovered] = useState<string | null>(null);
   const [lifted, setLifted] = useState(false);
@@ -47,6 +48,8 @@ export default function Chrome() {
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) setActive(e.target.id);
+          /* About scrolled back below the reader: they are on the hero again */
+          else if (e.target.id === nav[0].id && e.boundingClientRect.top > 0) setActive(null);
         });
       },
       { rootMargin: "-45% 0px -50% 0px" }
@@ -83,14 +86,18 @@ export default function Chrome() {
   /* The label rides beside whichever icon is hovered, else the live one. */
   useLayoutEffect(() => {
     const id = hovered ?? active;
-    const el = row.current?.querySelector<HTMLElement>(`[data-nav="${id}"]`);
+    const el = id ? row.current?.querySelector<HTMLElement>(`[data-nav="${id}"]`) : null;
     const tag = label.current;
-    if (!el || !tag) return;
+    if (!tag) return;
+    if (!el) {
+      tag.style.opacity = "0";
+      return;
+    }
     tag.style.opacity = "1";
     tag.style.setProperty("--y", `${el.offsetTop + el.offsetHeight / 2}px`);
   }, [hovered, active]);
 
-  const shown = nav.find((n) => n.id === (hovered ?? active)) ?? nav[0];
+  const shown = nav.find((n) => n.id === (hovered ?? active));
 
   return (
     <>
@@ -154,8 +161,8 @@ export default function Chrome() {
             );
           })}
 
-          <span ref={label} key={shown.id} aria-hidden className="vnav-label">
-            {shown.label}
+          <span ref={label} key={shown?.id ?? "none"} aria-hidden className="vnav-label">
+            {shown?.label}
           </span>
         </div>
       </nav>
