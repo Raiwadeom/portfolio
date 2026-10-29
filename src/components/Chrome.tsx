@@ -3,8 +3,8 @@
 /**
  * The nav bar.
  *
- * A dark rounded bar of icons standing on the left edge, vertically centred.
- * The section you are on is a white tile, and its name appears in a
+ * A liquid-glass pill of icons standing on the left edge, vertically centred.
+ * The section you are on is a white pill, and its name appears in a
  * bracketed label beside the bar. The signature sits top-left and a
  * "Get in touch" button top-right.
  *
