@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://omrushikeshraiwade.space/sitemap.xml",
+    sitemap: "https://www.omrushikeshraiwade.space/sitemap.xml",
   };
 }

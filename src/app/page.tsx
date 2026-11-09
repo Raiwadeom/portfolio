@@ -4,6 +4,7 @@ import Chrome from "@/components/Chrome";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import WorkCarousel from "@/components/WorkCarousel";
+import Channel from "@/components/Channel";
 import Library from "@/components/Library";
 import Footer from "@/components/Footer";
 
@@ -41,6 +42,8 @@ export default function Home() {
         </div>
 
         <WorkCarousel id="projects" />
+
+        <Channel />
 
         <div className="relative overflow-hidden bg-[var(--color-deep)]">
           <Library />

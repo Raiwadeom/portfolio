@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { siGithub, siInstagram } from "simple-icons";
+import { siGithub, siInstagram, siYoutube } from "simple-icons";
 
 /** simple-icons dropped the LinkedIn logo, so its "in" is drawn here. */
 const linkedinPath =
@@ -18,6 +18,10 @@ const tiles: Record<string, { tile: string; glyph: ReactNode }> = {
   IG: {
     tile: "rounded-[10px] bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285AEB_90%)]",
     glyph: <path d={siInstagram.path} fill="#fff" />,
+  },
+  YT: {
+    tile: "rounded-[10px] bg-[#FF0000]",
+    glyph: <path d={siYoutube.path} fill="#fff" />,
   },
   LB: {
     tile: "rounded-full bg-[#14181C]",

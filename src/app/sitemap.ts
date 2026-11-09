@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/lib/content";
 
-const BASE_URL = "https://omrushikeshraiwade.space";
+const BASE_URL = "https://www.omrushikeshraiwade.space";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["", "/work", "/hire", "/contact", "/library", "/notes"].map((path) => ({

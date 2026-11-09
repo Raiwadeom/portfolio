@@ -2392,3 +2392,132 @@ section[id] {
     letter-spacing: 0.1em;
   }
 }
+
+/* ---------- the tech channel (oruim.tech) on the landing page ---------- */
+.chan {
+  display: grid;
+  gap: 28px;
+  padding: clamp(24px, 5vw, 56px);
+  background: #18140f;
+  color: #f6f3ec;
+  border-radius: 6px;
+}
+@media (min-width: 860px) {
+  .chan {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+  }
+}
+.chan-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(246, 243, 236, 0.6);
+}
+.chan-live {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff4a14;
+  box-shadow: 0 0 0 4px rgba(255, 74, 20, 0.22);
+}
+.chan-name {
+  margin: 18px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 12vw, 7.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  color: #f6f3ec;
+}
+.chan-name span {
+  color: #ff4a14;
+}
+.chan-line {
+  margin: 20px 0 0;
+  max-width: 46ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(246, 243, 236, 0.72);
+}
+.chan-notes {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 26px;
+  padding: 12px 18px 12px 14px;
+  border: 1px solid rgba(246, 243, 236, 0.22);
+  border-radius: 10px;
+  color: #f6f3ec;
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.chan-notes:hover {
+  border-color: #ff4a14;
+  transform: translateY(-1px);
+}
+.chan-notes-n {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  line-height: 1;
+  color: #ff4a14;
+}
+.chan-notes small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(246, 243, 236, 0.6);
+}
+.chan-doors {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chan-door {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid rgba(246, 243, 236, 0.16);
+  border-radius: 12px;
+  background: rgba(246, 243, 236, 0.04);
+  color: #f6f3ec;
+  text-decoration: none;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.chan-door:hover {
+  background: rgba(246, 243, 236, 0.09);
+  border-color: rgba(255, 74, 20, 0.7);
+  transform: translateY(-2px);
+}
+.chan-door:active {
+  transform: scale(0.985);
+}
+.chan-door-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.chan-door-text b {
+  font-size: 16px;
+  font-weight: 600;
+}
+.chan-door-text small {
+  font-size: 13px;
+  color: rgba(246, 243, 236, 0.6);
+}
+.chan-door-go {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #ff4a14;
+  white-space: nowrap;
+}
