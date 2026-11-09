@@ -42,19 +42,12 @@ export default function KineticContact({
       <section className="kin-light" id="contact">
         <div className="kin-wrap kin-cta">
           <div className="kin-cta-copy">
-            <span className="kin-mark" aria-hidden>
-              {profile.logo.split("/")[0]}
-            </span>
             <h2>
               {lines[0]}
               <br />
               {lines[1]}
             </h2>
             <p>I build the whole thing, from the first sketch to the live site. Tell me what you need.</p>
-            <a className="kin-pill kin-pill-line" href="#kin-form">
-              Get started
-              <span className="kin-dot" aria-hidden />
-            </a>
           </div>
 
           <KineticForm />
