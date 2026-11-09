@@ -125,12 +125,14 @@ export default function Chrome() {
         </button>
       </div>
 
-      <div className="pointer-events-auto fixed right-[var(--gutter)] top-3 sm:top-4 z-50">
-        <button type="button" onClick={() => router.push("/contact")} className="touch-btn">
-          Get in touch
-          <span aria-hidden>↗</span>
-        </button>
-      </div>
+      {pathname !== "/contact" && (
+        <div className="pointer-events-auto fixed right-[var(--gutter)] top-3 sm:top-4 z-50">
+          <button type="button" onClick={() => router.push("/contact")} className="touch-btn">
+            Get in touch
+            <span aria-hidden>↗</span>
+          </button>
+        </div>
+      )}
 
       <nav
         aria-label="Sections"
