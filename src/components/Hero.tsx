@@ -87,7 +87,7 @@ export default function Hero() {
           <span aria-hidden>|</span> {profile.name} — web studio
         </p>
         <h1 className="hero-title">
-          We build websites
+          I build websites
           <br />
           that race ahead.
         </h1>
@@ -112,9 +112,6 @@ export default function Hero() {
             </span>
           </a>
         </div>
-        <p className="hero-lanes">
-          <span>Portfolio: about me and my work</span>
-        </p>
       </div>
     </section>
   );

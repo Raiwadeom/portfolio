@@ -5,7 +5,6 @@
  * project runs, and the enquiry form. All text is `hire` in content.ts.
  */
 
-import Link from "next/link";
 import { hire } from "@/lib/content";
 import KineticContact from "./KineticContact";
 import ServicesBoard from "./ServicesBoard";
@@ -52,20 +51,6 @@ export default function Hire() {
               </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      {/* ── free notes, just above contact ── */}
-      <section className="kin kin-dark kin-notes">
-        <div className="kin-wrap">
-          <Link href="/notes" className="kin-notes-card">
-            <span>
-              <small>Free for students</small>
-              <strong>Free notes</strong>
-              <em>PDF guides on building with AI, ready to download.</em>
-            </span>
-            <b aria-hidden>→</b>
-          </Link>
         </div>
       </section>
 

@@ -13,6 +13,17 @@
   color: #fff;
 }
 
+/* the red cover melts into the cream About page instead of ending on a hard line */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+  height: clamp(90px, 16vh, 180px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(243, 239, 230, 0), #f3efe6);
+}
+
 .hero-glow {
   position: absolute;
   inset: 0;
@@ -378,6 +389,17 @@
 .wc-bg {
   position: absolute;
   inset: 0;
+}
+
+/* the cream About page darkens into the projects instead of being cut off */
+.wc::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 1;
+  height: clamp(70px, 11vh, 120px);
+  pointer-events: none;
+  background: linear-gradient(to bottom, #f3efe6, rgba(10, 8, 7, 0));
 }
 
 .wc-bg-img {
